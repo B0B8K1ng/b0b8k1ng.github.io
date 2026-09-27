@@ -19,16 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://b0b8k1ng.github.io/OpenNWM/
     steps:
       - name: Check out website
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Prepare OpenNWM site
+        run: |
+          mkdir -p _site/OpenNWM _site/OpenNWM-website
+          cp -R index.html style.css app.js research.js assets content .nojekyll _site/OpenNWM/
+          touch _site/.nojekyll
+          printf '%s\n' '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=/OpenNWM/"><title>OpenNWM</title></head><body><a href="/OpenNWM/">OpenNWM</a></body></html>' > _site/index.html
+          cp _site/index.html _site/OpenNWM-website/index.html
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

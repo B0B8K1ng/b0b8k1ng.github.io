@@ -2,11 +2,13 @@
 
 OpenNWM 的独立公开网站：论文、真实模型预测视频、数据集场景和交互式研究结果。原生 HTML / CSS / JavaScript，无前端依赖或构建步骤。
 
-上线后地址：<https://b0b8k1ng.github.io/OpenNWM-website/>。
+网站地址：<https://b0b8k1ng.github.io/OpenNWM/>。
 
 ## 免费部署
 
-本仓库设为 **Public**，在 **Settings → Pages → Source** 选择 **GitHub Actions**。推送到 `main` 会自动部署；也可在 **Actions → Deploy website to GitHub Pages → Run workflow** 手动运行。
+公开仓库名称为 **B0B8K1ng/b0b8k1ng.github.io**，在 **Settings → Pages → Source** 选择 **GitHub Actions**。推送到 `main` 会自动部署；也可在 **Actions → Deploy website to GitHub Pages → Run workflow** 手动运行。
+
+网页源文件保持在仓库根目录，工作流将其发布到 `OpenNWM/`。用户站点根地址和旧的 `/OpenNWM-website/` 地址会跳转到 `/OpenNWM/`。
 
 本仓库保存网站内容。训练与评测实现位于私人仓库 [B0B8K1ng/OpenNWM](https://github.com/B0B8K1ng/OpenNWM)，访问代码需要协作者权限。
 
