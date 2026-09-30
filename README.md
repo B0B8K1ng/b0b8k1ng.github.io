@@ -27,7 +27,7 @@ python3 -m http.server 8000 --bind 127.0.0.1
 - `index.html`：布局与中英固定文案。
 - `style.css`：样式与手机布局。
 - `app.js`、`research.js`：视频、数据集、方法与结果交互。
-- `cinematic.js`、`playground.js`：首屏场景名、视频墙、行星压力测试和轨迹演示。
+- `cinematic.js`、`playground.js`：首屏影片章节导航、移动机器人进度、行星压力测试和轨迹演示。
 - `content/paper.json`：论文数据；出处见 `content/PAPER_SOURCES.md`。
 - `content/demos.json`、`content/datasets.json`：素材路径与来源信息。
 - `content/cinematic.json`、`content/space.json`、`content/playground.json`：新影片和演示的场景、素材及可公开来源记录。
@@ -37,6 +37,6 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 模型视频来自已完成的真实推理归档，并非实时生成；数据集展示为 15 个 NavAnywhere 来源及 4 个 NWM 后训练来源，后者不计入 NavAnywhere 总量。论文当前为匿名稿件、ICLR 2027 审稿中，引用信息为临时版本。
 
-首屏为 24 个第一人称场景，按地球环境、月球、火星播放；每段有唯一双语场景名。视频墙由 225 条独立轨迹组成，覆盖全部 15 个 NavAnywhere 来源。月球开场素材为 LuSNAR 仿真，火星为真实祝融图像的镜头移动效果。
+首屏是一段约 63 秒的完整影片：地球场景 → LuSNAR 月球仿真 → SynMars-TW 火星仿真连续帧 → 无文字的 225 格视频墙。CASIA-Nav 办公室轨迹已移除，视频墙仍覆盖全部 15 个 NavAnywhere 来源。顶部导航可跳转行星和地球场景，机器人图标随播放进度移动。O 字内部为 1/2 地球、1/4 月球、1/4 火星表面。每次打开网站默认英语，可手动切换中文。
 
-GitHub Pages 提供六场景、18 条真实预计算预测。鼠标/触屏可以绘制轨迹，任意轨迹的实时预测需要另行连接本机 GPU 演示服务；本公开仓库不包含模型权重或推理服务。当前权重的行星预测会漂移到地球环境，页面作为失败的压力测试呈现。
+19 个数据集卡片全部提供连续帧视频，在视野内播放，离开时暂停。交互 Demo 选用逐帧审查后较稳定的真实预计算预测，已移除 Glass corridor。鼠标/触屏可以绘制轨迹，任意轨迹的实时预测需要另行连接本机 GPU 演示服务；本公开仓库不包含模型权重或推理服务。当前权重的行星预测会漂移到地球环境，页面仍在独立区域作为失败的压力测试呈现。

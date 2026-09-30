@@ -1,16 +1,11 @@
 import { initResearch } from "./research.js";
-import { initCinematic } from "./cinematic.js";
-import { initPlayground } from "./playground.js";
+import { initCinematic } from "./cinematic.js?v=earth-space-v3-20260930";
+import { initPlayground } from "./playground.js?v=earth-space-v3-20260930";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const motion = matchMedia("(prefers-reduced-motion: reduce)");
 let language = "en";
-try {
-  language = localStorage.getItem("opennwm-language") === "zh" ? "zh" : "en";
-} catch {
-  /* Storage is optional. */
-}
 const t = (en, zh) => (language === "zh" ? zh : en);
 const icon = (name) => `<svg aria-hidden="true"><use href="#${name}"/></svg>`;
 const escape = (value) =>
@@ -54,11 +49,6 @@ function translate() {
 }
 $("#language").addEventListener("click", () => {
   language = language === "en" ? "zh" : "en";
-  try {
-    localStorage.setItem("opennwm-language", language);
-  } catch {
-    /* Storage is optional. */
-  }
   translate();
 });
 translate();
@@ -425,7 +415,7 @@ const descriptionsZh = {
   "ub-visiogeoloc": "城市与公共空间中的移动",
   recon: "真实机器人导航轨迹",
   sacson: "走廊与室内移动场景",
-  scand: "人与机器人共享的导航空间",
+  scand: "人与机器人共享的校园步道",
   "tartan-drive": "越野驾驶与自然地形",
 };
 const featured = [
@@ -447,7 +437,40 @@ function orderedDatasets() {
     return rank(a) - rank(b);
   });
 }
+// Load card videos only near the viewport; play only visible previews.
+const visibleDatasetVideos = new Set();
+function updateDatasetVideos() {
+  $$("#dataset-grid video").forEach((video) => {
+    const shouldPlay = visibleDatasetVideos.has(video) && !motion.matches && !document.hidden && !$("#dataset-dialog").open;
+    if (shouldPlay) video.play().catch(() => {});
+    else video.pause();
+  });
+}
+const datasetPreloadObserver = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (!entry.isIntersecting) continue;
+    const video = entry.target;
+    if (!video.src && video.dataset.src) {
+      video.src = video.dataset.src;
+      video.load();
+    }
+    datasetPreloadObserver.unobserve(video);
+  }
+}, { rootMargin: "220px 0px" });
+const datasetPlaybackObserver = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) visibleDatasetVideos.add(entry.target);
+    else visibleDatasetVideos.delete(entry.target);
+  }
+  updateDatasetVideos();
+}, { threshold: 0.15 });
+motion.addEventListener("change", updateDatasetVideos);
+document.addEventListener("visibilitychange", updateDatasetVideos);
 function renderDatasets() {
+  $$("#dataset-grid video").forEach((video) => video.pause());
+  datasetPreloadObserver.disconnect();
+  datasetPlaybackObserver.disconnect();
+  visibleDatasetVideos.clear();
   const matching = orderedDatasets().filter(
     (item) => filter === "all" || item.environments.includes(filter),
   );
@@ -455,9 +478,14 @@ function renderDatasets() {
   $("#dataset-grid").innerHTML = visible
     .map(
       (item) =>
-        `<button class="dataset-card" type="button" data-dataset="${item.id}" aria-haspopup="dialog" aria-label="${escape(t("Explore ", "查看 ") + item.name)}"><div class="dataset-card-image"><img src="${item.image}" alt="${escape(item.description)}" loading="lazy" width="480" height="270"><span class="dataset-card-index">${String(datasets.datasets.indexOf(item) + 1).padStart(2, "0")}</span><span class="dataset-card-arrow">${icon("arrow-up")}</span>${item.video ? `<span class="dataset-card-play">${icon("play")}</span>` : ""}</div><div class="dataset-card-label"><h3>${escape(item.name)}</h3><span class="source-group">${item.group === "pretraining" ? "PRETRAIN" : "POST-TRAIN"}</span></div><span class="dataset-card-sub">${escape(t(item.title, descriptionsZh[item.id]))}</span></button>`,
+        `<button class="dataset-card" type="button" data-dataset="${item.id}" aria-haspopup="dialog" aria-label="${escape(t("Explore ", "查看 ") + item.name)}"><div class="dataset-card-image"><video data-src="${escape(item.video || "")}" poster="${escape(item.image)}" muted loop playsinline preload="none" width="480" height="270" aria-label="${escape(item.name + t(" dataset video", " 数据集视频"))}"></video><span class="dataset-card-index">${String(datasets.datasets.indexOf(item) + 1).padStart(2, "0")}</span><span class="dataset-card-arrow">${icon("arrow-up")}</span>${item.video ? `<span class="dataset-card-play">${icon("play")}</span>` : ""}</div><div class="dataset-card-label"><h3>${escape(item.name)}</h3><span class="source-group">${item.group === "pretraining" ? "PRETRAIN" : "POST-TRAIN"}</span></div><span class="dataset-card-sub">${escape(t(item.title, item.titleZh || descriptionsZh[item.id]))}</span></button>`,
     )
     .join("");
+  $$("#dataset-grid video").forEach((video) => {
+    video.addEventListener("loadeddata", updateDatasetVideos);
+    datasetPreloadObserver.observe(video);
+    datasetPlaybackObserver.observe(video);
+  });
   $("#dataset-count").textContent = t(
     `${visible.length} / ${matching.length} SOURCES`,
     `${visible.length} / ${matching.length} 个来源`,
@@ -522,8 +550,8 @@ function renderDialog(item) {
   facts.push(
     item.video
       ? t(
-          "Consecutive source frames · 12 fps display",
-          "连续源帧 · 以 12 fps 展示",
+          `Consecutive source frames · ${item.source?.video?.playback_fps || 12} fps display`,
+          `连续源帧 · 以 ${item.source?.video?.playback_fps || 12} fps 展示`,
         )
       : t("A sampled source frame", "源数据中的采样帧"),
   );
@@ -547,12 +575,14 @@ $("#dataset-grid").addEventListener("click", async (event) => {
   $("#dialog-image").alt = currentDataset.description;
   $("#dialog-image").hidden = Boolean(currentDataset.video);
   dialogVideo.hidden = !currentDataset.video;
+  $("#dialog-media-status").hidden = true;
   dialogController?.abort();
   dialogController = new AbortController();
   const controller = dialogController;
   dialog.showModal();
   document.body.classList.add("dialog-open");
   updateHero();
+  updateDatasetVideos();
   if (currentDataset.video) {
     try {
       await loadVideo(
@@ -565,8 +595,8 @@ $("#dataset-grid").addEventListener("click", async (event) => {
         await dialogVideo.play();
     } catch (error) {
       if (error.name !== "AbortError") {
-        $("#dialog-image").hidden = false;
-        dialogVideo.hidden = true;
+        $("#dialog-media-status").textContent = t("Video could not load. Please close and try again.", "视频加载失败，请关闭后重试。");
+        $("#dialog-media-status").hidden = false;
       }
     }
   }
@@ -588,6 +618,7 @@ dialog.addEventListener("close", () => {
   dialogVideo.pause();
   document.body.classList.remove("dialog-open");
   updateHero();
+  updateDatasetVideos();
 });
 
 const sceneLabels = [
@@ -655,7 +686,7 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const response = await fetch(`content/${name}.json`);
+        const response = await fetch(`content/${name}.json?v=earth-space-v3-20260930`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
       }),

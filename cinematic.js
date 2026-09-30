@@ -3,46 +3,99 @@ const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&":
 
 export async function initCinematic(getLanguage) {
   const t = (en, zh) => getLanguage() === "zh" ? zh || en : en;
-  const motion = matchMedia("(prefers-reduced-motion: reduce)");
   const hero = $("#hero-video");
   const heroScene = $("#hero-scene");
-  const mosaic = $("#mosaic-video");
-  let enabled = !motion.matches, visible = false, selected = 0, space, film, journeyScenes = [];
+  const section = $(".cinematic-hero");
+  const seek = $("#journey-seek");
+  let selected = 0, space, film, journeyScenes = [], chapters = [], frame = 0;
   const mediaUrl = (source) => {
     const url = new URL(source, document.baseURI);
-    url.searchParams.set("v", film?.cacheVersion || "first-person-225-v2");
+    url.searchParams.set("v", film?.cacheVersion || "earth-to-space-v3");
     return url.href;
   };
+  const clock = (seconds) => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+  const filmDuration = () => Number.isFinite(hero.duration) ? hero.duration : Number(film?.journey?.durationSeconds || journeyScenes.at(-1)?.end || 60);
+  const normalizeScene = (scene) => ({
+    start: Number(scene.startSeconds ?? scene.start_seconds ?? 0),
+    end: Number(scene.endSeconds ?? scene.end_seconds ?? 0),
+    planet: scene.planet || "earth",
+    labelEn: scene.labelEn || scene.title || scene.label || scene.source || "NavAnywhere",
+    labelZh: scene.labelZh || scene.titleZh,
+  });
   function updateHeroScene() {
     const time = hero.currentTime || 0;
+    const duration = filmDuration();
+    const progress = Math.max(0, Math.min(1, time / duration));
     let scene = journeyScenes[0];
-    // During a dissolve, name the incoming scene from its first frame.
     for (const candidate of journeyScenes) {
-      if (candidate.start > time) break;
+      if (candidate.start > time + 0.001) break;
       scene = candidate;
     }
     const label = scene ? t(scene.labelEn, scene.labelZh) : "NavAnywhere";
-    if (heroScene.textContent !== label) heroScene.textContent = label;
+    const planet = scene?.planet || "earth";
+    if (heroScene.textContent !== (planet === "wall" ? "" : label)) heroScene.textContent = planet === "wall" ? "" : label;
+    section.dataset.planet = planet;
+    seek.max = duration;
+    seek.value = time;
+    seek.setAttribute("aria-valuetext", `${label}, ${clock(time)} ${t("of", "/")} ${clock(duration)}`);
+    $("#journey-rover").style.left = `${progress * 100}%`;
+    $("#journey-progress").style.width = `${progress * 100}%`;
+    const timeText = `${clock(time)} / ${clock(duration)}`;
+    if ($("#journey-time").textContent !== timeText) $("#journey-time").textContent = timeText;
+    $("#journey-chapters").querySelectorAll("button").forEach((button, i) => {
+      const chapter = chapters[i];
+      const active = time >= chapter.start - 0.001 && time < (chapter.end || duration) - 0.001;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-current", active ? "step" : "false");
+    });
+    $("#journey-scene-stops").querySelectorAll("button").forEach((button) => {
+      const active = Number(button.dataset.start) === scene?.start;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
   }
+  function drawFrame() {
+    updateHeroScene();
+    frame = !hero.paused && !document.hidden ? requestAnimationFrame(drawFrame) : 0;
+  }
+  hero.addEventListener("play", () => { cancelAnimationFrame(frame); drawFrame(); });
+  hero.addEventListener("pause", () => { cancelAnimationFrame(frame); frame = 0; updateHeroScene(); });
   ["timeupdate", "seeking", "seeked", "loadedmetadata", "emptied"].forEach((event) => hero.addEventListener(event, updateHeroScene));
-  const updateVideo = () => {
-    if (enabled && visible && !document.hidden) mosaic.play().catch(updateButton);
-    else mosaic.pause();
-  };
-  function updateButton() {
-    $("#mosaic-pause").innerHTML = `<svg><use href="#${mosaic.paused ? "play" : "pause"}"/></svg>`;
-    $("#mosaic-pause").setAttribute("aria-label", mosaic.paused ? t("Play video wall", "播放视频墙") : t("Pause video wall", "暂停视频墙"));
+  seek.addEventListener("input", () => { hero.currentTime = Number(seek.value); updateHeroScene(); });
+  function seekTo(time) {
+    hero.currentTime = time;
+    updateHeroScene();
   }
-  mosaic.addEventListener("play", updateButton);
-  mosaic.addEventListener("pause", updateButton);
-  $("#mosaic-pause").addEventListener("click", () => { enabled = mosaic.paused; updateVideo(); });
-  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; updateVideo(); }, { threshold: 0.12 }).observe(mosaic);
-  document.addEventListener("visibilitychange", updateVideo);
-  motion.addEventListener("change", () => { enabled = !motion.matches; updateVideo(); });
+  $("#journey-chapters").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-start]");
+    if (button) seekTo(Number(button.dataset.start));
+  });
+  $("#journey-scene-stops").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-start]");
+    if (button) seekTo(Number(button.dataset.start));
+  });
+  $("#watch-video-wall").addEventListener("click", () => {
+    const wall = chapters.find((chapter) => chapter.planet === "wall");
+    if (wall) {
+      seekTo(wall.start);
+      if (hero.paused) $("#hero-pause").click();
+    }
+  });
+  function renderNavigation() {
+    const duration = filmDuration();
+    const planetNames = { earth: t("EARTH", "地球"), moon: t("MOON", "月球"), mars: t("MARS", "火星"), wall: t("MANY WORLDS", "万千世界") };
+    $("#journey-chapters").innerHTML = chapters.map((chapter, i) => `<button type="button" data-start="${chapter.start}" data-planet="${escape(chapter.planet)}" style="--chapter-span:${Math.max(.01, chapter.end - chapter.start)}" aria-label="${escape(t("Go to ", "跳转到 ") + (planetNames[chapter.planet] || chapter.labelEn))}"><span class="chapter-dot"></span><span>${escape(planetNames[chapter.planet] || t(chapter.labelEn, chapter.labelZh))}</span><span class="chapter-order">${String(i + 1).padStart(2, "0")}</span></button>`).join("");
+    $("#journey-stops").innerHTML = journeyScenes.slice(1).map((scene) => `<i class="journey-stop ${scene.planet !== "earth" ? "planet-stop" : ""}" style="left:${scene.start / duration * 100}%"></i>`).join("");
+    $("#journey-scene-stops").innerHTML = journeyScenes.filter((scene) => scene.planet === "earth").map((scene, i) => `<button type="button" data-start="${scene.start}" aria-pressed="false"><span>${String(i + 1).padStart(2, "0")}</span>${escape(t(scene.labelEn, scene.labelZh))}</button>`).join("");
+    seek.setAttribute("aria-label", t("Seek through Earth, Moon, Mars and the video wall", "跳转地球、月球、火星与视频墙"));
+    $(".journey-navigation").setAttribute("aria-label", t("Opening film navigation", "开场影片导航"));
+    $("#journey-scene-stops").setAttribute("aria-label", t("Earth scenes", "地球场景"));
+    updateHeroScene();
+  }
 
   function render() {
-    updateButton();
-    updateHeroScene();
+    renderNavigation();
+    if (film?.disclosure || film?.provenance || film?.provenanceEn) $("#film-provenance").textContent = t(film.disclosure || film.provenanceEn || film.provenance, film.disclosureZh || film.provenanceZh);
     if (film?.counts) $("#mosaic-counts").textContent = t(`NAVANYWHERE / ${film.counts.sources} SOURCES / ${film.counts.clips} SEQUENCES`, `NAVANYWHERE / ${film.counts.sources} 个来源 / ${film.counts.clips} 段序列`);
     if (!space?.scenes?.length) return;
     $("#space-tabs").innerHTML = space.scenes.map((scene, i) => `<button type="button" data-scene="${i}" aria-pressed="${i === selected}" class="${i === selected ? "active" : ""}">${escape(t(scene.title, scene.titleZh))}<span>${escape(t(scene.tag || "", scene.tagZh))}</span></button>`).join("");
@@ -69,21 +122,22 @@ export async function initCinematic(getLanguage) {
   new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) $("#space-stage").querySelectorAll("video").forEach((video) => video.pause());
   }, { threshold: 0.01 }).observe($("#space-stage"));
-  const responses = await Promise.allSettled([fetch("content/cinematic.json", { cache: "no-cache" }), fetch("content/space.json")]);
+  const responses = await Promise.allSettled([fetch("content/cinematic.json?v=earth-space-v3-20260930", { cache: "no-cache" }), fetch("content/space.json?v=earth-space-v3-20260930")]);
   if (responses[0].status === "fulfilled" && responses[0].value.ok) {
     film = await responses[0].value.json();
-    journeyScenes = (film.journeyScenes || film.journey?.scenes || []).map((scene) => ({
-      start: Number(scene.startSeconds ?? scene.start_seconds ?? 0),
-      labelEn: scene.labelEn || scene.title || scene.label || scene.source || "NavAnywhere",
-      labelZh: scene.labelZh || scene.titleZh,
-    })).filter((scene) => Number.isFinite(scene.start)).sort((a, b) => a.start - b.start);
+    journeyScenes = (film.journeyScenes || film.journey?.scenes || []).map(normalizeScene).filter((scene) => Number.isFinite(scene.start)).sort((a, b) => a.start - b.start);
+    chapters = (film.chapters || []).map(normalizeScene);
+    if (!chapters.length) {
+      for (const scene of journeyScenes) {
+        const previous = chapters.at(-1);
+        if (previous?.planet === scene.planet) previous.end = scene.end;
+        else chapters.push({ ...scene });
+      }
+    }
     hero.poster = mediaUrl(film.journey?.poster || "assets/hero/journey-poster.webp");
     hero.src = mediaUrl(film.journey?.src || "assets/hero/journey.mp4");
-    mosaic.src = mediaUrl(film.mosaic?.src || "assets/hero/mosaic.mp4");
-    mosaic.poster = mediaUrl(film.mosaic?.poster || "assets/hero/mosaic-poster.webp");
   } else {
     hero.src = mediaUrl("assets/hero/journey.mp4");
-    mosaic.src = mediaUrl("assets/hero/mosaic.mp4");
   }
   if (responses[1].status === "fulfilled" && responses[1].value.ok) {
     space = await responses[1].value.json();
@@ -91,6 +145,5 @@ export async function initCinematic(getLanguage) {
     $("#space-stage").textContent = t("Planetary examples could not load. Please reload the page.", "行星场景加载失败，请刷新页面。");
   }
   render();
-  updateVideo();
   return { render };
 }

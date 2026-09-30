@@ -16,12 +16,12 @@
       property="og:description"
       content="Latent action pretraining. Real-world imagination. Explore navigation predictions and the diversity of NavAnywhere."
     />
-    <meta property="og:image" content="assets/hero/journey-poster.webp?v=first-person-225-v2" />
+    <meta property="og:image" content="assets/hero/journey-poster.webp?v=earth-to-space-v3" />
     <meta property="og:type" content="website" />
     <title>OpenNWM — A world beyond the familiar</title>
     <link rel="icon" type="image/svg+xml" href="assets/mark.svg" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="app.js" type="module"></script>
+    <link rel="stylesheet" href="style.css?v=earth-space-v3-20260930" />
+    <script src="app.js?v=earth-space-v3-20260930" type="module"></script>
   </head>
   <body>
     <svg class="svg-definitions" aria-hidden="true">
@@ -95,15 +95,25 @@
     </header>
 
     <main id="main">
-      <section class="hero cinematic-hero" aria-labelledby="hero-title">
+      <section class="hero cinematic-hero" id="opening-film" aria-labelledby="hero-title">
         <div class="cinematic-background" aria-hidden="true">
-          <video id="hero-video" muted loop playsinline preload="metadata" poster="assets/hero/journey-poster.webp?v=first-person-225-v2"></video>
+          <video id="hero-video" muted loop playsinline preload="metadata" poster="assets/hero/journey-poster.webp?v=earth-to-space-v3"></video>
           <div class="cinematic-shade"></div>
         </div>
+        <nav class="journey-navigation" aria-label="Opening film navigation">
+          <div class="journey-heading"><span class="journey-caption" data-en="ONE JOURNEY. MANY WORLDS." data-zh="一段旅程，万千世界。">ONE JOURNEY. MANY WORLDS.</span><span id="journey-time" class="journey-time">00:00 / 01:00</span></div>
+          <div class="journey-chapters" id="journey-chapters"></div>
+          <div class="journey-route" id="journey-route">
+            <div class="journey-rail" aria-hidden="true"><span class="journey-progress" id="journey-progress"></span><div id="journey-stops"></div></div>
+            <span class="journey-rover" id="journey-rover" aria-hidden="true"><svg viewBox="0 0 32 24"><path d="M9 16h15l-2-8H11l-2 8Z"/><path d="M15 8V4h5M6 16h22M6 16v3M27 16v3"/><circle cx="8" cy="20" r="2.3"/><circle cx="24" cy="20" r="2.3"/><path d="M13 12h2m3 0h2"/></svg></span>
+            <input id="journey-seek" type="range" min="0" max="60" step="0.05" value="0" aria-label="Seek through Earth, Moon, Mars and the video wall">
+          </div>
+          <div class="journey-scene-stops" id="journey-scene-stops" aria-label="Earth scenes"></div>
+        </nav>
         <div class="hero-center section-shell">
           <span class="hero-kicker"><i class="live-dot"></i><span data-en="A GENERALIST NAVIGATION WORLD MODEL" data-zh="通用导航世界模型">A GENERALIST NAVIGATION WORLD MODEL</span></span>
-          <h1 id="hero-title">OpenNWM<span>.</span></h1>
-          <p class="hero-statement" data-en="Imagine the way ahead." data-zh="想象前方，无论身在何处。">Imagine the way ahead.</p>
+          <h1 id="hero-title" aria-label="OpenNWM"><span class="planet-o" aria-hidden="true"><span class="planet-surface planet-earth"></span><span class="planet-surface planet-moon"></span><span class="planet-surface planet-mars"></span><span class="planet-light"></span></span><span class="wordmark-rest" aria-hidden="true">penNWM</span><span class="hero-dot" aria-hidden="true">.</span></h1>
+          <p class="hero-statement" data-en="From Earth to worlds beyond." data-zh="从地球，走向更远的世界。">From Earth to worlds beyond.</p>
           <p class="hero-description" data-en="A Generalist Navigation World Model&#10;with Latent Action Pretraining" data-zh="基于潜在动作预训练的通用导航世界模型">A Generalist Navigation World Model<br>with Latent Action Pretraining</p>
           <div class="hero-links">
             <a class="button button-hero" href="assets/paper/OpenNWM.pdf" target="_blank" rel="noopener"><span data-en="Read the paper" data-zh="阅读论文">Read the paper</span><svg><use href="#arrow-up"/></svg></a>
@@ -407,12 +417,9 @@
               ></a>
             </div>
           </div>
-          <figure class="dataset-cinema">
-            <video id="mosaic-video" muted loop playsinline preload="metadata" poster="assets/hero/mosaic-poster.webp?v=first-person-225-v2" aria-label="A video wall showing diverse navigation scenes"></video>
-            <figcaption class="mosaic-caption"><span class="eyebrow" id="mosaic-counts" data-en="NAVANYWHERE / A WORLD OF EXPERIENCE" data-zh="NAVANYWHERE / 丰富的视觉经验">NAVANYWHERE / A WORLD OF EXPERIENCE</span><button class="round-button" id="mosaic-pause" aria-label="Pause video wall"><svg><use href="#pause"/></svg></button></figcaption>
-          </figure>
-          <p class="media-provenance mosaic-provenance" id="mosaic-provenance" data-en="NavAnywhere source sequences. Opening film: LuSNAR Moon simulation and a camera move over one real Zhurong Mars image. OpenNWM predictions appear in the demos above." data-zh="视频墙展示 NavAnywhere 源序列。首屏月球片段为 LuSNAR 仿真，火星片段为单张真实祝融号图像的镜头移动。OpenNWM 模型预测见上方演示。">NavAnywhere source sequences. Opening film: LuSNAR Moon simulation and a camera move over one real Zhurong Mars image. OpenNWM predictions appear in the demos above.</p>
-          <details class="demo-details cinematic-details"><summary data-en="About the opening film" data-zh="关于开场影片">About the opening film</summary><p data-en="The opening film follows first-person observations through Earth environments, then the Moon and Mars. The Moon segment uses LuSNAR simulation; the Mars segment uses an editorial camera move over a single real Zhurong image. The film presents source material, not OpenNWM predictions." data-zh="开场影片以第一人称观测穿行地球上的不同环境，再抵达月球与火星。月球段落使用 LuSNAR 仿真；火星段落以单张真实祝融号图像制作镜头移动效果。影片展示来源素材，并非 OpenNWM 预测。">The opening film follows first-person observations through Earth environments, then the Moon and Mars. The Moon segment uses LuSNAR simulation; the Mars segment uses an editorial camera move over a single real Zhurong image. The film presents source material, not OpenNWM predictions.</p></details>
+          <div class="film-source-note"><span class="eyebrow" id="mosaic-counts">NAVANYWHERE / A WORLD OF EXPERIENCE</span><a class="text-link" href="#opening-film" id="watch-video-wall"><span data-en="Watch the video wall" data-zh="观看视频墙">Watch the video wall</span><svg><use href="#arrow-up"/></svg></a></div>
+          <p class="media-provenance mosaic-provenance" id="mosaic-provenance" data-en="One opening film: a journey across Earth, the Moon and Mars, followed by a 225-sequence video wall." data-zh="一段完整开场影片：穿行地球、月球和火星，随后展开 225 段序列组成的视频墙。">One opening film: a journey across Earth, the Moon and Mars, followed by a 225-sequence video wall.</p>
+          <details class="demo-details cinematic-details"><summary data-en="About the opening film" data-zh="关于开场影片">About the opening film</summary><p id="film-provenance" data-en="Source-data showcase, not model predictions. Moon: LuSNAR simulation. Mars: SynMars-TW synthetic rover views; playback speed is editorial." data-zh="数据源展示，非模型预测。月球来自 LuSNAR 仿真；火星来自 SynMars-TW 合成巡视器视角，播放速度经编辑调整。">Source-data showcase, not model predictions. Moon: LuSNAR simulation. Mars: SynMars-TW synthetic rover views; playback speed is editorial.</p></details>
           <div class="dataset-overview">
             <div class="dataset-note">
               <span class="big-serif">1,188.65<span>h</span></span
@@ -779,7 +786,7 @@
           muted
           preload="none"
           hidden
-        ></video>
+        ></video><span id="dialog-media-status" class="dialog-media-status" role="status" hidden></span>
       </div>
       <div class="dialog-copy">
         <h3 id="dialog-title"></h3>
