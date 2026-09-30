@@ -212,7 +212,7 @@ export async function initPlayground(getLanguage) {
   document.addEventListener("visibilitychange", () => { if (document.hidden) video.pause(); else if (!busy) health(); });
   draw();
   try {
-    const response = await fetch("content/playground.json");
+    const response = await fetch("content/playground.json?v=earth-space-v3-20260930", { cache: "no-cache" });
     if (!response.ok) throw new Error("Scene manifest unavailable");
     data = await response.json();
     if (!data.scenes?.length) throw new Error("No scenes available");

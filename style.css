@@ -3074,3 +3074,84 @@ html[lang="zh-CN"] .space-context h3 { font-size: 30px; }
 @media (prefers-reduced-motion: reduce) {
   .scroll-line::after,.generation-orbit { animation: none; }
 }
+
+/* A single source-data film travels from Earth to space, then reveals the wall. */
+.hero-center { padding-top: 118px; padding-bottom: 70px; }
+.hero-center h1 > .wordmark-rest { color: #fff; }
+.hero-center h1 > .hero-dot { color: #d5ed8d; }
+.hero-center h1 > .planet-o {
+  display: inline-block; position: relative; width: .75em; height: .79em;
+  vertical-align: -.035em; margin-right: .015em; overflow: hidden;
+  border: .095em solid #f5f7ef; border-radius: 50%; letter-spacing: 0;
+  background: #244958; box-shadow: 0 0 30px #bbdae32e, inset 0 0 18px #0008;
+}
+.planet-surface { position: absolute; background-size: cover; background-position: center; }
+.planet-earth { inset: 0 50% 0 0; background-image: url("assets/hero/earth-texture.webp"); background-position: 42% center; }
+.planet-moon { inset: 0 0 50% 50%; background-image: url("assets/hero/moon-texture.webp"); }
+.planet-mars { inset: 50% 0 0 50%; background-image: url("assets/hero/mars-texture.webp"); }
+.planet-light { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(ellipse at 28% 22%,#ffffff3d,transparent 45%,#03161a5c 90%),linear-gradient(90deg,transparent 48.5%,#fff5 49.5%,#fff5 50%,transparent 51%); box-shadow: inset -4px -4px 12px #07141d6b; }
+.hero-center .hero-statement { font-size: clamp(29px,3.8vw,54px); }
+.journey-navigation { position: absolute; z-index: 2; top: 27px; left: 50%; transform: translateX(-50%); width: min(1050px,calc(100% - 128px)); color: #fff; }
+.journey-heading { display: flex; justify-content: space-between; margin-bottom: 13px; font: 9px var(--mono); letter-spacing: 1.6px; color: #e8efefb3; }
+.journey-time { letter-spacing: .7px; font-variant-numeric: tabular-nums; }
+.journey-chapters { display: flex; gap: 0; }
+.journey-chapters button { --planet-color: #b8d9ae; flex: var(--chapter-span) 1 0%; min-width: 0; padding: 5px 0 9px; color: #d9e4e3ac; display: flex; gap: 7px; align-items: center; text-align: left; font: 10px var(--mono); letter-spacing: 1.3px; white-space: nowrap; transition: color .2s; }
+.journey-chapters button[data-planet="moon"] { --planet-color: #dce0ea; }
+.journey-chapters button[data-planet="mars"] { --planet-color: #edb18c; }
+.journey-chapters button[data-planet="wall"] { --planet-color: #cfdef2; }
+.journey-chapters button.active,.journey-chapters button:hover { color: #fff; }
+.chapter-dot { width: 8px; height: 8px; border: 1px solid var(--planet-color); border-radius: 50%; box-shadow: 0 0 8px #0004; flex-shrink: 0; }
+.journey-chapters button.active .chapter-dot { background: var(--planet-color); box-shadow: 0 0 12px var(--planet-color); }
+.chapter-order { font-size: 7px; opacity: .55; margin-left: 3px; }
+.journey-route { height: 29px; position: relative; margin-top: 4px; }
+.journey-rail { position: absolute; top: 13px; left: 0; right: 0; height: 2px; background: #f1f8f63d; }
+.journey-progress { display: block; position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg,#b8d9ae,#e4edf2 75%,#f3bd91); box-shadow: 0 0 12px #deeee454; }
+.journey-stop { position: absolute; width: 1px; height: 6px; top: -2px; background: #fff8; }
+.journey-stop.planet-stop { height: 8px; top: -3px; background: #fff; }
+.journey-rover { position: absolute; z-index: 1; top: -8px; width: 32px; height: 28px; left: 0; transform: translateX(-50%); filter: drop-shadow(0 2px 4px #00141dcc); pointer-events: none; }
+.journey-rover svg { width: 100%; height: 100%; stroke: #f6fbf5; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; fill: #254439; }
+#journey-seek { position: absolute; z-index: 2; inset: 0; width: 100%; height: 29px; margin: 0; opacity: 0; cursor: pointer; }
+.journey-route:focus-within { outline: 2px solid #d5ed8d; outline-offset: 5px; border-radius: 2px; }
+.journey-scene-stops { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: #ffffff50 transparent; padding: 3px 0 8px; }
+.journey-scene-stops button { flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: 5px 7px; min-height: 26px; font: 9px var(--mono); white-space: nowrap; color: #f2f7f2a8; border: 1px solid transparent; border-radius: 2px; background: #071b221a; transition: color .2s,background .2s; }
+.journey-scene-stops button > span { font-size: 6px; opacity: .5; }
+.journey-scene-stops button.active { color: #e7f3ca; border-color: #d5ed8d61; background: #162c29aa; }
+.journey-scene-stops button:hover { color: #fff; background: #ffffff14; }
+.cinematic-shade { transition: background 1s; }
+.cinematic-hero[data-planet="moon"] .cinematic-shade { background: linear-gradient(180deg,#080e1c80,#09101c73 43%,#080e1c30 72%,#080e1cb3); }
+.cinematic-hero[data-planet="mars"] .cinematic-shade { background: linear-gradient(180deg,#28141185,#271a155e 43%,#291a1026 72%,#25140bc4); }
+.cinematic-hero[data-planet="wall"] .cinematic-shade { background: linear-gradient(180deg,#061419a3,#07171768 43%,#07171745 72%,#071717b3); }
+.film-source-note { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 38px; padding-top: 20px; border-top: 1px solid var(--line); }
+.film-source-note .eyebrow { font-size: 9px; }
+.film-source-note .text-link { font-size: 11px; }
+.dataset-card-image > video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.2,.65,.2,1), filter .5s; }
+.dataset-card:hover .dataset-card-image > video { transform: scale(1.04); filter: brightness(.92); }
+.dialog-media-status { position: absolute; inset: auto 12px 12px; color: white; font-size: 12px; padding: 10px; background: #172b22d9; }
+.dialog-media-status[hidden] { display: none; }
+@media (max-width: 1050px) {
+  .journey-navigation { width: calc(100% - 80px); }
+  .journey-chapters button { font-size: 8px; letter-spacing: .8px; }
+  .hero-center .hero-statement { font-size: 40px; }
+}
+@media (max-width: 600px) {
+  .journey-navigation { top: 19px; width: calc(100% - 40px); }
+  .journey-heading { font-size: 6px; letter-spacing: 1px; margin-bottom: 8px; }
+  .journey-chapters button { font-size: 8px; gap: 4px; letter-spacing: .4px; }
+  .chapter-dot { width: 6px; height: 6px; }
+  .chapter-order { display: none; }
+  .journey-route { margin-top: 0; }
+  .journey-scene-stops { gap: 4px; padding-bottom: 6px; }
+  .journey-scene-stops button { font-size: 8px; padding: 4px 6px; }
+  .journey-rover { width: 28px; }
+  .hero-center { padding-top: 132px; padding-bottom: 55px; }
+  .hero-center h1 { margin-top: 21px; font-size: clamp(59px,16.6vw,94px); letter-spacing: -4px; }
+  .hero-center .hero-statement { font-size: clamp(23px,6.3vw,34px); margin-top: 17px; margin-bottom: 20px; }
+  .hero-center .hero-description { font-size: 11px; line-height: 1.7; margin-bottom: 22px; }
+  .hero-review { margin-top: 22px; }
+  .film-source-note { margin-top: 26px; }
+  .film-source-note .eyebrow { font-size: 8px; }
+  html[lang="zh-CN"] .hero-center .hero-statement { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .planet-o,.cinematic-shade,.dataset-card-image > video { transition: none; }
+}
