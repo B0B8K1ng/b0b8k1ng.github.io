@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "scenes": [
+    {
+      "id": "moon-yutu2",
+      "title": "The Moon",
+      "titleZh": "月球",
+      "tag": "YUTU-2 · REAL MISSION",
+      "tagZh": "玉兔二号 · 真实任务",
+      "description": "A real lunar observation from Chang’e-4 / Yutu-2, conditioned on a forward path.",
+      "descriptionZh": "以嫦娥四号／玉兔二号真实月面图像为起始观测，输入直行轨迹。",
+      "initial": "assets/playground/moon-yutu2/initial.webp",
+      "poster": "assets/playground/moon-yutu2/initial.webp",
+      "video": "assets/playground/moon-yutu2/forward.mp4",
+      "trajectory": "assets/space/moon-yutu2-trajectory.svg",
+      "manifest": "assets/playground/moon-yutu2/forward.json",
+      "provenance": "OpenNWM · Nav15 Stage 2 joint100k · DDPM 250 · seed 0 · VAE posterior mean. Autoregressive prediction feeds each generated image back into the model. Severe appearance drift was observed in these planetary rollouts. These are qualitative stress tests, not proof of arbitrary-scene or physical navigation capability. 16 model steps are displayed at 4 FPS; real mission capture intervals are irregular.",
+      "provenanceZh": "OpenNWM · Nav15 Stage 2 joint100k · DDPM 250 · seed 0 · VAE 后验均值。自回归预测将生成图像作为后续输入；这些行星场景中观察到了严重外观漂移。这些是定性压力测试，不代表已验证任意场景或真实导航能力。16 个模型步按 4 FPS 展示；真实任务的拍摄间隔不规则。"
+    },
+    {
+      "id": "mars-zhurong",
+      "title": "Mars",
+      "titleZh": "火星",
+      "tag": "ZHURONG · REAL MISSION",
+      "tagZh": "祝融号 · 真实任务",
+      "description": "A real Martian observation from Tianwen-1 / Zhurong, conditioned on a forward path.",
+      "descriptionZh": "以天问一号／祝融号真实火星图像为起始观测，输入直行轨迹。",
+      "initial": "assets/playground/mars-zhurong/initial.webp",
+      "poster": "assets/playground/mars-zhurong/initial.webp",
+      "video": "assets/playground/mars-zhurong/forward.mp4",
+      "trajectory": "assets/space/mars-zhurong-trajectory.svg",
+      "manifest": "assets/playground/mars-zhurong/forward.json",
+      "provenance": "OpenNWM · Nav15 Stage 2 joint100k · DDPM 250 · seed 0 · VAE posterior mean. Autoregressive prediction feeds each generated image back into the model. Severe appearance drift was observed in these planetary rollouts. These are qualitative stress tests, not proof of arbitrary-scene or physical navigation capability. 16 model steps are displayed at 4 FPS; real mission capture intervals are irregular.",
+      "provenanceZh": "OpenNWM · Nav15 Stage 2 joint100k · DDPM 250 · seed 0 · VAE 后验均值。自回归预测将生成图像作为后续输入；这些行星场景中观察到了严重外观漂移。这些是定性压力测试，不代表已验证任意场景或真实导航能力。16 个模型步按 4 FPS 展示；真实任务的拍摄间隔不规则。"
+    },
+    {
+      "id": "moon-lusnar",
+      "title": "A simulated Moon",
+      "titleZh": "仿真月球",
+      "tag": "LUSNAR · SIMULATION",
+      "tagZh": "LUSNAR · 仿真",
+      "description": "A simulated lunar landscape from LuSNAR, evaluated with the same checkpoint.",
+      "descriptionZh": "LuSNAR 仿真月面场景，使用相同模型权重测试。",
+      "initial": "assets/playground/moon-lusnar/initial.webp",
+      "poster": "assets/playground/moon-lusnar/initial.webp",
+      "video": "assets/playground/moon-lusnar/forward.mp4",
+      "trajectory": "assets/space/moon-lusnar-trajectory.svg",
+      "manifest": "assets/playground/moon-lusnar/forward.json",
+      "provenance": "OpenNWM · Nav15 Stage 2 joint100k · DDPM 250 · seed 0 · VAE posterior mean. Autoregressive prediction feeds each generated image back into the model. Severe appearance drift was observed in these planetary rollouts. These are qualitative stress tests, not proof of arbitrary-scene or physical navigation capability. 16 model steps are displayed at 4 FPS; this simulation uses normalized planar controls, without metric calibration.",
+      "provenanceZh": "OpenNWM · Nav15 Stage 2 joint100k · DDPM 250 · seed 0 · VAE 后验均值。自回归预测将生成图像作为后续输入；这些行星场景中观察到了严重外观漂移。这些是定性压力测试，不代表已验证任意场景或真实导航能力。16 个模型步按 4 FPS 展示；仿真输入使用归一化平面控制，没有米制标定。"
+    },
+    {
+      "id": "mars-recorded",
+      "title": "Recorded-path stress test",
+      "titleZh": "实测轨迹压力测试",
+      "tag": "MARS · AUTOREGRESSIVE",
+      "tagZh": "火星 · 自回归",
+      "description": "Conditioned on the recorded rover path, appearance drifts away from the Martian scene. Open the recorded reference to inspect the failure.",
+      "descriptionZh": "输入记录的行星车轨迹后，预测外观仍偏离火星场景。展开真实参考可查看这一失败案例。",
+      "initial": "assets/space/mars-archive-initial.webp",
+      "poster": "assets/space/mars-archive-initial.webp",
+      "video": "assets/space/mars-archive-prediction.mp4",
+      "groundTruth": "assets/space/mars-archive-gt.mp4",
+      "trajectory": "assets/space/mars-archive-trajectory.svg",
+      "provenance": "Archived inference · 24 September 2026 · sample 4 · joint100k · DDPM 250 · seed 0. All 16 predictions are shown, without interpolation. Source intervals are irregular; playback is not real mission time.",
+      "provenanceZh": "推理归档 · 2026 年 9 月 24 日 · 样例 4 · joint100k · DDPM 250 · seed 0。完整展示 16 个预测帧，无插帧。原始拍摄间隔不规则，播放时间不代表真实任务时间。",
+      "manifest": "assets/space/mars-archive-source.json"
+    }
+  ]
+}

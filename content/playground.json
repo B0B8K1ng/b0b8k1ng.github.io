@@ -1,0 +1,722 @@
+{
+  "schemaVersion": 1,
+  "model": "OpenNWM · Nav15 Stage 2 joint100k",
+  "defaultScene": "indoor-huron",
+  "fps": 4,
+  "duration": 4,
+  "coordinateSystem": {
+    "x": "right",
+    "y": "forward",
+    "origin": [
+      0,
+      0
+    ],
+    "bounds": {
+      "x": [
+        -1,
+        1
+      ],
+      "y": [
+        -0.25,
+        1.5
+      ]
+    },
+    "canvasUnitsToWaypointUnits": 12
+  },
+  "note": "Presets are genuine OpenNWM predictions conditioned on the displayed path. Draw a new path with the local GPU service to generate a new prediction.",
+  "noteZh": "预设视频由 OpenNWM 根据所示轨迹真实预测；连接本地 GPU 服务后可绘制任意轨迹进行新预测。",
+  "planetaryNote": "Moon and Mars start from real mission images. The 4-second horizon describes 16 model steps at 4 FPS; mission capture intervals are irregular.",
+  "planetaryNoteZh": "月球和火星使用真实任务影像作为起始帧。4 秒表示按 4 FPS 展示 16 个模型预测步；原任务拍摄间隔不规则。",
+  "scenes": [
+    {
+      "id": "indoor-huron",
+      "title": "Glass corridor",
+      "titleZh": "室内长廊",
+      "dataset": "HuRoN",
+      "domain": "ID",
+      "description": "A wheeled robot's indoor view.",
+      "descriptionZh": "从轮式机器人视角探索室内走廊。",
+      "planetary": false,
+      "simulated": false,
+      "qualityNote": "",
+      "qualityNoteZh": "",
+      "predictionMode": "autoregressive",
+      "protocol": "Autoregressive prediction; each generated view becomes the next observation.",
+      "protocolZh": "自回归预测，每次生成的图像作为下一步观测。",
+      "presets": [
+        {
+          "id": "forward",
+          "label": "Forward",
+          "labelZh": "直行",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "video": "assets/playground/indoor-huron/forward.mp4",
+          "poster": "assets/playground/indoor-huron/forward.webp",
+          "manifest": "assets/playground/indoor-huron/forward.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "left",
+          "label": "Turn left",
+          "labelZh": "左转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              -0.03,
+              0.4
+            ],
+            [
+              -0.12,
+              0.6
+            ],
+            [
+              -0.28,
+              0.8
+            ],
+            [
+              -0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/indoor-huron/left.mp4",
+          "poster": "assets/playground/indoor-huron/left.webp",
+          "manifest": "assets/playground/indoor-huron/left.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "right",
+          "label": "Turn right",
+          "labelZh": "右转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              0.03,
+              0.4
+            ],
+            [
+              0.12,
+              0.6
+            ],
+            [
+              0.28,
+              0.8
+            ],
+            [
+              0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/indoor-huron/right.mp4",
+          "poster": "assets/playground/indoor-huron/right.webp",
+          "manifest": "assets/playground/indoor-huron/right.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        }
+      ],
+      "poster": "assets/playground/indoor-huron/initial.webp",
+      "image": "assets/playground/indoor-huron/initial.webp"
+    },
+    {
+      "id": "outdoor-tartan",
+      "title": "Gravel trail",
+      "titleZh": "野外小径",
+      "dataset": "TartanDrive",
+      "domain": "ID",
+      "description": "An off-road view across uneven terrain.",
+      "descriptionZh": "在崎岖的户外地形中前进。",
+      "planetary": false,
+      "simulated": false,
+      "qualityNote": "",
+      "qualityNoteZh": "",
+      "predictionMode": "autoregressive",
+      "protocol": "Autoregressive prediction; each generated view becomes the next observation.",
+      "protocolZh": "自回归预测，每次生成的图像作为下一步观测。",
+      "presets": [
+        {
+          "id": "forward",
+          "label": "Forward",
+          "labelZh": "直行",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "video": "assets/playground/outdoor-tartan/forward.mp4",
+          "poster": "assets/playground/outdoor-tartan/forward.webp",
+          "manifest": "assets/playground/outdoor-tartan/forward.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "left",
+          "label": "Turn left",
+          "labelZh": "左转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              -0.03,
+              0.4
+            ],
+            [
+              -0.12,
+              0.6
+            ],
+            [
+              -0.28,
+              0.8
+            ],
+            [
+              -0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/outdoor-tartan/left.mp4",
+          "poster": "assets/playground/outdoor-tartan/left.webp",
+          "manifest": "assets/playground/outdoor-tartan/left.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "right",
+          "label": "Turn right",
+          "labelZh": "右转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              0.03,
+              0.4
+            ],
+            [
+              0.12,
+              0.6
+            ],
+            [
+              0.28,
+              0.8
+            ],
+            [
+              0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/outdoor-tartan/right.mp4",
+          "poster": "assets/playground/outdoor-tartan/right.webp",
+          "manifest": "assets/playground/outdoor-tartan/right.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        }
+      ],
+      "poster": "assets/playground/outdoor-tartan/initial.webp",
+      "image": "assets/playground/outdoor-tartan/initial.webp"
+    },
+    {
+      "id": "office-go2",
+      "title": "Robot dog · office",
+      "titleZh": "机器狗 · 办公室",
+      "dataset": "Office-Go2",
+      "domain": "OOD",
+      "description": "A held-out quadruped camera view.",
+      "descriptionZh": "来自域外四足机器人的相机视角。",
+      "planetary": false,
+      "simulated": false,
+      "qualityNote": "",
+      "qualityNoteZh": "",
+      "predictionMode": "autoregressive",
+      "protocol": "Autoregressive prediction; each generated view becomes the next observation.",
+      "protocolZh": "自回归预测，每次生成的图像作为下一步观测。",
+      "presets": [
+        {
+          "id": "forward",
+          "label": "Forward",
+          "labelZh": "直行",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "video": "assets/playground/office-go2/forward.mp4",
+          "poster": "assets/playground/office-go2/forward.webp",
+          "manifest": "assets/playground/office-go2/forward.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "left",
+          "label": "Turn left",
+          "labelZh": "左转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              -0.03,
+              0.4
+            ],
+            [
+              -0.12,
+              0.6
+            ],
+            [
+              -0.28,
+              0.8
+            ],
+            [
+              -0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/office-go2/left.mp4",
+          "poster": "assets/playground/office-go2/left.webp",
+          "manifest": "assets/playground/office-go2/left.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "right",
+          "label": "Turn right",
+          "labelZh": "右转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              0.03,
+              0.4
+            ],
+            [
+              0.12,
+              0.6
+            ],
+            [
+              0.28,
+              0.8
+            ],
+            [
+              0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/office-go2/right.mp4",
+          "poster": "assets/playground/office-go2/right.webp",
+          "manifest": "assets/playground/office-go2/right.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        }
+      ],
+      "poster": "assets/playground/office-go2/initial.webp",
+      "image": "assets/playground/office-go2/initial.webp"
+    },
+    {
+      "id": "moon-yutu2",
+      "title": "Moon · Yutu-2",
+      "titleZh": "月球 · 玉兔二号",
+      "dataset": "Planetary Rover",
+      "domain": "OOD",
+      "description": "Real Chang'e-4 / Yutu-2 lunar imagery.",
+      "descriptionZh": "来自嫦娥四号与玉兔二号的真实月面影像。",
+      "planetary": true,
+      "simulated": false,
+      "qualityNote": "Out-of-domain stress test: the current checkpoint does not preserve the space environment and hallucinates terrestrial structures. These are unmodified model predictions.",
+      "qualityNoteZh": "域外压力测试：当前 checkpoint 未能保持太空环境，预测中出现地球建筑。这里展示未经修饰的真实模型输出。",
+      "predictionMode": "autoregressive",
+      "protocol": "Autoregressive prediction; each generated view becomes the next observation.",
+      "protocolZh": "自回归预测，每次生成的图像作为下一步观测。",
+      "presets": [
+        {
+          "id": "forward",
+          "label": "Forward",
+          "labelZh": "直行",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "video": "assets/playground/moon-yutu2/forward.mp4",
+          "poster": "assets/playground/moon-yutu2/forward.webp",
+          "manifest": "assets/playground/moon-yutu2/forward.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "left",
+          "label": "Turn left",
+          "labelZh": "左转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              -0.03,
+              0.4
+            ],
+            [
+              -0.12,
+              0.6
+            ],
+            [
+              -0.28,
+              0.8
+            ],
+            [
+              -0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/moon-yutu2/left.mp4",
+          "poster": "assets/playground/moon-yutu2/left.webp",
+          "manifest": "assets/playground/moon-yutu2/left.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "right",
+          "label": "Turn right",
+          "labelZh": "右转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              0.03,
+              0.4
+            ],
+            [
+              0.12,
+              0.6
+            ],
+            [
+              0.28,
+              0.8
+            ],
+            [
+              0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/moon-yutu2/right.mp4",
+          "poster": "assets/playground/moon-yutu2/right.webp",
+          "manifest": "assets/playground/moon-yutu2/right.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        }
+      ],
+      "poster": "assets/playground/moon-yutu2/initial.webp",
+      "image": "assets/playground/moon-yutu2/initial.webp"
+    },
+    {
+      "id": "mars-zhurong",
+      "title": "Mars · Zhurong",
+      "titleZh": "火星 · 祝融号",
+      "dataset": "Planetary Rover",
+      "domain": "OOD",
+      "description": "Real Tianwen-1 / Zhurong Martian imagery.",
+      "descriptionZh": "来自天问一号与祝融号的真实火星影像。",
+      "planetary": true,
+      "simulated": false,
+      "qualityNote": "Out-of-domain stress test: the current checkpoint does not preserve the space environment and hallucinates terrestrial structures. These are unmodified model predictions.",
+      "qualityNoteZh": "域外压力测试：当前 checkpoint 未能保持太空环境，预测中出现地球建筑。这里展示未经修饰的真实模型输出。",
+      "predictionMode": "autoregressive",
+      "protocol": "Autoregressive prediction; each generated view becomes the next observation.",
+      "protocolZh": "自回归预测，每次生成的图像作为下一步观测。",
+      "presets": [
+        {
+          "id": "forward",
+          "label": "Forward",
+          "labelZh": "直行",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "video": "assets/playground/mars-zhurong/forward.mp4",
+          "poster": "assets/playground/mars-zhurong/forward.webp",
+          "manifest": "assets/playground/mars-zhurong/forward.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "left",
+          "label": "Turn left",
+          "labelZh": "左转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              -0.03,
+              0.4
+            ],
+            [
+              -0.12,
+              0.6
+            ],
+            [
+              -0.28,
+              0.8
+            ],
+            [
+              -0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/mars-zhurong/left.mp4",
+          "poster": "assets/playground/mars-zhurong/left.webp",
+          "manifest": "assets/playground/mars-zhurong/left.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "right",
+          "label": "Turn right",
+          "labelZh": "右转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              0.03,
+              0.4
+            ],
+            [
+              0.12,
+              0.6
+            ],
+            [
+              0.28,
+              0.8
+            ],
+            [
+              0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/mars-zhurong/right.mp4",
+          "poster": "assets/playground/mars-zhurong/right.webp",
+          "manifest": "assets/playground/mars-zhurong/right.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        }
+      ],
+      "poster": "assets/playground/mars-zhurong/initial.webp",
+      "image": "assets/playground/mars-zhurong/initial.webp"
+    },
+    {
+      "id": "moon-lusnar",
+      "title": "Moon · simulation",
+      "titleZh": "月球 · 仿真",
+      "dataset": "LuSNAR",
+      "domain": "OOD",
+      "description": "A simulated lunar environment from LuSNAR.",
+      "descriptionZh": "来自 LuSNAR 数据集的仿真月面环境。",
+      "planetary": false,
+      "simulated": true,
+      "qualityNote": "Out-of-domain stress test: the current checkpoint does not preserve the space environment and hallucinates terrestrial structures. These are unmodified model predictions.",
+      "qualityNoteZh": "域外压力测试：当前 checkpoint 未能保持太空环境，预测中出现地球建筑。这里展示未经修饰的真实模型输出。",
+      "predictionMode": "autoregressive",
+      "protocol": "Autoregressive prediction; each generated view becomes the next observation.",
+      "protocolZh": "自回归预测，每次生成的图像作为下一步观测。",
+      "presets": [
+        {
+          "id": "forward",
+          "label": "Forward",
+          "labelZh": "直行",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "video": "assets/playground/moon-lusnar/forward.mp4",
+          "poster": "assets/playground/moon-lusnar/forward.webp",
+          "manifest": "assets/playground/moon-lusnar/forward.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "left",
+          "label": "Turn left",
+          "labelZh": "左转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              -0.03,
+              0.4
+            ],
+            [
+              -0.12,
+              0.6
+            ],
+            [
+              -0.28,
+              0.8
+            ],
+            [
+              -0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/moon-lusnar/left.mp4",
+          "poster": "assets/playground/moon-lusnar/left.webp",
+          "manifest": "assets/playground/moon-lusnar/left.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        },
+        {
+          "id": "right",
+          "label": "Turn right",
+          "labelZh": "右转",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0.2
+            ],
+            [
+              0.03,
+              0.4
+            ],
+            [
+              0.12,
+              0.6
+            ],
+            [
+              0.28,
+              0.8
+            ],
+            [
+              0.5,
+              1
+            ]
+          ],
+          "video": "assets/playground/moon-lusnar/right.mp4",
+          "poster": "assets/playground/moon-lusnar/right.webp",
+          "manifest": "assets/playground/moon-lusnar/right.json",
+          "duration": 4,
+          "seed": 0,
+          "diffusionSteps": 250
+        }
+      ],
+      "poster": "assets/playground/moon-lusnar/initial.webp",
+      "image": "assets/playground/moon-lusnar/initial.webp"
+    }
+  ]
+}
