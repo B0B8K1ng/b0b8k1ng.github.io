@@ -1,4 +1,6 @@
 import { initResearch } from "./research.js";
+import { initCinematic } from "./cinematic.js";
+import { initPlayground } from "./playground.js";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -19,7 +21,7 @@ const escape = (value) =>
         char
       ],
   );
-let research, datasets, demos, paper;
+let research, datasets, demos, paper, cinematic, playground;
 let filter = "all",
   expanded = false,
   currentDataset;
@@ -39,6 +41,8 @@ function translate() {
     t("Reveal ground truth or prediction", "移动真实画面与预测画面的分界线"),
   );
   $("#timeline").setAttribute("aria-label", t("Video timeline", "视频时间轴"));
+  cinematic?.render();
+  playground?.render();
   if (!datasets) return;
   renderDemoText();
   renderDatasets();
@@ -127,6 +131,7 @@ function updateHero() {
 }
 hero.addEventListener("play", updateHeroUI);
 hero.addEventListener("pause", updateHeroUI);
+hero.addEventListener("loadedmetadata", updateHero);
 $("#hero-pause").addEventListener("click", () => {
   heroEnabled = hero.paused;
   updateHero();
@@ -657,9 +662,6 @@ async function init() {
     );
     research = initResearch(paper, () => language);
     $("#citation").textContent = paper.citation.bibtex;
-    hero.poster = datasets.hero_poster;
-    hero.src = datasets.hero_video;
-    $("#hero-source").textContent = "NavAnywhere / Walking Tours";
     translate();
     updateHero();
     await selectDemo(demos.defaultDemo);
@@ -674,3 +676,5 @@ async function init() {
   }
 }
 init();
+initCinematic(() => language).then((instance) => { cinematic = instance; });
+initPlayground(() => language).then((instance) => { playground = instance; });

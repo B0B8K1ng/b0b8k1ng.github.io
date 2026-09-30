@@ -1,7 +1,7 @@
 # Paper content and provenance
 
 `paper.json` is transcribed and summarized from the supplied 38-page manuscript,
-`/file_system/vepfs/algorithm/dujun.nie/code/OpenNWM.pdf`, inspected on 2026-09-27.
+`assets/paper/OpenNWM.pdf`, inspected on 2026-09-27.
 Page numbers refer to the PDF's one-based pages, which match its printed page
 numbers. This file records source and interpretation details for maintainers;
 the concise reader-facing text lives in `paper.json`.
@@ -126,4 +126,4 @@ media ID `casia-nav`; HuRoN uses `sacson` in the annotated dataset rows.
 
 PDF text extraction and temporary page renderings are outside the source
 repository in
-`/file_system/nas/algorithm/dujun.nie/nwm/opennwm_website_artifacts`.
+`the private media production archive`.

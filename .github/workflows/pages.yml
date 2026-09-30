@@ -28,7 +28,7 @@ jobs:
       - name: Prepare OpenNWM site
         run: |
           mkdir -p _site/OpenNWM _site/OpenNWM-website
-          cp -R index.html style.css app.js research.js assets content .nojekyll _site/OpenNWM/
+          cp -R index.html style.css app.js research.js cinematic.js playground.js assets content .nojekyll _site/OpenNWM/
           touch _site/.nojekyll
           printf '%s\n' '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=/OpenNWM/"><title>OpenNWM</title></head><body><a href="/OpenNWM/">OpenNWM</a></body></html>' > _site/index.html
           cp _site/index.html _site/OpenNWM-website/index.html
