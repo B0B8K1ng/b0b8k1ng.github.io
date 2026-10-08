@@ -2908,6 +2908,7 @@ html[lang="zh-CN"] .hero-video-bottom p {
 .space-frame figcaption { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; font: 8px var(--mono); letter-spacing: .5px; color: #d4dddb; }
 .space-frame figcaption > span { color: #9dafac; }
 .space-prediction > video,.space-prediction > img { aspect-ratio: 4/3; max-height: 505px; }
+.space-prediction.space-model-comparison > video { display: block; aspect-ratio: auto; }
 .space-trajectory img { background: #f5f5ef; }
 .space-context { grid-column: 1 / -1; padding: 10px 0 0; }
 .space-context .eyebrow { color: #a0b4aa; font-size: 8px; }
