@@ -500,5 +500,76 @@
   "action_translation_units": "meters divided by fixed training-only waypoint spacing",
   "action_yaw_units": "radians, positive left",
   "coordinate_convention": "GT is rover body-to-world, quaternion wxyz. Assume AirSim-style body +X forward, +Y right, +Z down, supported by the published left camera translation [1,-0.155,-1.5] and forward-motion audit. Reflect world Y and negate yaw to obtain OpenNWM +X forward/+Y left, positive-left yaw. Actions use rover-body XY/yaw, not a calibrated optical-camera trajectory; height, roll and pitch are not conditioned on.",
-  "limitations": "Qualitative held-out simulated scenes; direct predictions are not a continuous autoregressive rollout. Geometry and long-rollout consistency remain imperfect. Not a validation of physical navigation."
+  "limitations": "Qualitative held-out simulated scenes; direct predictions are not a continuous autoregressive rollout. Geometry and long-rollout consistency remain imperfect. Not a validation of physical navigation.",
+  "model_comparison": {
+    "opennwm": {
+      "name": "OpenNWM Nav15 Stage 2, LuSNAR fine-tuned EMA",
+      "checkpoint_sha256": "1dbeb11d9d86915e18cbe9fa064f38f9f5e05c3e727244a7e026675a128a6b56",
+      "source_checkpoint_sha256": "aabff9b5a3ab62a9145073892653a81019782511272933b6acfb41e21b48b4f4",
+      "training": {
+        "settings": {
+          "steps": 1000,
+          "effective_batch_size": 8,
+          "microbatch": 2,
+          "learning_rate": 1e-05,
+          "optimizer": "AdamW",
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.01,
+          "ema_decay": 0.99,
+          "grad_clip": 2.0,
+          "seed": 0,
+          "diffusion_training_steps": 1000,
+          "precision": "BF16 autocast; FP32 weights",
+          "posterior": "cached mean",
+          "validation_every": 100,
+          "selection": "fixed final step; validation monitored but no test-based selection",
+          "sampling": "shuffled exhaustive (window, horizon) rows; repeat after each epoch",
+          "resume": "no optimizer checkpoint; an interrupted run must restart in a fresh output directory"
+        },
+        "windows": 30,
+        "target_pairs": 480,
+        "data_manifest_sha256": "8e14a6d7b65a277bce97869dd739316f34fe3d2a850682271956d24a1b8108b3"
+      }
+    },
+    "nwm_release": {
+      "name": "NWM-release, LuSNAR fine-tuned EMA",
+      "checkpoint_sha256": "fbd04a71b05440b1cc6a57b402c51c29fc4e9f77506e23447dff5b00a1a1289b",
+      "source_checkpoint_sha256": "2a41c71eabd20946f61bb5d1d2490264246bff59b9ffca177eee672e855d5261",
+      "training": {
+        "settings": {
+          "steps": 1000,
+          "effective_batch_size": 8,
+          "microbatch": 2,
+          "learning_rate": 1e-05,
+          "optimizer": "AdamW",
+          "betas": [
+            0.9,
+            0.999
+          ],
+          "weight_decay": 0.01,
+          "ema_decay": 0.99,
+          "grad_clip": 2.0,
+          "seed": 0,
+          "diffusion_training_steps": 1000,
+          "precision": "BF16 autocast; FP32 weights",
+          "posterior": "cached mean",
+          "validation_every": 100,
+          "selection": "fixed final step; validation monitored but no test-based selection",
+          "sampling": "shuffled exhaustive (window, horizon) rows; repeat after each epoch",
+          "resume": "no optimizer checkpoint; an interrupted run must restart in a fresh output directory"
+        },
+        "windows": 30,
+        "target_pairs": 480,
+        "data_manifest_sha256": "8e14a6d7b65a277bce97869dd739316f34fe3d2a850682271956d24a1b8108b3"
+      }
+    },
+    "direct_manifest_sha256": "8f6fa3f05c91fd2d8c3ac4d04f6d7a48f1190ab4c11a565d114a01fc177a6b12",
+    "nwm_direct_manifest_sha256": "cdf8253e0802b1efa944980e8ab1dc6b42fb9f0b008735f1f01eaf0f5fa720e6",
+    "autoregressive_manifest_sha256": "b3be65deb5e567246a26192bbbebfb8b72951d2ec0e469525b859550865676a6",
+    "nwm_autoregressive_manifest_sha256": "bdfe1b98f7ed11acf110cdc5d6b96d0e87833e1584c07b9cfa35ccf718dc7ed1",
+    "conditions": "Identical observed frames, raw body actions, horizons, seed and diffusion noise keys. Each model uses its native action interface."
+  }
 }

@@ -1,5 +1,5 @@
 import { initResearch } from "./research.js";
-import { initCinematic } from "./cinematic.js?v=lusnar-finetuned-20261008";
+import { initCinematic } from "./cinematic.js?v=lunar-model-comparison-20261008";
 import { initPlayground } from "./playground.js?v=earth-space-v3-20260930";
 
 const $ = (selector) => document.querySelector(selector);
