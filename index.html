@@ -21,7 +21,7 @@
     <title>OpenNWM — A world beyond the familiar</title>
     <link rel="icon" type="image/svg+xml" href="assets/mark.svg" />
     <link rel="stylesheet" href="style.css?v=earth-space-v3-20260930" />
-    <script src="app.js?v=earth-space-v3-20260930" type="module"></script>
+    <script src="app.js?v=lusnar-finetuned-20261008" type="module"></script>
   </head>
   <body>
     <svg class="svg-definitions" aria-hidden="true">
@@ -341,10 +341,10 @@
       <section class="space-section section-space" id="space" aria-labelledby="space-title">
         <div class="section-shell">
           <div class="section-heading reveal">
-            <div><span class="eyebrow section-number" data-en="02 / BEYOND EARTH" data-zh="02 / 走向太空">02 / BEYOND EARTH</span><h2 id="space-title" data-en="Planetary&#10;stress tests." data-zh="行星环境，&#10;域外压力测试。">Planetary<br>stress tests.</h2></div>
-            <p data-en="Lunar and Martian starting views probe the limits of the current navigation world model." data-zh="从月球与火星的起始视野出发，探索当前导航世界模型的能力边界。">Lunar and Martian starting views probe the limits of the current navigation world model.</p>
+            <div><span class="eyebrow section-number" data-en="02 / BEYOND EARTH" data-zh="02 / 走向太空">02 / BEYOND EARTH</span><h2 id="space-title" data-en="Planetary&#10;predictions." data-zh="行星场景，&#10;预测与对照。">Planetary<br>predictions.</h2></div>
+            <p data-en="Fine-tuned OpenNWM on three held-out LuSNAR scenes, alongside the original lunar and Martian stress tests." data-zh="微调后的 OpenNWM 在三个 LuSNAR 留出场景上的预测，以及原模型的月球与火星压力测试。">Fine-tuned OpenNWM on three held-out LuSNAR scenes, alongside the original lunar and Martian stress tests.</p>
           </div>
-          <p class="space-limitation" role="note" data-en="In these rollouts, the current checkpoint drifts toward terrestrial scenes and does not preserve the planetary environment." data-zh="在这些预测中，当前模型逐渐漂移到地球场景，未能保持行星环境。">In these rollouts, the current checkpoint drifts toward terrestrial scenes and does not preserve the planetary environment.</p>
+          <p class="space-limitation" role="note" data-en="Fine-tuning improves lunar appearance; terrain and motion can still deviate from the recorded reference. Open the synchronized comparisons to inspect both prediction modes." data-zh="微调改善了月面外观，但地形和运动仍可能偏离真实参考。展开同步对照，可查看直接预测与自回归预测的差异。">Fine-tuning improves lunar appearance; terrain and motion can still deviate from the recorded reference. Open the synchronized comparisons to inspect both prediction modes.</p>
           <div id="space-tabs" class="scene-pills" role="group" aria-label="Planetary scenes"></div>
           <div class="space-stage" id="space-stage"><p data-en="Loading planetary examples…" data-zh="正在加载行星场景…">Loading planetary examples…</p></div>
           <details class="demo-details space-details"><summary data-en="Evaluation details &amp; provenance" data-zh="评估设置与来源">Evaluation details &amp; provenance</summary><p class="media-provenance" id="space-provenance"></p><a id="space-manifest" class="text-link" target="_blank" rel="noopener" hidden><span data-en="View sample manifest" data-zh="查看样例记录">View sample manifest</span><svg><use href="#arrow-up"/></svg></a></details>

@@ -103,9 +103,15 @@ export async function initCinematic(getLanguage) {
     const video = scene.video || scene.prediction;
     const initial = scene.initial || scene.initialImage || scene.poster;
     const imagePanel = (src, label, className = "") => `<figure class="space-frame ${className}"><img src="${escape(src)}" alt="${escape(label)}" loading="lazy"><figcaption>${escape(label)}</figcaption></figure>`;
-    const main = video ? `<figure class="space-frame space-prediction"><video controls playsinline muted preload="none" src="${escape(video)}" poster="${escape(initial)}" aria-label="${escape(t("OpenNWM planetary stress-test prediction", "OpenNWM 行星环境压力测试预测"))}"></video><figcaption>OPENNWM <span>${escape(t("PRECOMPUTED STRESS TEST", "预计算压力测试"))}</span></figcaption></figure>` : imagePanel(scene.predictionImage || scene.poster, t("OpenNWM prediction", "OpenNWM 预测"), "space-prediction");
+    const predictionLabel = t(scene.predictionLabel || "PRECOMPUTED STRESS TEST", scene.predictionLabelZh || "预计算压力测试");
+    const main = video ? `<figure class="space-frame space-prediction"><video controls playsinline muted preload="none" src="${escape(video)}" poster="${escape(scene.poster || initial)}" aria-label="${escape(`OpenNWM · ${predictionLabel}`)}"></video><figcaption>OPENNWM <span>${escape(predictionLabel)}</span></figcaption></figure>` : imagePanel(scene.predictionImage || scene.poster, t("OpenNWM prediction", "OpenNWM 预测"), "space-prediction");
+    const videoDetails = (src, label) => src ? `<details class="space-truth"><summary>${escape(label)}</summary><video controls playsinline muted preload="none" src="${escape(src)}" aria-label="${escape(label)}"></video></details>` : "";
+    const comparison = videoDetails(scene.comparison, t(scene.comparisonLabel || "Compare reference and direct prediction", scene.comparisonLabelZh || "对照真实参考与直接预测"));
+    const autoregressive = videoDetails(scene.autoregressive, t(scene.autoregressiveLabel || "Compare reference and autoregressive prediction", scene.autoregressiveLabelZh || "对照真实参考与自回归预测"));
     const truth = scene.groundTruth || scene.gt;
-    $("#space-stage").innerHTML = `<div class="space-observation">${imagePanel(initial, t("INITIAL OBSERVATION", "初始观测"))}${scene.trajectory ? imagePanel(scene.trajectory, t("CONDITIONING TRAJECTORY", "条件轨迹"), "space-trajectory") : ""}<div class="space-context"><span class="eyebrow">${escape(t(scene.tag || "PLANETARY ROVER", scene.tagZh))}</span><h3>${escape(t(scene.title, scene.titleZh))}</h3><p>${escape(t(scene.description || "", scene.descriptionZh))}</p></div></div><div class="space-output">${main}${truth ? `<details class="space-truth"><summary>${escape(t("View recorded reference", "查看真实参考"))}</summary>${/\.(mp4|webm)$/i.test(truth) ? `<video controls playsinline muted preload="none" src="${escape(truth)}"></video>` : `<img src="${escape(truth)}" alt="${escape(t("Recorded reference", "真实参考"))}" loading="lazy">`}</details>` : ""}</div>`;
+    const referenceLabel = t("View recorded reference", "查看真实参考");
+    const reference = truth ? (/\.(mp4|webm)$/i.test(truth) ? videoDetails(truth, referenceLabel) : `<details class="space-truth"><summary>${escape(referenceLabel)}</summary><img src="${escape(truth)}" alt="${escape(referenceLabel)}" loading="lazy"></details>`) : "";
+    $("#space-stage").innerHTML = `<div class="space-observation">${imagePanel(initial, t("INITIAL OBSERVATION", "初始观测"))}${scene.trajectory ? imagePanel(scene.trajectory, t("CONDITIONING TRAJECTORY", "条件轨迹"), "space-trajectory") : ""}<div class="space-context"><span class="eyebrow">${escape(t(scene.tag || "PLANETARY ROVER", scene.tagZh))}</span><h3>${escape(t(scene.title, scene.titleZh))}</h3><p>${escape(t(scene.description || "", scene.descriptionZh))}</p></div></div><div class="space-output">${main}${comparison}${autoregressive}${reference}</div>`;
     $("#space-provenance").textContent = t(scene.provenance || space.note || "", scene.provenanceZh || space.noteZh);
     $("#space-manifest").hidden = !scene.manifest;
     if (scene.manifest) $("#space-manifest").href = scene.manifest;
@@ -118,11 +124,14 @@ export async function initCinematic(getLanguage) {
     render();
     $("#space-tabs").querySelector(`[data-scene="${selected}"]`)?.focus({ preventScroll: true });
   });
+  $("#space-stage").addEventListener("toggle", (event) => {
+    if (event.target.matches("details:not([open])")) event.target.querySelectorAll("video").forEach((video) => video.pause());
+  }, true);
   // Pause foreground media when its section is no longer visible.
   new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) $("#space-stage").querySelectorAll("video").forEach((video) => video.pause());
   }, { threshold: 0.01 }).observe($("#space-stage"));
-  const responses = await Promise.allSettled([fetch("content/cinematic.json?v=earth-space-v3-20260930", { cache: "no-cache" }), fetch("content/space.json?v=earth-space-v3-20260930")]);
+  const responses = await Promise.allSettled([fetch("content/cinematic.json?v=earth-space-v3-20260930", { cache: "no-cache" }), fetch("content/space.json?v=lusnar-finetuned-20261008", { cache: "no-cache" })]);
   if (responses[0].status === "fulfilled" && responses[0].value.ok) {
     film = await responses[0].value.json();
     journeyScenes = (film.journeyScenes || film.journey?.scenes || []).map(normalizeScene).filter((scene) => Number.isFinite(scene.start)).sort((a, b) => a.start - b.start);
