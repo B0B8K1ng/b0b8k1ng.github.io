@@ -49,7 +49,7 @@ export async function initPlayground(getLanguage) {
     $("#prediction-placeholder").hidden = false; $("#generation-overlay").hidden = true;
   }
   function renderStatus() {
-    $("#service-status").textContent = serviceChecking || !serviceChecked ? t("Checking live service…", "正在连接实时服务…") : live ? t("Live GPU connected", "已连接实时 GPU") : t("Preset mode", "预计算模式");
+    $("#service-status").textContent = serviceChecking || !serviceChecked ? t("Checking live service…", "正在连接实时服务…") : live ? t("Live generation", "实时生成") : t("Preset videos", "预设视频");
     $("#service-status").classList.toggle("connected", live);
     $("#service-retry").hidden = live;
     $("#service-retry").disabled = serviceChecking || busy;
@@ -62,15 +62,15 @@ export async function initPlayground(getLanguage) {
     $("#generate-path").disabled = !live || busy || drawing || !validPath();
     $("#play-preset").disabled = busy || !selectedPreset()?.video;
     $("#path-clear").disabled = busy;
-    $("#playground-service-note").textContent = live ? t("Your custom route runs on the connected GPU. Generation can take a few minutes.", "自定义路线将在已连接的 GPU 上推理，生成可能需要几分钟。") : t("Explore real, precomputed predictions. Free drawing requires the local GPU demo service.", "可播放真实的预计算预测；自由绘制后的生成需要本机 GPU 演示服务。");
+    $("#playground-service-note").textContent = live ? t("Custom generation takes a few minutes.", "自定义生成需要几分钟。") : t("Connect the live service to generate a custom path.", "连接实时服务后可生成自定义路线。");
     const messages = {
       ready: t("Choose a preset or draw your own route.", "选择预设，或绘制你自己的路线。"),
       custom: live
         ? t("Custom path ready. Generate it with the live model.", "自定义路线已就绪，可调用实时模型生成。")
-        : t("Custom path ready. Connect the local GPU demo service to generate this route, or choose a preset to play a recorded prediction.", "自定义路线已就绪。请连接本机 GPU 演示服务后生成，或选择预设播放已有预测。"),
+        : t("Custom path ready.", "自定义路线已就绪。"),
       cleared: t("Draw from the starting point, or choose a preset below.", "从起点开始绘制，或选择下方预设。"),
-      preset: t("Playing a recorded model prediction for the displayed preset path.", "正在播放当前预设轨迹对应的模型预计算结果。"),
-      queued: t("Your path is queued for the GPU…", "你的路线正在排队等待 GPU…"),
+      preset: t("Playing preset prediction.", "正在播放预设预测。"),
+      queued: t("Waiting to generate…", "正在等待生成…"),
       running: t("OpenNWM is imagining your path…", "OpenNWM 正在预测这条路线的未来视野…"),
       completed: t("Generated from your path with OpenNWM.", "OpenNWM 已根据你绘制的路线生成结果。"),
       failed: t("Generation could not finish. Please try again.", "生成未能完成，请重试。"),
@@ -87,14 +87,6 @@ export async function initPlayground(getLanguage) {
     if (!scene) return;
     $("#playground-scenes").innerHTML = data.scenes.map((item) => `<button type="button" data-scene="${escape(item.id)}" class="${item.id === scene.id ? "active" : ""}" aria-pressed="${item.id === scene.id}">${escape(t(item.title, item.titleZh))}</button>`).join("");
     $("#playground-scene-name").textContent = t(scene.title, scene.titleZh);
-    const origin = scene.simulated ? t("SIMULATION", "仿真") : scene.planetary ? t("REAL MISSION", "真实任务") : "";
-    $("#playground-domain").textContent = [origin, scene.domain, data.duration ? `${data.duration} s` : ""].filter(Boolean).join(" · ");
-    $("#playground-scene-description").textContent = t(scene.description || "", scene.descriptionZh);
-    const limitation = t(scene.limitation || scene.qualityNote || "", scene.limitationZh || scene.qualityNoteZh);
-    $("#playground-limitation").textContent = limitation;
-    $("#playground-limitation").hidden = !limitation;
-    $("#playground-protocol").textContent = t(scene.protocol || "", scene.protocolZh);
-    $("#playground-timing").textContent = scene.planetary ? t(data.planetaryNote || "", data.planetaryNoteZh) : "";
     canvas.setAttribute("aria-label", t("Draw a route on a top-down plane, or choose a preset route below", "在俯视平面上绘制路线，或选择下方预设路线"));
     renderStatus(); draw();
   }

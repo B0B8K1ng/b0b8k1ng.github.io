@@ -124,6 +124,5 @@ Each content group carries a `source` field. Source IDs in
 statistics and media by `id`. The paper's In-house Collected source uses the
 media ID `casia-nav`; HuRoN uses `sacson` in the annotated dataset rows.
 
-PDF text extraction and temporary page renderings are outside the source
-repository in
-`the private media production archive`.
+PDF text extraction and temporary page renderings are maintained separately
+from this public website repository.

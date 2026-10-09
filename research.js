@@ -15,102 +15,65 @@ export function initResearch(paper, getLanguage) {
   const metricTabs = element("metric-tabs");
   const chart = element("result-chart");
   const rows = paper.results.direct_prediction.rows;
-  const state = { stage: 0, domain: "id", idMetric: "lpips" };
+  const state = { domain: "id", idMetric: "lpips" };
   const t = (en, zh) => (getLanguage().startsWith("zh") ? zh : en);
-  const cells = () =>
-    `<div class="latent-cells" aria-hidden="true">${Array.from({ length: 32 }, (_, i) => `<i style="--opacity:${0.45 + (i % 6) * 0.1};--delay:${(i % 8) * -0.23}s"></i>`).join("")}</div>`;
-  const arrow = '<div class="diagram-arrow" aria-hidden="true">→</div>';
-  const thumbnail = (label) =>
-    `<div class="diagram-input"><img src="assets/datasets/i2nav-robot.webp" alt="" loading="lazy"><span>${escapeHTML(label)}</span></div>`;
+  const flowArrow = '<span class="method-flow-arrow" aria-hidden="true">↓</span>';
+  const node = (label, accent = false) =>
+    `<span class="method-node${accent ? " method-node-accent" : ""}">${label}</span>`;
 
-  function stages() {
+  function methodCards() {
     return [
       {
-        title: t("Learn latent actions", "学习潜在动作"),
-        short: t(
-          "Visual prediction + physical grounding",
-          "视觉预测 + 物理运动约束",
-        ),
-        kicker: t("LAM · 32-D LATENT SPACE", "LAM · 32 维潜在空间"),
-        heading: t("A shared language for motion.", "为运动学习共同的表达。"),
+        title: t("Ground motion in video", "从视频中理解运动"),
+        label: t("Dual-supervised latent actions", "双重监督的潜在动作"),
         text: t(
-          "A frame pair is encoded into a 32-dimensional variational latent action. Visual reconstruction learns from video; an auxiliary physical predictor grounds the latent on RECON, HuRoN, and SCAND. The 60K-step checkpoint supplies deterministic posterior-mean latents.",
-          "将一对图像编码为 32 维变分潜在动作。视觉重建从视频中学习，辅助运动预测器通过 RECON、HuRoN 和 SCAND 的标注建立物理约束。使用 60K 步检查点的后验均值生成确定性潜在动作。",
+          "The latent action model (LAM) encodes a pair of frames into a shared motion representation. Visual reconstruction preserves the transition; physical-motion supervision on annotated trajectories grounds it in controllable movement.",
+          "潜在动作模型（LAM）将前后两帧编码为共享的运动表示。视觉重建保留画面中的变化；带标注轨迹上的物理运动监督，让表示对应可控制的运动。",
         ),
-        equation: "L = L_RGB + λ_action L_action + β L_KL",
-        diagram: `${thumbnail(t("Video frames", "视频帧"))}${arrow}<div class="diagram-model"><span class="eyebrow">LAM</span>${cells()}<strong>${t("Encode motion", "编码运动")}</strong><small>${t("Pixel + Action", "像素 + 动作监督")}</small></div>${arrow}<div class="diagram-output"><div class="action-vector">z ∈ ℝ³²</div><span>${t("Latent action", "潜在动作")}</span></div>`,
+        diagram: `${node(t("Current + future frame", "当前帧 + 未来帧"))}${flowArrow}${node(`LAM → ${t("latent action", "潜在动作")} <i>z</i>`, true)}<div class="method-supervision"><span>${t("Visual reconstruction", "视觉重建")}</span><span>${t("Motion grounding", "运动约束")}</span></div>`,
       },
       {
-        title: t("Pretrain on video", "从视频预训练"),
-        short: t(
-          "15 sources · 60K world-model steps",
-          "15 个来源 · 60K 步世界模型训练",
-        ),
-        kicker: t("NWM · LATENT PRETRAINING", "NWM · 潜在动作预训练"),
-        heading: t(
-          "Turn diverse video into dynamics.",
-          "从多样视频中学习动态。",
-        ),
+        title: t("Learn from NavAnywhere", "从 NavAnywhere 学习"),
+        label: t("Action-free video pretraining", "无动作标注视频预训练"),
         text: t(
-          "The frozen LAM supplies latent actions for NavAnywhere. A CDiT-B/2 diffusion backbone learns future observations from four context frames, relative time, and local latent actions. Latent conditioning is used for valid offsets within ±8 frames; target offsets extend to ±64.",
-          "冻结的 LAM 为 NavAnywhere 提供潜在动作。CDiT-B/2 扩散主干根据四帧上下文、相对时间与局部潜在动作学习未来观测。潜在动作条件用于 ±8 帧内的有效偏移，预测目标偏移可覆盖 ±64 帧。",
+          "The frozen LAM infers actions from diverse videos without recorded controls. A diffusion world model learns future observations from visual context, relative time, and inferred latent actions—scaling dynamics learning to NavAnywhere’s 17.5M frames.",
+          "冻结的 LAM 从多样视频中推断潜在动作，无需录制控制指令。扩散世界模型结合视觉上下文、相对时间与推断的潜在动作学习未来画面，将动态学习扩展到 NavAnywhere 的 1750 万帧。",
         ),
-        equation: t(
-          "60K steps · 4 context frames · 4 targets / observation",
-          "60K 步 · 4 帧上下文 · 每个观测 4 个预测目标",
-        ),
-        diagram: `<div class="diagram-input"><div class="action-vector">z + Δt</div><span>${t("Latent + time", "潜在动作 + 时间")}</span></div>${arrow}<div class="diagram-model"><span class="eyebrow">CDiT-B/2</span>${cells()}<strong>${t("Learn dynamics", "学习动态")}</strong><small>${t("+ visual context", "+ 视觉上下文")}</small></div>${arrow}<div class="diagram-output"><img src="assets/datasets/i2nav-robot.webp" alt="" loading="lazy"><span>${t("RGB target", "RGB 目标帧")}</span></div>`,
+        diagram: `${node(t("NavAnywhere → frozen LAM", "NavAnywhere → 冻结 LAM"))}${flowArrow}${node(t("Context + latent action + time", "上下文 + 潜在动作 + 时间"), true)}${flowArrow}${node(t("World model → future frames", "世界模型 → 未来画面"))}`,
       },
       {
-        title: t("Align physical actions", "对齐物理动作"),
-        short: t(
-          "3K warmup → 100K joint updates",
-          "3K 步预热 → 100K 步联合训练",
-        ),
-        kicker: t("NWM · PHYSICAL POST-TRAINING", "NWM · 物理动作后训练"),
-        heading: t(
-          "Connect imagination to action.",
-          "连接未来预测与实际行动。",
-        ),
+        title: t("Turn prediction into navigation", "从未来预测到导航"),
+        label: t("Physical-action alignment & planning", "物理动作对齐与规划"),
         text: t(
-          "A new physical-action encoder warms up for 3K steps with the CDiT backbone frozen. Both then train jointly for 100K steps on RECON, HuRoN, SCAND, and TartanDrive. At inference, CEM searches physical waypoint actions (Δx, Δy, Δψ) and replans after the first action.",
-          "新物理动作编码器先预热 3K 步，此时冻结 CDiT 主干；随后二者在 RECON、HuRoN、SCAND 与 TartanDrive 上联合训练 100K 步。推理时，CEM 搜索物理路点动作 (Δx, Δy, Δψ)，执行第一个动作后重新规划。",
+          "Post-training connects the world model to physical waypoint actions (Δx, Δy, Δψ). At navigation time, CEM evaluates candidate actions through predicted futures, selects a plan toward the visual goal, and replans after executing its first action.",
+          "后训练将世界模型与物理路点动作（Δx、Δy、Δψ）对齐。导航时，CEM 通过预测未来评估候选动作，选择通向视觉目标的方案，执行第一个动作后重新规划。",
         ),
-        equation: t(
-          "3K: encoder only → 100K: encoder + backbone",
-          "3K：仅编码器 → 100K：编码器 + 主干",
-        ),
-        diagram: `<div class="diagram-input"><div class="action-vector">Δx\nΔy\nΔψ</div><span>${t("Physical action", "物理动作")}</span></div>${arrow}<div class="diagram-model"><span class="eyebrow">OpenNWM</span>${cells()}<strong>${t("Align & adapt", "对齐与适配")}</strong><small>${t("Encoder + CDiT", "编码器 + CDiT")}</small></div>${arrow}<div class="diagram-output"><img src="assets/datasets/recon.webp" alt="" loading="lazy"><span>${t("RGB target", "RGB 目标帧")}</span></div>`,
+        diagram: `${node(t("Candidate waypoint actions", "候选路点动作"))}${flowArrow}${node(t("OpenNWM → predicted futures", "OpenNWM → 未来预测"), true)}${flowArrow}${node(t("Select → execute → replan", "选择 → 执行 → 重新规划"))}`,
       },
     ];
   }
 
   function renderMethod() {
-    const descriptions = stages();
-    const selected = descriptions[state.stage];
-    steps.setAttribute("aria-label", t("Method stages", "方法阶段"));
+    const descriptions = methodCards();
+    steps.parentElement.classList.add("method-overview");
+    steps.setAttribute("role", "list");
+    steps.setAttribute("aria-label", t("How OpenNWM works", "OpenNWM 的方法"));
     steps.innerHTML = descriptions
       .map(
         (stage, index) =>
-          `<button type="button" class="method-step" role="tab" id="method-tab-${index}" aria-controls="method-panel" aria-selected="${index === state.stage}" tabindex="${index === state.stage ? 0 : -1}" data-stage="${index}"><span class="method-step-number" aria-hidden="true">0${index + 1}</span><span><h3>${escapeHTML(stage.title)}</h3><p>${escapeHTML(stage.short)}</p></span></button>`,
+          `<article class="method-card" role="listitem"><div class="method-card-label"><span aria-hidden="true">0${index + 1}</span>${escapeHTML(stage.label)}</div><h3>${escapeHTML(stage.title)}</h3><div class="method-card-diagram" aria-hidden="true">${stage.diagram}</div><p>${escapeHTML(stage.text)}</p></article>`,
       )
       .join("");
-    panel.setAttribute("aria-labelledby", `method-tab-${state.stage}`);
-    panel.tabIndex = 0;
-    const diagram = element("method-diagram");
-    diagram.innerHTML = selected.diagram;
-    diagram.setAttribute("role", "img");
-    diagram.setAttribute(
-      "aria-label",
-      t(
-        "Training schematic; dataset images illustrate the input and target roles. ",
-        "训练示意图；数据集图像仅示意输入与目标。",
-      ) + selected.heading,
-    );
-    element("method-kicker").textContent = selected.kicker;
-    element("method-subtitle").textContent = selected.heading;
-    element("method-description").textContent = selected.text;
-    element("method-equation").textContent = selected.equation;
+    panel.removeAttribute("role");
+    panel.removeAttribute("aria-live");
+    panel.removeAttribute("aria-labelledby");
+    panel.removeAttribute("tabindex");
+    const training = [
+      [t("Latent pretraining", "潜在动作预训练"), t("Learn the world model from NavAnywhere.", "在 NavAnywhere 上训练世界模型。")],
+      [t("Action-encoder warmup", "动作编码器预热"), t("Train the new physical-action encoder; freeze the world model.", "冻结世界模型，仅训练新的物理动作编码器。")],
+      [t("Joint post-training", "联合后训练"), t("Adapt the encoder and world model together on action-labeled video.", "用带动作标注的视频联合训练编码器与世界模型。")],
+    ];
+    panel.innerHTML = `<div class="method-training-heading"><h3>${t("How the world model is trained", "世界模型如何训练")}</h3><span>${t("After learning the LAM", "在 LAM 训练完成后")}</span></div><ol class="method-training">${training.map(([title, text]) => `<li><strong>${escapeHTML(title)}</strong><p>${escapeHTML(text)}</p></li>`).join("")}</ol>`;
   }
 
   function domains() {
@@ -183,25 +146,6 @@ export function initResearch(paper, getLanguage) {
       : t("LOWER IS BETTER ↓", "越低越好 ↓");
   }
 
-  steps.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-stage]");
-    if (!button) return;
-    state.stage = Number(button.dataset.stage);
-    renderMethod();
-    element(`method-tab-${state.stage}`).focus({ preventScroll: true });
-  });
-  steps.addEventListener("keydown", (event) => {
-    if (!event.target.closest("[data-stage]")) return;
-    const offsets = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
-    if (event.key in offsets)
-      state.stage = (state.stage + offsets[event.key] + 3) % 3;
-    else if (event.key === "Home") state.stage = 0;
-    else if (event.key === "End") state.stage = 2;
-    else return;
-    event.preventDefault();
-    renderMethod();
-    element(`method-tab-${state.stage}`).focus({ preventScroll: true });
-  });
   domainSelect.addEventListener("change", () => {
     state.domain = domainSelect.value;
     renderResults();
