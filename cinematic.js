@@ -120,7 +120,7 @@ export async function initCinematic(getLanguage) {
   new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) $("#space-stage").querySelectorAll("video").forEach((video) => video.pause());
   }, { threshold: 0.01 }).observe($("#space-stage"));
-  const responses = await Promise.allSettled([fetch("content/cinematic.json?v=earth-space-v3-20260930", { cache: "no-cache" }), fetch("content/space.json?v=curved-motion-sync-20261009", { cache: "no-cache" })]);
+  const responses = await Promise.allSettled([fetch("content/cinematic.json?v=earth-space-v3-20260930", { cache: "no-cache" }), fetch("content/space.json?v=curved-motion-sync2-20261009", { cache: "no-cache" })]);
   if (responses[0].status === "fulfilled" && responses[0].value.ok) {
     film = await responses[0].value.json();
     journeyScenes = (film.journeyScenes || film.journey?.scenes || []).map(normalizeScene).filter((scene) => Number.isFinite(scene.start)).sort((a, b) => a.start - b.start);

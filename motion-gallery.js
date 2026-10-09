@@ -105,10 +105,11 @@ export function initMotionGallery(demos, getLanguage) {
     if (!item.playing) return;
     item.generation++;
     item.phase = "buffering";
-    // Seek only once per barrier, to an actual frame. Some decoders report the
-    // preceding frame after a fractional-frame seek; retrying it on every
-    // canplay/seeked event can otherwise leave them seeking forever.
-    item.syncTime = Math.floor(Math.max(0, time + .001) * item.demo.fps) / item.demo.fps;
+    // Preserve an already aligned pair's clocks when buffering. Rounding the
+    // target to a frame would cause an unnecessary backward seek on every wait.
+    // Seek only once per barrier: decoders can report the preceding frame, and
+    // retrying that seek on each canplay/seeked event can keep it seeking forever.
+    item.syncTime = Math.max(0, time);
     item.pendingSeek = new Set(item.videos);
     clearInterval(item.syncTimer);
     item.videos.forEach((video) => { video.pause(); video.playbackRate = 1; });

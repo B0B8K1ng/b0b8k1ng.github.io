@@ -1,8 +1,8 @@
-import { initResearch } from "./research.js?v=curved-motion-sync-20261009";
-import { initMotionGallery } from "./motion-gallery.js?v=curved-motion-sync-20261009";
-import { initNavigation } from "./navigation.js?v=curved-motion-sync-20261009";
-import { initCinematic } from "./cinematic.js?v=curved-motion-sync-20261009";
-import { initPlayground } from "./playground.js?v=curved-motion-sync-20261009";
+import { initResearch } from "./research.js?v=curved-motion-sync2-20261009";
+import { initMotionGallery } from "./motion-gallery.js?v=curved-motion-sync2-20261009";
+import { initNavigation } from "./navigation.js?v=curved-motion-sync2-20261009";
+import { initCinematic } from "./cinematic.js?v=curved-motion-sync2-20261009";
+import { initPlayground } from "./playground.js?v=curved-motion-sync2-20261009";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -468,7 +468,7 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const response = await fetch(`content/${name}.json?v=curved-motion-sync-20261009`);
+        const response = await fetch(`content/${name}.json?v=curved-motion-sync2-20261009`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
       }),
