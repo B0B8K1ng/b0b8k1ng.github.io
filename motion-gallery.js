@@ -47,27 +47,87 @@ export function initMotionGallery(demos, getLanguage) {
   function pause(item) {
     item.generation++;
     item.playing = false;
-    item.videos.forEach((video) => video.pause());
+    item.phase = "paused";
+    clearInterval(item.syncTimer);
+    item.videos.forEach((video) => { video.pause(); video.playbackRate = 1; });
     updateButton(item);
   }
-  async function play(item, restart = false) {
+  function seekPair(item, time) {
+    for (const video of item.videos) {
+      if (video.readyState >= 1 && Math.abs(video.currentTime - time) > .025) video.currentTime = time;
+    }
+  }
+  function bufferedAhead(video, time = video.currentTime) {
+    for (let index = 0; index < video.buffered.length; index++) {
+      if (video.buffered.start(index) <= time + .025 && video.buffered.end(index) >= time) return video.buffered.end(index) - time;
+    }
+    return 0;
+  }
+  function synchronize(item) {
+    if (!item.playing || item.phase !== "running") return;
+    // The seeking event supplies the requested target; do not replace it with
+    // the other video's old clock before that event has been handled.
+    if (item.videos.some((video) => video.seeking)) return;
+    if (item.videos.some((video) => video.readyState < 3)) {
+      holdPair(item);
+      return;
+    }
+    const prediction = item.videos[1];
+    const drift = item.leader.currentTime - prediction.currentTime;
+    if (Math.abs(drift) > .12) {
+      holdPair(item);
+      return;
+    }
+    // Small clock differences are corrected smoothly, without repeated seeks.
+    prediction.playbackRate = Math.abs(drift) > .035 ? 1 + Math.max(-.05, Math.min(.05, drift * .5)) : 1;
+  }
+  async function startReadyPair(item) {
+    if (!item.playing || item.phase !== "buffering" || document.hidden || !item.visible) return;
+    for (const video of item.videos) {
+      if (!item.pendingSeek.has(video) || video.readyState < 1) continue;
+      item.pendingSeek.delete(video);
+      if (Math.abs(video.currentTime - item.syncTime) > .025) video.currentTime = item.syncTime;
+    }
+    // Both decoders must have future data at the same time before either runs.
+    // A short shared cushion avoids immediately re-entering waiting on slow links.
+    if (!item.videos.every((video) => video.readyState >= 3 && !video.seeking
+      && bufferedAhead(video, item.syncTime) >= Math.min(.5, Math.max(0, video.duration - item.syncTime - .025)))) return;
+    const generation = item.generation;
+    item.phase = "starting";
+    const results = await Promise.allSettled(item.videos.map((video) => video.play()));
+    if (generation !== item.generation) return;
+    if (results.some((result) => result.status === "rejected")) { pause(item); return; }
+    item.phase = "running";
+    synchronize(item);
+    if (item.phase === "running") item.syncTimer = setInterval(() => synchronize(item), 100);
+  }
+  function holdPair(item, time = Math.min(...item.videos.map((video) => video.currentTime))) {
+    if (!item.playing) return;
+    item.generation++;
+    item.phase = "buffering";
+    // Seek only once per barrier, to an actual frame. Some decoders report the
+    // preceding frame after a fractional-frame seek; retrying it on every
+    // canplay/seeked event can otherwise leave them seeking forever.
+    item.syncTime = Math.floor(Math.max(0, time + .001) * item.demo.fps) / item.demo.fps;
+    item.pendingSeek = new Set(item.videos);
+    clearInterval(item.syncTimer);
+    item.videos.forEach((video) => { video.pause(); video.playbackRate = 1; });
+    updateTrajectory(item);
+    startReadyPair(item);
+  }
+  function play(item, restart = false) {
     if (item.playing || document.hidden || !item.visible) return;
-    const generation = ++item.generation;
+    const time = restart || item.videos.some((video) => video.ended) ? 0 : Math.min(...item.videos.map((video) => video.currentTime));
+    item.playing = true;
     item.videos.forEach((video) => {
       if (!video.getAttribute("src")) {
         video.src = video.dataset.source;
         video.preload = "auto";
         video.load();
       }
-      if (restart || video.ended) video.currentTime = 0;
-      else if (video !== item.leader && video.readyState >= 1) video.currentTime = item.leader.currentTime;
     });
-    updateTrajectory(item);
-    item.playing = true;
     updateButton(item);
-    const results = await Promise.allSettled(item.videos.map((video) => video.play()));
-    if (generation !== item.generation) return;
-    if (results.some((result) => result.status === "rejected")) pause(item);
+    holdPair(item, time);
   }
   function resumeVisible() {
     items.forEach((item) => {
@@ -94,6 +154,7 @@ export function initMotionGallery(demos, getLanguage) {
       comparison: card.querySelector(".motion-comparison"), slider: card.querySelector("input"),
       cursor: card.querySelector(".motion-path-cursor"), progress: card.querySelector(".motion-path-progress"),
       visible: false, playing: false, userPaused: false, generation: 0,
+      phase: "paused", syncTime: 0, syncTimer: null, pendingSeek: new Set(),
     };
     item.videos.forEach((element) => { element.muted = true; });
     item.slider.addEventListener("input", () => updateWipe(item));
@@ -103,17 +164,28 @@ export function initMotionGallery(demos, getLanguage) {
     });
     leader.addEventListener("timeupdate", () => {
       updateTrajectory(item);
-      if (!item.playing || leader.seeking || leader.ended) return;
-      const prediction = item.videos[1];
-      if (prediction.readyState >= 2 && !prediction.seeking && Math.abs(prediction.currentTime - leader.currentTime) > .18) prediction.currentTime = leader.currentTime;
+      synchronize(item);
     });
-    leader.addEventListener("seeked", () => updateTrajectory(item));
-    leader.addEventListener("ended", () => {
-      const shouldLoop = item.playing;
-      pause(item);
-      if (shouldLoop) play(item, true);
+    item.videos.forEach((video) => {
+      ["loadedmetadata", "canplay", "canplaythrough", "progress"].forEach((event) => video.addEventListener(event, () => startReadyPair(item)));
+      video.addEventListener("waiting", () => {
+        if (item.playing && (item.phase === "running" || item.phase === "starting") && video.readyState < 3) holdPair(item);
+      });
+      video.addEventListener("stalled", () => {
+        // A stalled download need not interrupt playback if it is buffered.
+        if (item.playing && item.phase === "running" && (video.readyState < 3 || bufferedAhead(video) < .25)) holdPair(item);
+      });
+      video.addEventListener("seeking", () => {
+        if (!video.seeking || item.phase === "buffering" || item.phase === "starting") return;
+        if (item.playing) holdPair(item, video.currentTime);
+        else seekPair(item, video.currentTime);
+      });
+      video.addEventListener("seeked", () => { updateTrajectory(item); startReadyPair(item); });
+      video.addEventListener("ended", () => {
+        if (item.playing && video.ended) holdPair(item, 0);
+      });
+      video.addEventListener("error", () => pause(item));
     });
-    item.videos.forEach((element) => element.addEventListener("error", () => pause(item)));
     updateTrajectory(item);
     items.push(item);
   }
