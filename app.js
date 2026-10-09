@@ -1,6 +1,8 @@
-import { initResearch } from "./research.js";
-import { initCinematic } from "./cinematic.js?v=lunar-model-comparison-20261008";
-import { initPlayground } from "./playground.js?v=earth-space-v3-20260930";
+import { initResearch } from "./research.js?v=curved-motion-20261009";
+import { initMotionGallery } from "./motion-gallery.js?v=curved-motion-20261009";
+import { initNavigation } from "./navigation.js?v=curved-motion-20261009";
+import { initCinematic } from "./cinematic.js?v=curved-motion-20261009";
+import { initPlayground } from "./playground.js?v=curved-motion-20261009";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -16,7 +18,7 @@ const escape = (value) =>
         char
       ],
   );
-let research, datasets, demos, paper, cinematic, playground;
+let research, datasets, demos, paper, cinematic, playground, motionGallery, navigation;
 let filter = "all",
   expanded = false,
   currentDataset;
@@ -31,19 +33,14 @@ function translate() {
     "aria-label",
     t("Switch to Chinese", "Switch to English"),
   );
-  $("#comparison-slider").setAttribute(
-    "aria-label",
-    t("Reveal ground truth or prediction", "移动真实画面与预测画面的分界线"),
-  );
-  $("#timeline").setAttribute("aria-label", t("Video timeline", "视频时间轴"));
   cinematic?.render();
   playground?.render();
   if (!datasets) return;
-  renderDemoText();
+  motionGallery?.render();
+  navigation?.render();
   renderDatasets();
   renderDistribution();
   research.render();
-  updatePlaybackUI();
   updateHeroUI();
   if ($("#dataset-dialog").open && currentDataset) renderDialog(currentDataset);
 }
@@ -138,77 +135,8 @@ motion.addEventListener("change", () => {
   updateHero();
 });
 
-// Two native video elements share one timeline and one playback state.
-const truth = $("#truth-video"),
-  prediction = $("#prediction-video");
-const streams = [truth, prediction];
-let demo,
-  model = "prediction",
-  loadVersion = 0,
-  playbackVersion = 0,
-  playing = false,
-  frameRequest = 0;
-const timeLabel = (seconds) =>
-  `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
-function updatePlaybackUI() {
-  $("#play-toggle").innerHTML = icon(playing ? "pause" : "play");
-  $("#play-toggle").setAttribute(
-    "aria-label",
-    playing
-      ? t("Pause comparison", "暂停对照视频")
-      : t("Play comparison", "播放对照视频"),
-  );
-  const duration = Number.isFinite(truth.duration)
-    ? truth.duration
-    : demo?.duration || 0;
-  $("#player-time").textContent =
-    `${timeLabel(truth.currentTime)} / ${timeLabel(duration)}`;
-  $("#timeline").value = duration ? (truth.currentTime / duration) * 1000 : 0;
-}
-function pauseComparison() {
-  playbackVersion++;
-  playing = false;
-  streams.forEach((video) => video.pause());
-  cancelAnimationFrame(frameRequest);
-  updatePlaybackUI();
-}
-function synchronize() {
-  if (!playing) return;
-  if (
-    !truth.seeking &&
-    !prediction.seeking &&
-    Math.abs(truth.currentTime - prediction.currentTime) > 0.12
-  )
-    prediction.currentTime = truth.currentTime;
-  updatePlaybackUI();
-  frameRequest = requestAnimationFrame(synchronize);
-}
-async function playComparison() {
-  if (!$("#video-loading").hidden) return;
-  if (truth.ended || truth.currentTime >= truth.duration - 0.08)
-    streams.forEach((video) => {
-      video.currentTime = 0;
-    });
-  prediction.currentTime = truth.currentTime;
-  const version = loadVersion,
-    playback = ++playbackVersion;
-  playing = true;
-  updatePlaybackUI();
-  try {
-    await Promise.all(streams.map((video) => video.play()));
-    if (version !== loadVersion || playback !== playbackVersion) return;
-    playing = true;
-    cancelAnimationFrame(frameRequest);
-    synchronize();
-  } catch {
-    if (version !== loadVersion || playback !== playbackVersion) return;
-    pauseComparison();
-    $("#page-status").textContent = t(
-      "Press play to start both videos.",
-      "点击播放以启动对照视频。",
-    );
-  }
-}
+document.addEventListener("visibilitychange", updateHero);
+
 function loadVideo(video, src, poster, signal) {
   return new Promise((resolve, reject) => {
     const finish = (error) => {
@@ -249,152 +177,6 @@ function loadVideo(video, src, poster, signal) {
       .catch(finish);
   });
 }
-let loadingController;
-async function selectDemo(id, preserveTime = false) {
-  const time = preserveTime ? truth.currentTime : 0;
-  const resume = preserveTime && playing;
-  pauseComparison();
-  loadingController?.abort();
-  loadingController = new AbortController();
-  const version = ++loadVersion;
-  demo = demos.demos.find((item) => item.id === id);
-  renderDemoText();
-  $("#video-loading").hidden = false;
-  $("#video-loading").textContent = t("Loading scene…", "正在加载场景…");
-  $("#play-toggle").disabled = true;
-  $("#timeline").disabled = true;
-  try {
-    await Promise.all([
-      loadVideo(truth, demo.gt, demo.gtPoster, loadingController.signal),
-      loadVideo(
-        prediction,
-        demo[model],
-        demo[`${model}Poster`],
-        loadingController.signal,
-      ),
-    ]);
-    if (version !== loadVersion) return;
-    streams.forEach((video) => {
-      video.currentTime = Math.min(time, demo.duration - 0.01);
-      video.playbackRate = Number($("#playback-speed").value);
-    });
-    $("#video-loading").hidden = true;
-    $("#play-toggle").disabled = false;
-    $("#timeline").disabled = false;
-    updatePlaybackUI();
-    if (resume) await playComparison();
-  } catch (error) {
-    if (version !== loadVersion || error.name === "AbortError") return;
-    $("#video-loading").textContent = t(
-      "Video unavailable. Select a scene to retry.",
-      "视频加载失败，请重新选择场景。",
-    );
-  }
-}
-const demoTitles = {
-  "huron-41": "玻璃走廊",
-  "tartan-drive-36": "越野小径",
-  "unitree-go2-81": "办公室漫步",
-};
-function renderDemoText() {
-  if (!demo) return;
-  $("#demo-tabs").innerHTML = demos.demos
-    .map(
-      (item) =>
-        `<button type="button" role="tab" id="tab-${item.id}" aria-controls="demo-player" aria-selected="${item.id === demo.id}" tabindex="${item.id === demo.id ? 0 : -1}" data-demo="${item.id}">${escape(t(item.title, demoTitles[item.id]))}<small>${item.domain}</small></button>`,
-    )
-    .join("");
-  $("#demo-player").setAttribute("role", "tabpanel");
-  $("#demo-player").setAttribute("aria-labelledby", `tab-${demo.id}`);
-  $("#prediction-label").textContent = demo.labels[model].toUpperCase();
-  prediction.setAttribute(
-    "aria-label",
-    `${demo.labels[model]} ${t("prediction", "预测画面")}`,
-  );
-  $("#demo-description").textContent = t(
-    `${demo.dataset} · ${demo.horizon}-second future, conditioned on recorded actions.`,
-    `${demo.dataset} · 由记录的真实动作驱动，预测未来 ${demo.horizon} 秒。`,
-  );
-  $("#demo-format").textContent =
-    `${demo.width} × ${demo.height} / ${demo.fps} FPS / ${demo.domain}`;
-  $("#demo-provenance").textContent = t(
-    `${demo.model}; baseline: ${demo.baselineModel}. Both use 250-step DDPM and the same recorded actions. One initial observation is repeated into a four-frame context, then predictions are fed back. The clip includes the initial frame; future horizon: ${demo.horizon}s. Archive: ${demo.sourceArchive}, sample ${demo.sampleId}.`,
-    `${demo.model}；基线：${demo.baselineModel}。均使用 250 步 DDPM 和相同的记录动作。初始图像重复为四帧上下文，随后将预测画面回灌。视频包含初始帧，未来预测时长 ${demo.horizon} 秒。归档：${demo.sourceArchive}，样例 ${demo.sampleId}。`,
-  );
-}
-$("#demo-tabs").addEventListener("click", (event) => {
-  const tab = event.target.closest("[data-demo]");
-  if (!tab) return;
-  const id = tab.dataset.demo;
-  selectDemo(id);
-  $(`#tab-${id}`).focus({ preventScroll: true });
-});
-$("#demo-tabs").addEventListener("keydown", (event) => {
-  const tabs = $$("#demo-tabs [role=tab]"),
-    index = tabs.indexOf(document.activeElement);
-  if (
-    index < 0 ||
-    !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)
-  )
-    return;
-  event.preventDefault();
-  const next =
-    event.key === "Home"
-      ? 0
-      : event.key === "End"
-        ? tabs.length - 1
-        : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) %
-          tabs.length;
-  selectDemo(tabs[next].dataset.demo);
-  $$("#demo-tabs button")[next].focus();
-});
-$("#model-select").addEventListener("change", (event) => {
-  model = event.target.value;
-  selectDemo(demo.id, true);
-});
-$("#play-toggle").addEventListener("click", () =>
-  playing ? pauseComparison() : playComparison(),
-);
-streams.forEach((video) => video.addEventListener("ended", pauseComparison));
-truth.addEventListener("timeupdate", () => {
-  if (!playing) updatePlaybackUI();
-});
-$("#timeline").addEventListener("input", (event) => {
-  if (!Number.isFinite(truth.duration)) return;
-  const time = (Number(event.target.value) / 1000) * truth.duration;
-  streams.forEach((video) => {
-    video.currentTime = time;
-  });
-  updatePlaybackUI();
-});
-$("#playback-speed").addEventListener("change", (event) =>
-  streams.forEach((video) => {
-    video.playbackRate = Number(event.target.value);
-  }),
-);
-$("#comparison-slider").addEventListener("input", (event) => {
-  $("#comparison-stage").style.setProperty(
-    "--reveal",
-    `${event.target.value}%`,
-  );
-  $("#comparison-stage").classList.add("interacted");
-});
-if (!document.fullscreenEnabled) $("#fullscreen").hidden = true;
-$("#fullscreen").addEventListener("click", async () => {
-  try {
-    if (document.fullscreenElement) await document.exitFullscreen();
-    else await $("#demo-player").requestFullscreen();
-  } catch {
-    $("#page-status").textContent = t(
-      "Full screen is unavailable in this browser.",
-      "此浏览器不支持全屏。",
-    );
-  }
-});
-document.addEventListener("visibilitychange", () => {
-  updateHero();
-  if (document.hidden) pauseComparison();
-});
 
 // A browsable atlas: pretraining sources and action-labeled sources stay distinct.
 const descriptionsZh = {
@@ -570,7 +352,7 @@ $("#dataset-grid").addEventListener("click", async (event) => {
     (item) => item.id === button.dataset.dataset,
   );
   renderDialog(currentDataset);
-  pauseComparison();
+  document.querySelectorAll("main video").forEach((video) => video.pause());
   $("#dialog-image").src = currentDataset.image;
   $("#dialog-image").alt = currentDataset.description;
   $("#dialog-image").hidden = Boolean(currentDataset.video);
@@ -686,22 +468,22 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const response = await fetch(`content/${name}.json?v=earth-space-v3-20260930`);
+        const response = await fetch(`content/${name}.json?v=curved-motion-20261009`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
       }),
     );
     research = initResearch(paper, () => language);
+    motionGallery = initMotionGallery(demos, () => language);
+    navigation = await initNavigation(paper, () => language);
     $("#citation").textContent = paper.citation.bibtex;
     translate();
     updateHero();
-    await selectDemo(demos.defaultDemo);
   } catch (error) {
     const message = t(
       "Interactive content could not load. Serve this folder with a local HTTP server and reload.",
       "交互内容加载失败。请通过本地 HTTP 服务打开网页并刷新。",
     );
-    $("#video-loading").textContent = message;
     $("#page-status").textContent = message;
     console.error(error);
   }

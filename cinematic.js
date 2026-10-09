@@ -7,7 +7,7 @@ export async function initCinematic(getLanguage) {
   const heroScene = $("#hero-scene");
   const section = $(".cinematic-hero");
   const seek = $("#journey-seek");
-  let selected = 0, space, film, journeyScenes = [], chapters = [], frame = 0;
+  let rolloutMode = "direct", space, film, journeyScenes = [], chapters = [], frame = 0;
   const mediaUrl = (source) => {
     const url = new URL(source, document.baseURI);
     url.searchParams.set("v", film?.cacheVersion || "earth-to-space-v3");
@@ -95,48 +95,32 @@ export async function initCinematic(getLanguage) {
 
   function render() {
     renderNavigation();
-    if (film?.disclosure || film?.provenance || film?.provenanceEn) $("#film-provenance").textContent = t(film.disclosure || film.provenanceEn || film.provenance, film.disclosureZh || film.provenanceZh);
     if (film?.counts) $("#mosaic-counts").textContent = t(`NAVANYWHERE / ${film.counts.sources} SOURCES / ${film.counts.clips} SEQUENCES`, `NAVANYWHERE / ${film.counts.sources} 个来源 / ${film.counts.clips} 段序列`);
     if (!space?.scenes?.length) return;
-    $("#space-tabs").innerHTML = space.scenes.map((scene, i) => `<button type="button" data-scene="${i}" aria-pressed="${i === selected}" class="${i === selected ? "active" : ""}">${escape(t(scene.title, scene.titleZh))}<span>${escape(t(scene.tag || "", scene.tagZh))}</span></button>`).join("");
-    const scene = space.scenes[selected];
-    const video = scene.modelComparison || scene.video || scene.prediction;
-    const initial = scene.initial || scene.initialImage || scene.poster;
-    const imagePanel = (src, label, className = "") => `<figure class="space-frame ${className}"><img src="${escape(src)}" alt="${escape(label)}" loading="lazy"><figcaption>${escape(label)}</figcaption></figure>`;
-    const predictionLabel = t(scene.predictionLabel || "PRECOMPUTED STRESS TEST", scene.predictionLabelZh || "预计算压力测试");
-    const modelComparisonLabel = t(scene.modelComparisonLabel || "OpenNWM / NWM · fine-tuned predictions", scene.modelComparisonLabelZh || "OpenNWM / NWM · 微调后预测");
-    const mainLabel = scene.modelComparison ? modelComparisonLabel : `OpenNWM · ${predictionLabel}`;
-    const poster = scene.modelComparison ? scene.modelComparisonPoster : scene.poster || initial;
-    const main = video ? `<figure class="space-frame space-prediction${scene.modelComparison ? " space-model-comparison" : ""}"><video controls playsinline muted preload="none" src="${escape(video)}" poster="${escape(poster || initial)}" aria-label="${escape(mainLabel)}"></video><figcaption>${scene.modelComparison ? escape(modelComparisonLabel) : `OPENNWM <span>${escape(predictionLabel)}</span>`}</figcaption></figure>` : imagePanel(scene.predictionImage || scene.poster, t("OpenNWM prediction", "OpenNWM 预测"), "space-prediction");
-    const videoDetails = (src, label) => src ? `<details class="space-truth"><summary>${escape(label)}</summary><video controls playsinline muted preload="none" src="${escape(src)}" aria-label="${escape(label)}"></video></details>` : "";
-    const standalone = scene.modelComparison ? videoDetails(scene.video || scene.prediction, t("View OpenNWM prediction separately", "单独查看 OpenNWM 预测")) : "";
-    const modelAutoregressive = videoDetails(scene.arModelComparison, t(scene.arModelComparisonLabel || "OpenNWM / NWM · fine-tuned autoregressive rollouts", scene.arModelComparisonLabelZh || "OpenNWM / NWM · 微调后自回归预测"));
-    const comparison = videoDetails(scene.comparison, t(scene.comparisonLabel || "Compare reference and direct prediction", scene.comparisonLabelZh || "对照真实参考与直接预测"));
-    const autoregressive = videoDetails(scene.autoregressive, t(scene.autoregressiveLabel || "Compare reference and autoregressive prediction", scene.autoregressiveLabelZh || "对照真实参考与自回归预测"));
-    const truth = scene.groundTruth || scene.gt;
-    const referenceLabel = t("View recorded reference", "查看真实参考");
-    const reference = truth ? (/\.(mp4|webm)$/i.test(truth) ? videoDetails(truth, referenceLabel) : `<details class="space-truth"><summary>${escape(referenceLabel)}</summary><img src="${escape(truth)}" alt="${escape(referenceLabel)}" loading="lazy"></details>`) : "";
-    $("#space-stage").innerHTML = `<div class="space-observation">${imagePanel(initial, t("INITIAL OBSERVATION", "初始观测"))}${scene.trajectory ? imagePanel(scene.trajectory, t("CONDITIONING TRAJECTORY", "条件轨迹"), "space-trajectory") : ""}<div class="space-context"><span class="eyebrow">${escape(t(scene.tag || "PLANETARY ROVER", scene.tagZh))}</span><h3>${escape(t(scene.title, scene.titleZh))}</h3><p>${escape(t(scene.description || "", scene.descriptionZh))}</p></div></div><div class="space-output">${main}${modelAutoregressive}${standalone}${comparison}${autoregressive}${reference}</div>`;
-    $("#space-provenance").textContent = t(scene.provenance || space.note || "", scene.provenanceZh || space.noteZh);
-    $("#space-manifest").hidden = !scene.manifest;
-    if (scene.manifest) $("#space-manifest").href = scene.manifest;
+    const scenes = space.scenes.filter((scene) => scene.id.startsWith("lusnar-finetuned-moon-") && scene.modelComparison);
+    $("#space-tabs").innerHTML = [["direct", t("Direct prediction", "直接预测")], ["autoregressive", t("Autoregressive rollout", "自回归预测")]].map(([mode, label]) => `<button type="button" data-mode="${mode}" aria-pressed="${mode === rolloutMode}" class="${mode === rolloutMode ? "active" : ""}">${label}</button>`).join("");
+    $("#space-tabs").setAttribute("aria-label", t("Prediction mode", "预测模式"));
+    $("#space-stage").classList.add("transfer-grid");
+    $("#space-stage").innerHTML = scenes.map((scene) => {
+      const number = scene.id.split("-").at(-1);
+      const label = t(`Moon ${number}`, `月面 ${number}`);
+      const src = rolloutMode === "autoregressive" ? scene.arModelComparison : scene.modelComparison;
+      return `<article class="transfer-card"><h3>${escape(label)}</h3><video controls playsinline muted preload="none" src="${escape(src)}" poster="${escape(scene.modelComparisonPoster)}" aria-label="${escape(label + t(": reference, OpenNWM and NWM", "：真实画面、OpenNWM 与 NWM"))}"></video></article>`;
+    }).join("");
   }
   $("#space-tabs").addEventListener("click", (event) => {
-    const button = event.target.closest("[data-scene]");
+    const button = event.target.closest("[data-mode]");
     if (!button) return;
     $("#space-stage").querySelectorAll("video").forEach((video) => video.pause());
-    selected = Number(button.dataset.scene);
+    rolloutMode = button.dataset.mode;
     render();
-    $("#space-tabs").querySelector(`[data-scene="${selected}"]`)?.focus({ preventScroll: true });
+    $("#space-tabs").querySelector(`[data-mode="${rolloutMode}"]`)?.focus({ preventScroll: true });
   });
-  $("#space-stage").addEventListener("toggle", (event) => {
-    if (event.target.matches("details:not([open])")) event.target.querySelectorAll("video").forEach((video) => video.pause());
-  }, true);
   // Pause foreground media when its section is no longer visible.
   new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) $("#space-stage").querySelectorAll("video").forEach((video) => video.pause());
   }, { threshold: 0.01 }).observe($("#space-stage"));
-  const responses = await Promise.allSettled([fetch("content/cinematic.json?v=earth-space-v3-20260930", { cache: "no-cache" }), fetch("content/space.json?v=lunar-model-comparison-20261008", { cache: "no-cache" })]);
+  const responses = await Promise.allSettled([fetch("content/cinematic.json?v=earth-space-v3-20260930", { cache: "no-cache" }), fetch("content/space.json?v=curved-motion-20261009", { cache: "no-cache" })]);
   if (responses[0].status === "fulfilled" && responses[0].value.ok) {
     film = await responses[0].value.json();
     journeyScenes = (film.journeyScenes || film.journey?.scenes || []).map(normalizeScene).filter((scene) => Number.isFinite(scene.start)).sort((a, b) => a.start - b.start);
