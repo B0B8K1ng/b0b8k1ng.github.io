@@ -31,7 +31,7 @@ export async function initNavigation(paper, getLanguage) {
   const root = document.getElementById("navigation-content");
   if (!root) return { render() {} };
   const t = (en, zh) => getLanguage().startsWith("zh") ? zh : en;
-  const response = await fetch("content/navigation.json?v=curved-motion-20261009");
+  const response = await fetch("content/navigation.json?v=curved-motion-sync-20261009");
   if (!response.ok) throw new Error(`Navigation data: HTTP ${response.status}`);
   const manifest = await response.json();
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
