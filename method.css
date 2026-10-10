@@ -1,108 +1,32 @@
-/* Preserve the original paper figures, including their white background. */
+/* Keep the paper architecture figure intact and readable. */
 .method-layout.method-overview {
   display: block;
   padding-top: 0;
   border-top: 0;
 }
-
-.method-overview .method-steps {
-  display: block;
-}
-
-.method-overview .method-panel {
-  margin-top: 22px;
-}
-
 .method-paper-figure {
   min-width: 0;
   margin: 0;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: var(--surface);
 }
-
-.method-figure-caption {
-  padding: 26px 28px;
-}
-
-.method-figure-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.method-figure-heading h3 {
-  margin: 0;
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: clamp(20px, 2vw, 24px);
-  font-weight: 500;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
-}
-
-.method-full-size {
-  flex-shrink: 0;
-  color: var(--accent);
-  font-size: 13px;
-  line-height: 1.5;
-  text-decoration: none;
-}
-
-.method-full-size:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.method-figure-caption p {
-  max-width: 920px;
-  margin: 12px 0 0;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.7;
-}
-
 .method-figure-link {
   display: block;
   padding: 20px;
   background: #fff;
   cursor: zoom-in;
 }
-
 .method-figure-link img {
   display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
 }
-
 .method-figure-link:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: -5px;
 }
-
 @media (max-width: 760px) {
-  .method-overview .method-panel {
-    margin-top: 18px;
-  }
-
-  .method-figure-caption {
-    padding: 22px 20px;
-  }
-
-  .method-figure-heading {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .method-figure-caption p {
-    font-size: 14px;
-  }
-
-  .method-figure-link {
-    padding: 10px;
-  }
+  .method-figure-link { padding: 10px; }
 }
