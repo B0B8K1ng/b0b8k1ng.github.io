@@ -86,7 +86,7 @@ export async function initCinematic(getLanguage) {
     renderNavigation();
     if (film?.counts) $("#mosaic-counts").textContent = t(`NAVANYWHERE / ${film.counts.sources} SOURCES / ${film.counts.clips} SEQUENCES`, `NAVANYWHERE / ${film.counts.sources} 个来源 / ${film.counts.clips} 段序列`);
   }
-  const response = await fetch("content/cinematic.json?v=prediction-v6-20261010", { cache: "no-cache" }).catch(() => null);
+  const response = await fetch("content/cinematic.json?v=method-v7-20261010", { cache: "no-cache" }).catch(() => null);
   if (response?.ok) {
     film = await response.json();
     journeyScenes = (film.journeyScenes || film.journey?.scenes || []).map(normalizeScene).filter((scene) => Number.isFinite(scene.start)).sort((a, b) => a.start - b.start);

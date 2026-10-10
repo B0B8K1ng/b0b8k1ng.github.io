@@ -1,32 +1,53 @@
-/* Keep the paper architecture figure intact and readable. */
-.method-layout.method-overview {
-  display: block;
-  padding-top: 0;
-  border-top: 0;
-}
-.method-paper-figure {
-  min-width: 0;
-  margin: 0;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
-.method-figure-link {
-  display: block;
-  padding: 20px;
-  background: #fff;
-  cursor: zoom-in;
-}
-.method-figure-link img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-.method-figure-link:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: -5px;
-}
+/* Animate emphasis over the unchanged paper figure. */
+.method-layout.method-overview { display: block; padding-top: 0; border-top: 0; }
+.method-paper-figure { position: relative; min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
+.method-animation { --method-stage: 0; --method-play-state: paused; min-width: 0; background: var(--surface); }
+.method-animation-stage { padding: 14px; overflow: hidden; background: #fff; }
+.method-animation-artwork { position: relative; width: 100%; transform: translateX(0); }
+.method-animation-image { display: block; width: 100%; max-width: none; height: auto; }
+.method-animation-focus, .method-animation-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.method-animation-focus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.method-animation-column { position: relative; border-radius: 8px; background: #ffffff8a; transition: background .3s ease, box-shadow .3s ease; }
+.method-animation-column.is-active { background: transparent; box-shadow: inset 0 0 0 2px #8fb54470; }
+.method-animation-signals { opacity: 0; }
+.method-animation-signals.is-active { opacity: 1; }
+.method-flow-dot { fill: #69763e; stroke: #f0ffbc; stroke-width: 2; filter: drop-shadow(0 0 5px #b6ee65); animation: method-flow 1.6s ease-in-out infinite; animation-play-state: paused; }
+.method-flow-dot-lower { animation-delay: .35s; }
+.method-trainable-glow { fill: #d4f6a10d; stroke: #91ab45; stroke-width: 3; filter: drop-shadow(0 0 5px #a3ca59); animation: method-trainable 2.4s ease-in-out infinite; animation-play-state: paused; }
+.method-animation-signals.is-active .method-flow-dot, .method-animation-signals.is-active .method-trainable-glow { animation-play-state: var(--method-play-state); }
+.method-animation-controls { display: flex; align-items: center; justify-content: center; gap: 14px; min-width: 0; padding: 12px 58px 12px 14px; border-top: 1px solid var(--line); }
+.method-animation-steps { display: flex; min-width: 0; gap: 8px; }
+.method-stage-button, .method-animation-toggle, .method-original-link { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: transparent; font: 500 12px/1.3 var(--sans); cursor: pointer; text-decoration: none; }
+.method-stage-button { padding: 8px 16px; white-space: nowrap; }
+.method-stage-button[aria-pressed="true"] { color: #141811; border-color: var(--accent); background: var(--accent); }
+.method-stage-button:hover, .method-animation-toggle:hover, .method-original-link:hover { border-color: var(--accent); color: var(--ink); }
+.method-stage-button[aria-pressed="true"]:hover { color: #141811; }
+.method-animation-toggle { flex: 0 0 36px; width: 36px; padding: 8px; }
+.method-original-link { position: absolute; right: 14px; bottom: 12px; width: 36px; padding: 8px; }
+.method-animation-toggle svg, .method-original-link svg { display: block; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.method-stage-button:focus-visible, .method-animation-toggle:focus-visible, .method-original-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@keyframes method-flow { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(25px); opacity: 0; } }
+@keyframes method-trainable { 0%, 100% { opacity: .3; } 50% { opacity: .85; } }
 @media (max-width: 760px) {
-  .method-figure-link { padding: 10px; }
+  .method-animation-stage { padding: 12px 0; }
+  .method-animation-artwork { width: 300%; transform: translateX(calc(var(--method-stage) * -100% / 3)); transition: transform .55s cubic-bezier(.22, .68, .22, 1); }
+  .method-animation-column { border-radius: 0; }
+  .method-animation-column.is-active { box-shadow: none; }
+  .method-animation[data-running="false"] .method-animation-artwork { transition: none; }
+}
+@media (max-width: 480px) {
+  .method-animation-controls { flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding: 10px 12px; }
+  .method-animation-steps { flex: 1 1 100%; gap: 6px; }
+  .method-stage-button { flex: 1 1 0; min-width: 0; padding: 8px 6px; }
+  .method-animation-toggle { margin-right: 44px; }
+  .method-original-link { right: 12px; bottom: 10px; }
+}
+/* A deliberate Play click enables only this figure under reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .method-animation[data-motion="allowed"] .method-flow-dot { animation: method-flow 1.6s ease-in-out infinite !important; animation-play-state: paused !important; }
+  .method-animation[data-motion="allowed"] .method-flow-dot-lower { animation-delay: .35s !important; }
+  .method-animation[data-motion="allowed"] .method-trainable-glow { animation: method-trainable 2.4s ease-in-out infinite !important; animation-play-state: paused !important; }
+  .method-animation[data-motion="allowed"] .method-animation-signals.is-active .method-flow-dot,
+  .method-animation[data-motion="allowed"] .method-animation-signals.is-active .method-trainable-glow { animation-play-state: var(--method-play-state) !important; }
+  .method-animation[data-motion="allowed"][data-running="true"] .method-animation-artwork { transition: transform .55s cubic-bezier(.22, .68, .22, 1) !important; }
 }
