@@ -56,6 +56,7 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
 .cinematic-hero .cinematic-shade, .cinematic-hero[data-planet] .cinematic-shade {
   background: linear-gradient(180deg, #080a0c55 0%, #080a0c70 35%, #080a0c66 60%, #080a0ce0 100%);
 }
+.cinematic-hero[data-planet="wall"] .cinematic-background video { object-fit: contain; }
 .hero-center { width: 100%; max-width: none; padding: 0 32px 80px; }
 .hero-kicker { position: absolute; top: 28px; left: 32px; font: 400 10px/1.5 var(--sans); letter-spacing: 1.6px; }
 .hero-kicker .live-dot { display: none; }
@@ -73,17 +74,19 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
 .hero-film-controls .round-button { width: 32px; height: 32px; background: #0d0e104d; color: #eee; border-color: #ffffff55; }
 .journey-navigation { top: auto; bottom: 20px; width: calc(100% - 64px); max-width: none; border-top: 1px solid #ffffff2b; padding-top: 10px; }
 .journey-heading { position: absolute; right: 0; top: 17px; margin: 0; }
-.journey-caption, .journey-scene-stops, .journey-rover, .chapter-order { display: none; }
+.journey-caption, .journey-scene-stops, .chapter-order { display: none; }
 .journey-chapters { width: calc(100% - 110px); gap: 20px; }
 .journey-chapters button { flex: none; font: 400 11px/1.4 var(--sans); letter-spacing: .5px; min-height: 30px; padding: 4px 0; color: #b4b7b8; }
 .journey-chapters button.active { color: var(--accent); }
 .chapter-dot { width: 5px; height: 5px; border-color: #a4a7ac; box-shadow: none; }
 .journey-chapters button.active .chapter-dot { background: var(--accent); box-shadow: none; border-color: var(--accent); }
 .journey-time { font: 10px/1.5 var(--mono); color: #b4b7b8; }
-.journey-route { height: 20px; margin: 0; }
-.journey-rail { top: 10px; height: 1px; background: #ffffff30; }
+.journey-route { height: 29px; margin: 4px 0 0; }
+.journey-rover { display: block; top: -8px; }
+.journey-rover svg { fill: #252d22; stroke: #d8eecc; }
+.journey-rail { top: 13px; height: 1px; background: #ffffff30; }
 .journey-progress { background: var(--accent); box-shadow: none; }
-#journey-seek { height: 20px; }
+#journey-seek { height: 29px; }
 .hero-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 36px; padding-bottom: 36px; gap: 24px; border-bottom-color: var(--line); }
 .hero-stats > div { gap: 12px; }
 .hero-stats .stat-value { font-size: 36px; font-weight: 500; letter-spacing: -1px; color: var(--ink); }

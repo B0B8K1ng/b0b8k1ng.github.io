@@ -16,17 +16,16 @@
       property="og:description"
       content="Latent action pretraining. Real-world imagination. Explore navigation predictions and the diversity of NavAnywhere."
     />
-    <meta property="og:image" content="assets/hero/journey-poster.webp?v=wall-earth-moon-mars-v4" />
+    <meta property="og:image" content="assets/hero/journey-poster.webp?v=wall-moon-mars-v5" />
     <meta property="og:type" content="website" />
     <title>OpenNWM — A Generalist Navigation World Model</title>
-    <link rel="icon" type="image/svg+xml" href="assets/mark.svg?v=navigation-v5-20261010" />
-    <link rel="stylesheet" href="style.css?v=navigation-v5-20261010" />
-    <link rel="stylesheet" href="method.css?v=navigation-v5-20261010" />
-    <link rel="stylesheet" href="motion-gallery.css?v=navigation-v5-20261010" />
-    <link rel="stylesheet" href="navigation.css?v=navigation-v5-20261010" />
-    <link rel="stylesheet" href="space-trajectory.css?v=navigation-v5-20261010" />
-    <link rel="stylesheet" href="reference-theme.css?v=navigation-v5-20261010" />
-    <script src="app.js?v=navigation-v5-20261010" type="module"></script>
+    <link rel="icon" type="image/svg+xml" href="assets/mark.svg?v=prediction-v6-20261010" />
+    <link rel="stylesheet" href="style.css?v=prediction-v6-20261010" />
+    <link rel="stylesheet" href="method.css?v=prediction-v6-20261010" />
+    <link rel="stylesheet" href="motion-gallery.css?v=prediction-v6-20261010" />
+    <link rel="stylesheet" href="navigation.css?v=prediction-v6-20261010" />
+    <link rel="stylesheet" href="reference-theme.css?v=prediction-v6-20261010" />
+    <script src="app.js?v=prediction-v6-20261010" type="module"></script>
   </head>
   <body>
     <svg class="svg-definitions" aria-hidden="true">
@@ -58,7 +57,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a href="#" class="brand" aria-label="OpenNWM home"
-        ><img src="assets/mark.svg?v=navigation-v5-20261010" alt="" width="28" height="28" />OpenNWM<span
+        ><img src="assets/mark.svg?v=prediction-v6-20261010" alt="" width="28" height="28" />OpenNWM<span
           class="brand-dot"
           >.</span
         ></a
@@ -69,7 +68,6 @@
         <a href="#navigation" data-en="Navigation" data-zh="导航">Navigation</a>
         <a href="#results" data-en="Results" data-zh="指标结果">Results</a>
         <a href="#playground" data-en="Demo" data-zh="Demo">Demo</a>
-        <a href="#space" data-en="Beyond Earth" data-zh="迁移到新环境">Beyond Earth</a>
         <a href="#dataset" data-en="Dataset" data-zh="数据集">Dataset</a>
       </nav>
       <div class="header-actions">
@@ -99,20 +97,19 @@
     </header>
 
     <main id="main">
-      <section class="hero cinematic-hero" id="opening-film" aria-labelledby="hero-title">
+      <section class="hero cinematic-hero" id="opening-film" data-planet="wall" aria-labelledby="hero-title">
         <div class="cinematic-background" aria-hidden="true">
-          <video id="hero-video" muted loop playsinline preload="metadata" poster="assets/hero/journey-poster.webp?v=wall-earth-moon-mars-v4"></video>
+          <video id="hero-video" muted loop playsinline preload="metadata" poster="assets/hero/journey-poster.webp?v=wall-moon-mars-v5"></video>
           <div class="cinematic-shade"></div>
         </div>
         <nav class="journey-navigation" aria-label="Opening film navigation">
-          <div class="journey-heading"><span class="journey-caption" data-en="ONE JOURNEY. MANY WORLDS." data-zh="一段旅程，万千世界。">ONE JOURNEY. MANY WORLDS.</span><span id="journey-time" class="journey-time">00:00 / 01:00</span></div>
+          <div class="journey-heading"><span class="journey-caption" data-en="ONE JOURNEY. MANY WORLDS." data-zh="一段旅程，万千世界。">ONE JOURNEY. MANY WORLDS.</span><span id="journey-time" class="journey-time">00:00 / 00:25</span></div>
           <div class="journey-chapters" id="journey-chapters"></div>
           <div class="journey-route" id="journey-route">
             <div class="journey-rail" aria-hidden="true"><span class="journey-progress" id="journey-progress"></span><div id="journey-stops"></div></div>
             <span class="journey-rover" id="journey-rover" aria-hidden="true"><svg viewBox="0 0 32 24"><path d="M9 16h15l-2-8H11l-2 8Z"/><path d="M15 8V4h5M6 16h22M6 16v3M27 16v3"/><circle cx="8" cy="20" r="2.3"/><circle cx="24" cy="20" r="2.3"/><path d="M13 12h2m3 0h2"/></svg></span>
-            <input id="journey-seek" type="range" min="0" max="60" step="0.05" value="0" aria-label="Seek through the video wall, Earth, Moon and Mars">
+            <input id="journey-seek" type="range" min="0" max="25.25" step="0.05" value="0" aria-label="Seek through the video wall, Moon and Mars">
           </div>
-          <div class="journey-scene-stops" id="journey-scene-stops" aria-label="Earth scenes"></div>
         </nav>
         <div class="hero-center section-shell">
           <span class="hero-kicker"><i class="live-dot"></i><span data-en="A GENERALIST NAVIGATION WORLD MODEL" data-zh="通用导航世界模型">A GENERALIST NAVIGATION WORLD MODEL</span></span>
@@ -151,24 +148,20 @@
             >
             <h2
               id="method-title"
-              data-en="From seeing motion&#10;to understanding it."
-              data-zh="从看见运动，&#10;到理解运动。"
+              data-en="Learn actions.&#10;Predict futures."
+              data-zh="学习动作，&#10;预测未来。"
             >
-              From seeing motion<br />to understanding it.
+              Learn actions.<br />Predict futures.
             </h2>
           </div>
           <p
-            data-en="A shared latent-action space connects broad visual experience with executable navigation actions."
-            data-zh="共享潜在动作空间，将广泛的视觉经验与可执行的导航动作相连接。"
+            data-en="OpenNWM learns latent actions from video to pretrain a world model, then aligns it with physical controls for prediction and navigation."
+            data-zh="OpenNWM 从视频中学习潜在动作，预训练世界模型，再用物理动作对齐，实现未来预测与导航规划。"
           >
-            A shared latent-action space connects broad visual experience with
-            executable navigation actions.
+            OpenNWM learns latent actions from video to pretrain a world model, then aligns it with physical controls for prediction and navigation.
           </p>
         </div>
-        <div class="method-layout">
-          <div class="method-steps" id="method-steps" role="list" aria-label="How OpenNWM works"></div>
-          <div class="method-panel" id="method-panel"></div>
-        </div>
+        <div class="method-layout method-overview" id="method-overview"></div>
       </section>
 
       <section
@@ -180,9 +173,9 @@
           <div>
             <span
               class="eyebrow section-number"
-              data-en="02 / IN MOTION"
-              data-zh="02 / 效果演示"
-              >02 / IN MOTION</span
+              data-en="02 / PREDICTION"
+              data-zh="02 / 视觉预测"
+              >02 / PREDICTION</span
             >
             <h2
               id="motion-title"
@@ -193,10 +186,10 @@
             </h2>
           </div>
           <p
-            data-en="Action-conditioned predictions across indoor and outdoor environments."
-            data-zh="对照室内外多种环境中，由动作驱动的未来预测。"
+            data-en="Future views along a given path, on Earth and the Moon."
+            data-zh="沿着给定轨迹，预测地球与月面环境中的未来画面。"
           >
-            Action-conditioned predictions across indoor and outdoor environments.
+            Future views along a given path, on Earth and the Moon.
           </p>
         </div>
         <div id="motion-gallery" class="motion-gallery"></div>
@@ -296,18 +289,6 @@
         <div class="playground-actions"><div><p id="playground-status" role="status" aria-live="polite"></p><p id="playground-service-note" class="media-provenance"></p></div><div class="generation-actions"><button class="button button-outline" type="button" id="play-preset"><svg><use href="#play"/></svg><span data-en="Play preset" data-zh="播放预设">Play preset</span></button><button class="button button-dark" type="button" id="generate-path" disabled><span data-en="Generate my path" data-zh="生成我的路线">Generate my path</span><svg><use href="#arrow"/></svg></button></div></div>
       </section>
 
-      <section class="space-section section-space" id="space" aria-labelledby="space-title">
-        <div class="section-shell">
-          <div class="section-heading reveal">
-            <div><span class="eyebrow section-number" data-en="06 / BEYOND EARTH" data-zh="06 / 走向太空">06 / BEYOND EARTH</span><h2 id="space-title" data-en="New worlds.&#10;A little fine-tuning." data-zh="少量微调，&#10;迁移到未见环境。">New worlds.<br>A little fine-tuning.</h2></div>
-            <p data-en="From Earth to unseen simulated lunar scenes: adapt OpenNWM with just 30 training windows and 1,000 updates." data-zh="仅用 30 个训练窗口、1,000 步微调，让 OpenNWM 从地球环境迁移到未见过的仿真月面。">From Earth to unseen simulated lunar scenes: adapt OpenNWM with just 30 training windows and 1,000 updates.</p>
-          </div>
-          <div class="transfer-facts"><span data-en="30 training windows" data-zh="30 个训练窗口">30 training windows</span><span data-en="1,000 fine-tuning steps" data-zh="1,000 步微调">1,000 fine-tuning steps</span><span data-en="3 held-out simulated scenes" data-zh="3 个未见月面场景">3 held-out simulated scenes</span></div>
-          <div id="space-tabs" class="scene-pills" role="group" aria-label="Planetary scenes"></div>
-          <div class="space-stage" id="space-stage"><p data-en="Loading planetary examples…" data-zh="正在加载行星场景…">Loading planetary examples…</p></div>
-        </div>
-      </section>
-
       <section
         class="dataset-section section-space"
         id="dataset"
@@ -318,9 +299,9 @@
             <div>
               <span
                 class="eyebrow section-number"
-                data-en="07 / NAVANYWHERE"
-                data-zh="07 / NAVANYWHERE 数据集"
-                >07 / NAVANYWHERE</span
+                data-en="06 / NAVANYWHERE"
+                data-zh="06 / NAVANYWHERE 数据集"
+                >06 / NAVANYWHERE</span
               >
               <h2
                 id="dataset-title"
@@ -520,7 +501,7 @@
     </main>
     <footer class="site-footer section-shell">
       <a class="brand" href="#"
-        ><img src="assets/mark.svg?v=navigation-v5-20261010" alt="" width="24" height="24" />OpenNWM<span
+        ><img src="assets/mark.svg?v=prediction-v6-20261010" alt="" width="24" height="24" />OpenNWM<span
           class="brand-dot"
           >.</span
         ></a

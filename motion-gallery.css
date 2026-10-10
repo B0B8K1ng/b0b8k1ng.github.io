@@ -10,6 +10,17 @@
 .motion-card { min-width: 0; padding: 12px; border: 1px solid var(--line,#303638); border-radius: 12px; background: var(--surface,#161a1c); }
 .motion-card-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .motion-card-heading h3 { margin: 0; color: var(--ink,#eee); font: 600 15px/1.35 var(--sans,Arial,Helvetica,sans-serif); letter-spacing: 0; }
+.motion-card-title { min-width: 0; }
+.motion-card-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 9px; }
+.motion-adaptation-label { display: block; margin-top: 3px; color: #b4b8bf; font: 500 11px/1.4 var(--sans,Arial,Helvetica,sans-serif); }
+.motion-moon-mark { width: 19px; height: 19px; fill: #b9bdc5; stroke: #d4d6da; stroke-width: 1; }
+.motion-card-lunar { --accent: #d5d8df; --line: #555b65; border-color: #626974; background: #20232a; }
+.motion-card-lunar .motion-trajectory { background: #1a1d23; }
+.motion-card-lunar .motion-path-grid { stroke: #353942; }
+.motion-card-lunar .motion-path-full { stroke: #737a87; }
+.motion-card-lunar .motion-path-start { fill: #1a1d23; stroke: #adb3bf; }
+.motion-card-lunar .motion-path-cursor { stroke: #1a1d23; }
+.motion-card-lunar .motion-card-toggle:hover { background: #30343e; }
 .motion-card-toggle { flex: 0 0 36px; width: 36px; height: 36px; display: grid; place-items: center; padding: 9px; border-radius: 50%; }
 .motion-card-toggle[aria-pressed="true"] { color: var(--accent,#b6ee65); }
 .motion-card-toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; }

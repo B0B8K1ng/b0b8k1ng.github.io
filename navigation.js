@@ -181,7 +181,7 @@ export async function initNavigation(paper, getLanguage) {
     observer?.disconnect();
     visible.clear();
     root.querySelectorAll("video").forEach((video) => video.pause());
-    root.innerHTML = `<div class="navigation-gallery-heading"><span>${t("Selected offline local plans", "精选离线局部规划")}</span><div class="navigation-legend"><span><i class="navigation-legend-plan"></i>OpenNWM</span><span><i class="navigation-legend-reference"></i>${t("Recorded path", "参考轨迹")}</span></div><button class="navigation-play-toggle" type="button"></button></div>
+    root.innerHTML = `<div class="navigation-gallery-heading"><span>${t("Selected offline local plans", "精选离线局部规划")}</span><div class="navigation-legend"><span><i class="navigation-legend-plan"></i>OpenNWM</span><span><i class="navigation-legend-reference"></i>${t("Reference path", "参考轨迹")}</span></div><button class="navigation-play-toggle" type="button"></button></div>
       <div class="navigation-examples">${manifest.samples
         .map(
           (

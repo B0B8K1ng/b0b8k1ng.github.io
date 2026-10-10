@@ -11,7 +11,7 @@ function projectTrajectory(positions) {
   return points.map(([x, y]) => [66 + (x - (minX + maxX) / 2) * scale, 112 + (y - (minY + maxY) / 2) * scale]);
 }
 
-/** Synchronized GT/OpenNWM wipe comparisons with their recorded input paths. */
+/** Synchronized GT/OpenNWM wipe comparisons with their given input paths. */
 export function initMotionGallery(demos, getLanguage) {
   const root = document.querySelector("#motion-gallery");
   if (!root) return { render() {} };
@@ -142,10 +142,11 @@ export function initMotionGallery(demos, getLanguage) {
     if (!Array.isArray(positions) || positions.length !== demo.frameCount) continue;
     const points = projectTrajectory(positions);
     const card = document.createElement("article");
-    card.className = "motion-card";
+    card.className = `motion-card${demo.environment === "lunar" ? " motion-card-lunar" : ""}`;
     card.dataset.demo = demo.id;
     const video = (key) => `<video data-model="${key}" muted playsinline preload="none" width="${Number(demo.width) || 224}" height="${Number(demo.height) || 224}" data-source="${escape(demo[key])}" poster="${escape(demo[`${key}Poster`] || demo.poster)}"></video>`;
-    card.innerHTML = `<header class="motion-card-heading"><h3 id="motion-title-${escape(demo.id)}"></h3><button type="button" class="motion-card-toggle"></button></header><div class="motion-card-media"><div class="motion-comparison" style="--wipe:50%"><div class="motion-video-layer motion-prediction-layer">${video("prediction")}<span class="motion-video-label motion-label-prediction">OpenNWM</span></div><div class="motion-video-layer motion-truth-layer">${video("gt")}<span class="motion-video-label motion-label-gt"></span></div><div class="motion-wipe-handle" aria-hidden="true"><span>‹ ›</span></div><input class="motion-wipe-input" type="range" min="0" max="100" step="1" value="50"></div><figure class="motion-trajectory"><svg viewBox="0 0 132 224" role="img"><path class="motion-path-grid" d="M22 0v224M44 0v224M66 0v224M88 0v224M110 0v224M0 28h132M0 56h132M0 84h132M0 112h132M0 140h132M0 168h132M0 196h132"/><polyline class="motion-path-full" points="${points.map((point) => point.join(",")).join(" ")}"/><polyline class="motion-path-progress"/><circle class="motion-path-start" cx="${points[0][0]}" cy="${points[0][1]}" r="4"/><circle class="motion-path-cursor" r="5"/></svg><figcaption></figcaption></figure></div>`;
+    const lunarMark = demo.environment === "lunar" ? '<svg class="motion-moon-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.3A8.8 8.8 0 0 1 9.7 3.5a8.8 8.8 0 1 0 10.8 10.8Z"/></svg>' : "";
+    card.innerHTML = `<header class="motion-card-heading"><div class="motion-card-title"><h3 id="motion-title-${escape(demo.id)}"></h3>${demo.fineTuned ? '<span class="motion-adaptation-label"></span>' : ""}</div><div class="motion-card-actions"><button type="button" class="motion-card-toggle"></button>${lunarMark}</div></header><div class="motion-card-media"><div class="motion-comparison" style="--wipe:50%"><div class="motion-video-layer motion-prediction-layer">${video("prediction")}<span class="motion-video-label motion-label-prediction">OpenNWM</span></div><div class="motion-video-layer motion-truth-layer">${video("gt")}<span class="motion-video-label motion-label-gt"></span></div><div class="motion-wipe-handle" aria-hidden="true"><span>‹ ›</span></div><input class="motion-wipe-input" type="range" min="0" max="100" step="1" value="50"></div><figure class="motion-trajectory"><svg viewBox="0 0 132 224" role="img"><path class="motion-path-grid" d="M22 0v224M44 0v224M66 0v224M88 0v224M110 0v224M0 28h132M0 56h132M0 84h132M0 112h132M0 140h132M0 168h132M0 196h132"/><polyline class="motion-path-full" points="${points.map((point) => point.join(",")).join(" ")}"/><polyline class="motion-path-progress"/><circle class="motion-path-start" cx="${points[0][0]}" cy="${points[0][1]}" r="4"/><circle class="motion-path-cursor" r="5"/></svg><figcaption></figcaption></figure></div>`;
     card.setAttribute("aria-labelledby", `motion-title-${demo.id}`);
     grid.append(card);
     const leader = card.querySelector('[data-model="gt"]');
@@ -206,8 +207,10 @@ export function initMotionGallery(demos, getLanguage) {
       const title = t(item.demo.title, item.demo.titleZh);
       item.card.querySelector("h3").textContent = title;
       item.card.querySelector(".motion-label-gt").textContent = t("Ground truth", "真实画面");
-      item.card.querySelector("figcaption").textContent = t("Recorded path", "真实轨迹");
-      item.card.querySelector(".motion-trajectory svg").setAttribute("aria-label", t(`Recorded conditioning path for ${title}. The dot follows the current video frame.`, `${title}的真实条件轨迹，圆点对应当前视频帧。`));
+      item.card.querySelector("figcaption").textContent = t("Given path", "给定轨迹");
+      item.card.querySelector(".motion-trajectory svg").setAttribute("aria-label", t(`Given path for ${title}. The dot follows the current video frame.`, `${title}的给定轨迹，圆点对应当前视频帧。`));
+      const adaptation = item.card.querySelector(".motion-adaptation-label");
+      if (adaptation) adaptation.textContent = t("Lightly fine-tuned", "少量微调");
       item.slider.setAttribute("aria-label", t(`Compare Ground truth and OpenNWM: ${title}`, `滑动对比真实画面与 OpenNWM：${title}`));
       item.videos.forEach((element) => element.setAttribute("aria-label", `${title} · ${element.dataset.model === "gt" ? t("Ground truth", "真实画面") : "OpenNWM"}`));
       updateWipe(item);
