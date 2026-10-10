@@ -19,14 +19,14 @@
     <meta property="og:image" content="assets/hero/journey-poster.webp?v=wall-earth-moon-mars-v4" />
     <meta property="og:type" content="website" />
     <title>OpenNWM — A Generalist Navigation World Model</title>
-    <link rel="icon" type="image/svg+xml" href="assets/mark.svg?v=structure-v4-20261010" />
-    <link rel="stylesheet" href="style.css?v=structure-v4-20261010" />
-    <link rel="stylesheet" href="method.css?v=structure-v4-20261010" />
-    <link rel="stylesheet" href="motion-gallery.css?v=structure-v4-20261010" />
-    <link rel="stylesheet" href="navigation.css?v=structure-v4-20261010" />
-    <link rel="stylesheet" href="space-trajectory.css?v=structure-v4-20261010" />
-    <link rel="stylesheet" href="reference-theme.css?v=structure-v4-20261010" />
-    <script src="app.js?v=structure-v4-20261010" type="module"></script>
+    <link rel="icon" type="image/svg+xml" href="assets/mark.svg?v=navigation-v5-20261010" />
+    <link rel="stylesheet" href="style.css?v=navigation-v5-20261010" />
+    <link rel="stylesheet" href="method.css?v=navigation-v5-20261010" />
+    <link rel="stylesheet" href="motion-gallery.css?v=navigation-v5-20261010" />
+    <link rel="stylesheet" href="navigation.css?v=navigation-v5-20261010" />
+    <link rel="stylesheet" href="space-trajectory.css?v=navigation-v5-20261010" />
+    <link rel="stylesheet" href="reference-theme.css?v=navigation-v5-20261010" />
+    <script src="app.js?v=navigation-v5-20261010" type="module"></script>
   </head>
   <body>
     <svg class="svg-definitions" aria-hidden="true">
@@ -58,7 +58,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a href="#" class="brand" aria-label="OpenNWM home"
-        ><img src="assets/mark.svg?v=structure-v4-20261010" alt="" width="28" height="28" />OpenNWM<span
+        ><img src="assets/mark.svg?v=navigation-v5-20261010" alt="" width="28" height="28" />OpenNWM<span
           class="brand-dot"
           >.</span
         ></a
@@ -68,7 +68,7 @@
         <a href="#in-motion" data-en="Prediction" data-zh="视觉预测">Prediction</a>
         <a href="#navigation" data-en="Navigation" data-zh="导航">Navigation</a>
         <a href="#results" data-en="Results" data-zh="指标结果">Results</a>
-        <a href="#playground" data-en="Demo" data-zh="交互体验">Demo</a>
+        <a href="#playground" data-en="Demo" data-zh="Demo">Demo</a>
         <a href="#space" data-en="Beyond Earth" data-zh="迁移到新环境">Beyond Earth</a>
         <a href="#dataset" data-en="Dataset" data-zh="数据集">Dataset</a>
       </nav>
@@ -134,7 +134,6 @@
         <div><span class="stat-value">17.5<span>M</span></span><span class="stat-label" data-en="visual observations" data-zh="视觉观测">visual observations</span></div>
         <div><span class="stat-value">15</span><span class="stat-label" data-en="heterogeneous sources" data-zh="异构数据来源">heterogeneous sources</span></div>
         <div><span class="stat-value">70.8<span>K</span></span><span class="stat-label" data-en="navigation sequences" data-zh="导航序列">navigation sequences</span></div>
-        <div><span class="stat-value">280<span>M</span></span><span class="stat-label" data-en="world model parameters" data-zh="世界模型参数">world model parameters</span></div>
       </div>
 
       <section
@@ -238,33 +237,12 @@
             </p>
           </div>
           <div class="results-layout">
-            <div class="result-highlights">
-              <div>
-                <span class="result-improvement">−9.1<span>%</span></span>
-                <p data-en="LPIPS, in-domain" data-zh="域内 LPIPS">
-                  LPIPS, in-domain
-                </p>
-              </div>
-              <div>
-                <span class="result-improvement">−13.7<span>%</span></span>
-                <p data-en="DreamSim, in-domain" data-zh="域内 DreamSim">
-                  DreamSim, in-domain
-                </p>
-              </div>
-              <span
-                class="result-note"
-                data-en="Relative to the strongest baseline for each metric. Lower is better."
-                data-zh="相对各指标的最强基线，数值越低越好。"
-                >Relative to the strongest baseline for each metric. Lower is
-                better.</span
-              >
-            </div>
             <div class="chart-panel">
               <div class="chart-header">
                 <span
-                  data-en="Visual prediction benchmark"
-                  data-zh="视觉预测基准"
-                  >Visual prediction benchmark</span
+                  data-en="Visual prediction"
+                  data-zh="视觉预测"
+                  >Visual prediction</span
                 ><select id="result-domain" aria-label="Benchmark domain">
                   <option value="id">In-domain</option>
                   <option value="ood">Out-of-domain</option>
@@ -292,21 +270,14 @@
                 ><span id="chart-direction" class="mono"></span>
               </div>
             </div>
+            <div id="navigation-benchmarks"></div>
           </div>
-          <p
-            class="results-source"
-            data-en="Prediction benchmarks · Paper, Table 1."
-            data-zh="预测基准 · 论文表 1。"
-          >
-            Prediction benchmarks · Paper, Table 1.
-          </p>
-          <div id="navigation-benchmarks"></div>
         </div>
       </section>
 
       <section class="playground-section section-shell section-space" id="playground" aria-labelledby="playground-title">
         <div class="section-heading reveal">
-          <div><span class="eyebrow section-number" data-en="05 / THE IMAGINATION LAB" data-zh="05 / 交互体验">05 / THE IMAGINATION LAB</span><h2 id="playground-title" data-en="Your path.&#10;An imagined future." data-zh="画出你的轨迹，&#10;看见想象的未来。">Your path.<br>An imagined future.</h2></div>
+          <div><span class="eyebrow section-number" data-en="05 / Demo" data-zh="05 / Demo">05 / Demo</span><h2 id="playground-title" data-en="Your path.&#10;An imagined future." data-zh="画出你的轨迹，&#10;看见想象的未来。">Your path.<br>An imagined future.</h2></div>
           <p data-en="Choose a scene and a path. Let OpenNWM imagine the view ahead." data-zh="选择场景与路线，看看 OpenNWM 预测的前方视野。">Choose a scene and a path. Let OpenNWM imagine the view ahead.</p>
         </div>
         <div class="playground-topbar"><div id="playground-scenes" class="scene-pills" role="group" aria-label="Choose a starting scene"></div><div class="service-connection"><span id="service-status" class="service-status" role="status">Checking live service…</span><button id="service-retry" type="button" data-en="Reconnect" data-zh="重新连接" hidden>Reconnect</button></div></div>
@@ -549,7 +520,7 @@
     </main>
     <footer class="site-footer section-shell">
       <a class="brand" href="#"
-        ><img src="assets/mark.svg?v=structure-v4-20261010" alt="" width="24" height="24" />OpenNWM<span
+        ><img src="assets/mark.svg?v=navigation-v5-20261010" alt="" width="24" height="24" />OpenNWM<span
           class="brand-dot"
           >.</span
         ></a

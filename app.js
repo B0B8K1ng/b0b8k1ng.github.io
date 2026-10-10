@@ -1,8 +1,8 @@
-import { initResearch } from "./research.js?v=structure-v4-20261010";
-import { initMotionGallery } from "./motion-gallery.js?v=structure-v4-20261010";
-import { initNavigation } from "./navigation.js?v=structure-v4-20261010";
-import { initCinematic } from "./cinematic.js?v=structure-v4-20261010";
-import { initPlayground } from "./playground.js?v=structure-v4-20261010";
+import { initResearch } from "./research.js?v=navigation-v5-20261010";
+import { initMotionGallery } from "./motion-gallery.js?v=navigation-v5-20261010";
+import { initNavigation } from "./navigation.js?v=navigation-v5-20261010";
+import { initCinematic } from "./cinematic.js?v=navigation-v5-20261010";
+import { initPlayground } from "./playground.js?v=navigation-v5-20261010";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -468,7 +468,7 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const response = await fetch(`content/${name}.json?v=structure-v4-20261010`);
+        const response = await fetch(`content/${name}.json?v=navigation-v5-20261010`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
       }),
