@@ -1,8 +1,8 @@
-import { initResearch } from "./research.js?v=method-v7-20261010";
-import { initMotionGallery } from "./motion-gallery.js?v=method-v7-20261010";
-import { initNavigation } from "./navigation.js?v=method-v7-20261010";
-import { initCinematic } from "./cinematic.js?v=method-v7-20261010";
-import { initPlayground } from "./playground.js?v=method-v7-20261010";
+import { initResearch } from "./research.js?v=main-figure-v8-20261010";
+import { initMotionGallery } from "./motion-gallery.js?v=main-figure-v8-20261010";
+import { initNavigation } from "./navigation.js?v=main-figure-v8-20261010";
+import { initCinematic } from "./cinematic.js?v=main-figure-v8-20261010";
+import { initPlayground } from "./playground.js?v=main-figure-v8-20261010";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -468,7 +468,7 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const response = await fetch(`content/${name}.json?v=method-v7-20261010`);
+        const response = await fetch(`content/${name}.json?v=main-figure-v8-20261010`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
       }),
