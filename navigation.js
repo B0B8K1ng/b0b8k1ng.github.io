@@ -29,6 +29,7 @@ function trajectoryGraphic(sample, t) {
 
 export async function initNavigation(paper, getLanguage) {
   const root = document.getElementById("navigation-content");
+  const benchmarks = document.getElementById("navigation-benchmarks");
   if (!root) return { render() {} };
   const t = (en, zh) => getLanguage().startsWith("zh") ? zh : en;
   const response = await fetch("content/navigation.json?v=curved-motion-sync2-20261009");
@@ -76,8 +77,9 @@ export async function initNavigation(paper, getLanguage) {
           <figure><video src="${sample.video}" poster="${sample.poster}" width="224" height="224" preload="none" muted loop playsinline aria-label="${escapeHTML(t(`${sample.title.en}: OpenNWM imagined local plan`, `${sample.title.zh}：OpenNWM 规划预测`))}"></video><figcaption>OpenNWM</figcaption></figure>
           <figure><img src="${sample.goal}" loading="lazy" width="224" height="224" alt="${escapeHTML(t(`${sample.title.en}: goal image`, `${sample.title.zh}：目标图像`))}"><figcaption>${t("Goal", "目标")}</figcaption></figure>
         </div>
-        <div class="navigation-path-row">${trajectoryGraphic(sample, t)}<span>${t("Goal error", "终点误差")}<strong>${sample.goal_error_m.toFixed(2)} m</strong></span></div>
-      </article>`).join("")}</div>${benchmarkCards()}`;
+        <div class="navigation-path-row">${trajectoryGraphic(sample, t)}</div>
+      </article>`).join("")}</div>`;
+    if (benchmarks) benchmarks.innerHTML = benchmarkCards();
     root.querySelector(".navigation-play-toggle").addEventListener("click", () => { paused = !paused; updatePlayback(); });
     observer = new IntersectionObserver((entries) => {
       entries.forEach(({ target, isIntersecting }) => isIntersecting ? visible.add(target) : visible.delete(target));
