@@ -1,8 +1,8 @@
-import { initResearch } from "./research.js?v=curved-motion-sync2-20261009";
-import { initMotionGallery } from "./motion-gallery.js?v=curved-motion-sync2-20261009";
-import { initNavigation } from "./navigation.js?v=curved-motion-sync2-20261009";
-import { initCinematic } from "./cinematic.js?v=curved-motion-sync2-20261009";
-import { initPlayground } from "./playground.js?v=curved-motion-sync2-20261009";
+import { initResearch } from "./research.js?v=reference-dark-20261010";
+import { initMotionGallery } from "./motion-gallery.js?v=reference-dark-20261010";
+import { initNavigation } from "./navigation.js?v=reference-dark-20261010";
+import { initCinematic } from "./cinematic.js?v=reference-dark-20261010";
+import { initPlayground } from "./playground.js?v=reference-dark-20261010";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -410,7 +410,7 @@ const sceneLabels = [
   "公园与花园",
   "自然与越野",
 ];
-const swatches = ["#b5c4a0", "#315c45", "#618061", "#8eac7b", "#c7d7a6"];
+const swatches = ["#b6ee65", "#91b96a", "#6f8b63", "#d4e6be", "#a4a7ac"];
 function renderDistribution() {
   const categories = paper.datasets.navanywhere.scene_categories;
   $("#distribution-value").textContent = t("5 SCENE TYPES", "5 类环境");
@@ -468,7 +468,7 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const response = await fetch(`content/${name}.json?v=curved-motion-sync2-20261009`);
+        const response = await fetch(`content/${name}.json?v=reference-dark-20261010`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
       }),
