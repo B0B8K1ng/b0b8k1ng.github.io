@@ -84,7 +84,7 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
 .journey-rail { top: 10px; height: 1px; background: #ffffff30; }
 .journey-progress { background: var(--accent); box-shadow: none; }
 #journey-seek { height: 20px; }
-.hero-stats { padding-top: 36px; padding-bottom: 36px; gap: 24px; border-bottom-color: var(--line); }
+.hero-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 36px; padding-bottom: 36px; gap: 24px; border-bottom-color: var(--line); }
 .hero-stats > div { gap: 12px; }
 .hero-stats .stat-value { font-size: 36px; font-weight: 500; letter-spacing: -1px; color: var(--ink); }
 .hero-stats .stat-value > span { font-size: 22px; color: var(--ink); }
@@ -117,7 +117,8 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
 .dataset-footer { border-color: var(--line); }
 .dataset-footer .text-link { font-size: 13px; }
 .results-section h2 { color: #d4e6be; }
-.results-layout { gap: 64px; margin-top: 40px; }
+.results-layout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 40px; align-items: start; }
+.results-layout #navigation-benchmarks { margin-top: 0; }
 .result-highlights > div { border-color: var(--line); }
 .result-improvement { font-size: 64px; font-weight: 500; letter-spacing: -2px; }
 .result-highlights p { font-size: 14px; color: var(--ink); }
@@ -200,7 +201,7 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
   .header-paper { display: none; }
   .hero-stats .stat-value { font-size: 30px; }
   .hero-stats .stat-label { font-size: 11px; }
-  .results-layout { gap: 32px; }
+  .results-layout { grid-template-columns: 1fr; gap: 24px; }
   .closing-section { gap: 32px; }
 }
 @media (max-width: 800px) {

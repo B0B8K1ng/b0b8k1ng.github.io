@@ -17,7 +17,15 @@ export function initResearch(paper, getLanguage) {
   const rows = paper.results.direct_prediction.rows;
   const state = { domain: "id", idMetric: "lpips" };
   const t = (en, zh) => (getLanguage().startsWith("zh") ? zh : en);
-  function methodFigure({ figure, title, description, file, width, height, alt }) {
+  function methodFigure({
+    figure,
+    title,
+    description,
+    file,
+    width,
+    height,
+    alt,
+  }) {
     const fullSize = t("View full size ↗", "查看原图 ↗");
     const linkLabel = t(
       `Open paper Figure ${figure} at full resolution in a new tab`,
@@ -57,7 +65,10 @@ export function initResearch(paper, getLanguage) {
     panel.removeAttribute("tabindex");
     panel.innerHTML = methodFigure({
       figure: 3,
-      title: t("From latent actions to physical controls", "从潜在动作到物理控制"),
+      title: t(
+        "From latent actions to physical controls",
+        "从潜在动作到物理控制",
+      ),
       description: t(
         "After latent-action pretraining, the world model is frozen while a physical-action encoder warms up. Joint post-training then aligns both on action-labeled videos, enabling navigation planning through predicted futures.",
         "完成潜在动作预训练后，先冻结世界模型，预热物理动作编码器；再用带动作标注的视频联合训练两者，实现基于未来预测的导航规划。",
@@ -125,18 +136,11 @@ export function initResearch(paper, getLanguage) {
         const value = row[key];
         const model = row.id === "nwm-xl-ego4d" ? "NWM†" : row.model;
         const number = value.toFixed(3);
-        const accessible = `${model}, ${row.parameters_millions}M ${t("parameters", "参数")}: ${metricName} ${number}${higher ? " dB" : ""}${value === best ? t(", best reported", "，本表最优") : ""}`;
-        return `<div class="chart-row${row.id === "opennwm" ? " ours" : ""}" role="listitem" aria-label="${escapeHTML(accessible)}"><span class="chart-model-label" aria-hidden="true">${escapeHTML(model)}<small>${row.parameters_millions.toLocaleString("en-US")}M ${t("params", "参数")}</small></span><div class="chart-track" aria-hidden="true"><div class="chart-bar" style="--value:${(value / axisMaximum) * 100}%"></div></div><span class="chart-number" aria-hidden="true">${number}</span></div>`;
+        const accessible = `${model}: ${metricName} ${number}${higher ? " dB" : ""}${value === best ? t(", best reported", "，已报告最优") : ""}`;
+        return `<div class="chart-row${row.id === "opennwm" ? " ours" : ""}" role="listitem" aria-label="${escapeHTML(accessible)}"><span class="chart-model-label" aria-hidden="true">${escapeHTML(model)}</span><div class="chart-track" aria-hidden="true"><div class="chart-bar" style="--value:${(value / axisMaximum) * 100}%"></div></div><span class="chart-number" aria-hidden="true">${number}</span></div>`;
       })
       .join("");
-    const split = isID
-      ? t(
-          "ID average: RECON, SCAND, HuRoN, TartanDrive.",
-          "域内平均：RECON、SCAND、HuRoN、TartanDrive。",
-        )
-      : `${label}.`;
-    element("chart-footnote").textContent =
-      `${split} ${t("Direct prediction at 4 s · Table 1. NWM†: CDiT-XL + Ego4D. Bars start at zero.", "4 秒直接预测 · 表 1。NWM†：CDiT-XL + Ego4D。条形从零起算。")}`;
+    element("chart-footnote").textContent = "NWM†: CDiT-XL + Ego4D";
     element("chart-direction").textContent = higher
       ? t("HIGHER IS BETTER ↑", "越高越好 ↑")
       : t("LOWER IS BETTER ↓", "越低越好 ↓");
