@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "cacheVersion": "earth-moon-mars-wall-v3-bb7ecdec97d1",
+  "version": 4,
+  "cacheVersion": "dataset-earth-moon-mars-v4-bd007cb21cda",
   "journey": {
     "src": "assets/hero/journey.mp4",
     "poster": "assets/hero/journey-poster.webp",
@@ -10,17 +10,17 @@
     "fps": 24,
     "perspective": "first-person",
     "order": [
+      "Dataset video wall",
       "Earth",
       "Moon",
-      "Mars",
-      "Video wall"
+      "Mars"
     ]
   },
   "mosaic": {
     "src": "assets/hero/journey.mp4",
     "poster": "assets/hero/mosaic-poster.webp",
-    "startSeconds": 44.708333333333336,
-    "endSeconds": 62.708333333333336,
+    "startSeconds": 0.0,
+    "endSeconds": 18.0,
     "durationSeconds": 18.0,
     "width": 1920,
     "height": 1080,
@@ -113,46 +113,57 @@
   ],
   "chapters": [
     {
+      "planet": "wall",
+      "labelEn": "Dataset",
+      "labelZh": "数据集",
+      "startSeconds": 0.0,
+      "endSeconds": 18.0
+    },
+    {
       "planet": "earth",
       "labelEn": "Earth",
       "labelZh": "地球",
-      "startSeconds": 0.0,
-      "endSeconds": 22.44
+      "startSeconds": 18.0,
+      "endSeconds": 40.44
     },
     {
       "planet": "moon",
       "labelEn": "Moon",
       "labelZh": "月球",
-      "startSeconds": 22.44,
-      "endSeconds": 32.88
+      "startSeconds": 40.44,
+      "endSeconds": 50.88
     },
     {
       "planet": "mars",
       "labelEn": "Mars",
       "labelZh": "火星",
-      "startSeconds": 32.88,
-      "endSeconds": 44.708333333333336
-    },
-    {
-      "planet": "wall",
-      "labelEn": "225 worlds",
-      "labelZh": "225个世界",
-      "startSeconds": 44.708333333333336,
+      "startSeconds": 50.88,
       "endSeconds": 62.708333333333336
     }
   ],
-  "description": "One continuous film travels through 12 Earth environments, two Moon scenes and two Mars scenes, before pulling back into an unlabeled 225-video wall.",
+  "description": "One continuous film opens with an unlabeled 225-video dataset wall, then travels through 12 Earth environments, two Moon scenes and two Mars scenes.",
   "disclosure": "Source-data showcase, not model predictions. Moon: LuSNAR simulation. Mars: SynMars-TW synthetic rover views from contiguous left-camera route frames. Playback speed is editorial; original camera timing and action ground truth are not implied.",
   "disclosureZh": "数据源展示，非模型预测。月球来自LuSNAR仿真；火星使用SynMars-TW同一路线左目连续帧。播放速度经编辑调整，不代表原始采集时间或真实动作标注。",
   "processing": [
     "Source frames are center-cropped to 16:9 and resized; presentation speed differs from capture timing.",
     "Journey scenes remain first-person in Earth, Moon, Mars order, using nearest real source frames within each scene and brief cross-dissolves only between scenes. Visual selection does not establish matched ground-truth actions.",
     "The 15 by 15 wall contains 225 distinct trajectories from all 15 NavAnywhere sources. Short clips play forward then backward to soften loops.",
-    "The wall is pure video with no burned-in labels. Bilingual journey names and Earth/Moon/Mars/wall navigation are synchronized by the website.",
+    "The film opens with the dataset wall, followed by Earth, Moon and Mars. The wall is pure video with no burned-in labels. Bilingual journey names and chapter navigation are synchronized by the website.",
     "All CASIA-Nav office trajectories are excluded. Four new outdoor trajectories preserve 225 distinct wall clips.",
     "SynMars-TW is a synthetic Blender dataset, not footage captured on Mars. Each selected segment keeps one left-camera route and contiguous frame indices."
   ],
   "journeyScenes": [
+    {
+      "id": "video-wall",
+      "planet": "wall",
+      "labelEn": "Dataset",
+      "labelZh": "数据集",
+      "kind": "video_mosaic",
+      "start_seconds": 0.0,
+      "startSeconds": 0.0,
+      "endSeconds": 18.0,
+      "duration_seconds": 18.0
+    },
     {
       "id": "realestate10k-v2-10",
       "source": "RealEstate10K",
@@ -197,9 +208,9 @@
       "playback_fps": 4.0,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 0.0,
-      "startSeconds": 0.0,
-      "endSeconds": 2.05
+      "start_seconds": 18.0,
+      "startSeconds": 18.0,
+      "endSeconds": 20.05
     },
     {
       "id": "dl3dv-10k-v2-11",
@@ -262,9 +273,9 @@
       "playback_fps": 10.833,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 1.87,
-      "startSeconds": 1.87,
-      "endSeconds": 3.92
+      "start_seconds": 19.87,
+      "startSeconds": 19.87,
+      "endSeconds": 21.92
     },
     {
       "id": "egowalk-v2-16",
@@ -327,9 +338,9 @@
       "playback_fps": 12.0,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 3.74,
-      "startSeconds": 3.74,
-      "endSeconds": 5.79
+      "start_seconds": 21.74,
+      "startSeconds": 21.74,
+      "endSeconds": 23.79
     },
     {
       "id": "egowalk-v2-15",
@@ -392,9 +403,9 @@
       "playback_fps": 12.0,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 5.61,
-      "startSeconds": 5.61,
-      "endSeconds": 7.66
+      "start_seconds": 23.61,
+      "startSeconds": 23.61,
+      "endSeconds": 25.66
     },
     {
       "id": "sanpo-1",
@@ -457,9 +468,9 @@
       "relative_path": "NavAnywhere/SANPO/-5OCPnbrwJdu3jH70ieU7pUiFsOJQoeG",
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 7.48,
-      "startSeconds": 7.48,
-      "endSeconds": 9.53
+      "start_seconds": 25.48,
+      "startSeconds": 25.48,
+      "endSeconds": 27.53
     },
     {
       "id": "walking-tours-v2-8",
@@ -522,9 +533,9 @@
       "playback_fps": 12.0,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 9.35,
-      "startSeconds": 9.35,
-      "endSeconds": 11.4
+      "start_seconds": 27.35,
+      "startSeconds": 27.35,
+      "endSeconds": 29.4
     },
     {
       "id": "dl3dv-10k-v2-7",
@@ -587,9 +598,9 @@
       "playback_fps": 10.833,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 11.22,
-      "startSeconds": 11.22,
-      "endSeconds": 13.27
+      "start_seconds": 29.22,
+      "startSeconds": 29.22,
+      "endSeconds": 31.27
     },
     {
       "id": "the-great-outdoors-v2-7",
@@ -652,9 +663,9 @@
       "playback_fps": 12.0,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 13.09,
-      "startSeconds": 13.09,
-      "endSeconds": 15.14
+      "start_seconds": 31.09,
+      "startSeconds": 31.09,
+      "endSeconds": 33.14
     },
     {
       "id": "rover-v2-7",
@@ -717,9 +728,9 @@
       "playback_fps": 12.0,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 14.96,
-      "startSeconds": 14.96,
-      "endSeconds": 17.01
+      "start_seconds": 32.96,
+      "startSeconds": 32.96,
+      "endSeconds": 35.01
     },
     {
       "id": "great-outdoors-1",
@@ -782,9 +793,9 @@
       "relative_path": "NavAnywhere/The_Great_Outdoors/2025-01-24-09-44-24_newcal",
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 16.83,
-      "startSeconds": 16.83,
-      "endSeconds": 18.88
+      "start_seconds": 34.83,
+      "startSeconds": 34.83,
+      "endSeconds": 36.88
     },
     {
       "id": "the-great-outdoors-v2-9",
@@ -847,9 +858,9 @@
       "playback_fps": 12.0,
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 18.7,
-      "startSeconds": 18.7,
-      "endSeconds": 20.75
+      "start_seconds": 36.7,
+      "startSeconds": 36.7,
+      "endSeconds": 38.75
     },
     {
       "id": "casia-nav-1",
@@ -912,9 +923,9 @@
       "relative_path": "NavAnywhere/CASIA-Nav/birds_nest_museum",
       "duration_seconds": 2.05,
       "planet": "earth",
-      "start_seconds": 20.57,
-      "startSeconds": 20.57,
-      "endSeconds": 22.62
+      "start_seconds": 38.57,
+      "startSeconds": 38.57,
+      "endSeconds": 40.62
     },
     {
       "id": "moon-1",
@@ -993,9 +1004,9 @@
       ],
       "editorial_note": "LuSNAR lunar simulation source sequence; not an OpenNWM prediction.",
       "planet": "moon",
-      "start_seconds": 22.44,
-      "startSeconds": 22.44,
-      "endSeconds": 27.84
+      "start_seconds": 40.44,
+      "startSeconds": 40.44,
+      "endSeconds": 45.84
     },
     {
       "id": "moon-2",
@@ -1073,10 +1084,10 @@
       "trajectory_frame_count": 58,
       "first_index": 0,
       "relative_path": "LuSNAR/Moon_2/image0/color",
-      "start_seconds": 27.66,
+      "start_seconds": 45.66,
       "duration_seconds": 5.4,
-      "startSeconds": 27.66,
-      "endSeconds": 33.06
+      "startSeconds": 45.66,
+      "endSeconds": 51.06
     },
     {
       "id": "mars-rocks",
@@ -1169,10 +1180,10 @@
       "trajectory_frame_count": 72,
       "first_index": 0,
       "relative_path": "SynMars-TW/images/testing",
-      "start_seconds": 32.88,
+      "start_seconds": 50.88,
       "duration_seconds": 6.0,
-      "startSeconds": 32.88,
-      "endSeconds": 38.88
+      "startSeconds": 50.88,
+      "endSeconds": 56.88
     },
     {
       "id": "mars-valley",
@@ -1265,20 +1276,10 @@
       "trajectory_frame_count": 72,
       "first_index": 0,
       "relative_path": "SynMars-TW/images/testing",
-      "start_seconds": 38.7,
+      "start_seconds": 56.7,
       "duration_seconds": 6.0,
-      "startSeconds": 38.7,
-      "endSeconds": 44.7
-    },
-    {
-      "id": "video-wall",
-      "planet": "wall",
-      "labelEn": "225 worlds",
-      "labelZh": "225个世界",
-      "kind": "video_mosaic",
-      "startSeconds": 44.708333333333336,
-      "endSeconds": 62.708333333333336,
-      "duration_seconds": 18.0
+      "startSeconds": 56.7,
+      "endSeconds": 62.708333333333336
     }
   ],
   "clips": [

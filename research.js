@@ -17,63 +17,59 @@ export function initResearch(paper, getLanguage) {
   const rows = paper.results.direct_prediction.rows;
   const state = { domain: "id", idMetric: "lpips" };
   const t = (en, zh) => (getLanguage().startsWith("zh") ? zh : en);
-  const flowArrow = '<span class="method-flow-arrow" aria-hidden="true">↓</span>';
-  const node = (label, accent = false) =>
-    `<span class="method-node${accent ? " method-node-accent" : ""}">${label}</span>`;
-
-  function methodCards() {
-    return [
-      {
-        title: t("Ground motion in video", "从视频中理解运动"),
-        label: t("Dual-supervised latent actions", "双重监督的潜在动作"),
-        text: t(
-          "The latent action model (LAM) encodes a pair of frames into a shared motion representation. Visual reconstruction preserves the transition; physical-motion supervision on annotated trajectories grounds it in controllable movement.",
-          "潜在动作模型（LAM）将前后两帧编码为共享的运动表示。视觉重建保留画面中的变化；带标注轨迹上的物理运动监督，让表示对应可控制的运动。",
-        ),
-        diagram: `${node(t("Current + future frame", "当前帧 + 未来帧"))}${flowArrow}${node(`LAM → ${t("latent action", "潜在动作")} <i>z</i>`, true)}<div class="method-supervision"><span>${t("Visual reconstruction", "视觉重建")}</span><span>${t("Motion grounding", "运动约束")}</span></div>`,
-      },
-      {
-        title: t("Learn from NavAnywhere", "从 NavAnywhere 学习"),
-        label: t("Action-free video pretraining", "无动作标注视频预训练"),
-        text: t(
-          "The frozen LAM infers actions from diverse videos without recorded controls. A diffusion world model learns future observations from visual context, relative time, and inferred latent actions—scaling dynamics learning to NavAnywhere’s 17.5M frames.",
-          "冻结的 LAM 从多样视频中推断潜在动作，无需录制控制指令。扩散世界模型结合视觉上下文、相对时间与推断的潜在动作学习未来画面，将动态学习扩展到 NavAnywhere 的 1750 万帧。",
-        ),
-        diagram: `${node(t("NavAnywhere → frozen LAM", "NavAnywhere → 冻结 LAM"))}${flowArrow}${node(t("Context + latent action + time", "上下文 + 潜在动作 + 时间"), true)}${flowArrow}${node(t("World model → future frames", "世界模型 → 未来画面"))}`,
-      },
-      {
-        title: t("Turn prediction into navigation", "从未来预测到导航"),
-        label: t("Physical-action alignment & planning", "物理动作对齐与规划"),
-        text: t(
-          "Post-training connects the world model to physical waypoint actions (Δx, Δy, Δψ). At navigation time, CEM evaluates candidate actions through predicted futures, selects a plan toward the visual goal, and replans after executing its first action.",
-          "后训练将世界模型与物理路点动作（Δx、Δy、Δψ）对齐。导航时，CEM 通过预测未来评估候选动作，选择通向视觉目标的方案，执行第一个动作后重新规划。",
-        ),
-        diagram: `${node(t("Candidate waypoint actions", "候选路点动作"))}${flowArrow}${node(t("OpenNWM → predicted futures", "OpenNWM → 未来预测"), true)}${flowArrow}${node(t("Select → execute → replan", "选择 → 执行 → 重新规划"))}`,
-      },
-    ];
+  function methodFigure({ figure, title, description, file, width, height, alt }) {
+    const fullSize = t("View full size ↗", "查看原图 ↗");
+    const linkLabel = t(
+      `Open paper Figure ${figure} at full resolution in a new tab`,
+      `在新标签页查看论文图 ${figure} 原图`,
+    );
+    return `<figure class="method-paper-figure">
+      <figcaption class="method-figure-caption">
+        <div class="method-figure-heading"><h3>${escapeHTML(title)}</h3><a class="method-full-size" href="assets/paper/${file}" target="_blank" rel="noopener" aria-label="${escapeHTML(linkLabel)}">${fullSize}</a></div>
+        <p>${escapeHTML(description)}</p>
+      </figcaption>
+      <a class="method-figure-link" href="assets/paper/${file}" target="_blank" rel="noopener" aria-label="${escapeHTML(linkLabel)}"><img src="assets/paper/${file}" width="${width}" height="${height}" alt="${escapeHTML(alt)}" loading="lazy" decoding="async"></a>
+    </figure>`;
   }
 
   function renderMethod() {
-    const descriptions = methodCards();
     steps.parentElement.classList.add("method-overview");
-    steps.setAttribute("role", "list");
-    steps.setAttribute("aria-label", t("How OpenNWM works", "OpenNWM 的方法"));
-    steps.innerHTML = descriptions
-      .map(
-        (stage, index) =>
-          `<article class="method-card" role="listitem"><div class="method-card-label"><span aria-hidden="true">0${index + 1}</span>${escapeHTML(stage.label)}</div><h3>${escapeHTML(stage.title)}</h3><div class="method-card-diagram" aria-hidden="true">${stage.diagram}</div><p>${escapeHTML(stage.text)}</p></article>`,
-      )
-      .join("");
+    steps.removeAttribute("role");
+    steps.removeAttribute("aria-label");
+    steps.innerHTML = methodFigure({
+      figure: 2,
+      title: t("A shared action space from video", "从视频学习共享动作空间"),
+      description: t(
+        "A latent action model learns motion from frame pairs, with visual reconstruction and physical-motion supervision. Its inferred actions let the diffusion world model learn future observations from NavAnywhere videos without recorded controls.",
+        "潜在动作模型通过视觉重建与物理运动监督，从前后帧中学习运动表示。它推断的潜在动作，让扩散世界模型无需录制控制指令，就能从 NavAnywhere 视频中学习预测未来画面。",
+      ),
+      file: "figure-2-framework.png",
+      width: 2352,
+      height: 720,
+      alt: t(
+        "Original paper Figure 2: the latent action model and visual context condition a diffusion transformer to predict future frames.",
+        "论文图 2 原图：潜在动作模型与视觉上下文共同为扩散 Transformer 提供条件，预测未来画面。",
+      ),
+    });
     panel.removeAttribute("role");
     panel.removeAttribute("aria-live");
     panel.removeAttribute("aria-labelledby");
     panel.removeAttribute("tabindex");
-    const training = [
-      [t("Latent pretraining", "潜在动作预训练"), t("Learn the world model from NavAnywhere.", "在 NavAnywhere 上训练世界模型。")],
-      [t("Action-encoder warmup", "动作编码器预热"), t("Train the new physical-action encoder; freeze the world model.", "冻结世界模型，仅训练新的物理动作编码器。")],
-      [t("Joint post-training", "联合后训练"), t("Adapt the encoder and world model together on action-labeled video.", "用带动作标注的视频联合训练编码器与世界模型。")],
-    ];
-    panel.innerHTML = `<div class="method-training-heading"><h3>${t("How the world model is trained", "世界模型如何训练")}</h3><span>${t("After learning the LAM", "在 LAM 训练完成后")}</span></div><ol class="method-training">${training.map(([title, text]) => `<li><strong>${escapeHTML(title)}</strong><p>${escapeHTML(text)}</p></li>`).join("")}</ol>`;
+    panel.innerHTML = methodFigure({
+      figure: 3,
+      title: t("From latent actions to physical controls", "从潜在动作到物理控制"),
+      description: t(
+        "After latent-action pretraining, the world model is frozen while a physical-action encoder warms up. Joint post-training then aligns both on action-labeled videos, enabling navigation planning through predicted futures.",
+        "完成潜在动作预训练后，先冻结世界模型，预热物理动作编码器；再用带动作标注的视频联合训练两者，实现基于未来预测的导航规划。",
+      ),
+      file: "figure-3-training.png",
+      width: 2124,
+      height: 576,
+      alt: t(
+        "Original paper Figure 3: latent-action pretraining on NavAnywhere, action-encoder warmup with the world model frozen, and joint post-training.",
+        "论文图 3 原图：在 NavAnywhere 上进行潜在动作预训练、冻结世界模型预热动作编码器，以及联合后训练。",
+      ),
+    });
   }
 
   function domains() {
