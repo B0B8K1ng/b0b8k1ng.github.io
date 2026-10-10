@@ -21,20 +21,20 @@ export async function initPlayground(getLanguage) {
     if (canvas.width !== 540 * ratio) { canvas.width = 540 * ratio; canvas.height = 470 * ratio; }
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
     context.clearRect(0, 0, 540, 470);
-    context.strokeStyle = "#dfe5da"; context.lineWidth = 1;
+    context.strokeStyle = "#282e31"; context.lineWidth = 1;
     for (let x = 6; x < 540; x += 44) { context.beginPath(); context.moveTo(x, 0); context.lineTo(x, 470); context.stroke(); }
     for (let y = 33; y < 470; y += 44) { context.beginPath(); context.moveTo(0, y); context.lineTo(540, y); context.stroke(); }
-    context.strokeStyle = "#c6d2c1"; context.setLineDash([3, 6]);
+    context.strokeStyle = "#454e52"; context.setLineDash([3, 6]);
     context.beginPath(); context.moveTo(270, 48); context.lineTo(270, 443); context.stroke(); context.setLineDash([]);
     if (points.length > 1) {
       context.beginPath(); points.forEach((p, i) => { const [x, y] = toCanvas(p); i ? context.lineTo(x, y) : context.moveTo(x, y); });
-      context.lineWidth = 6; context.lineCap = "round"; context.lineJoin = "round"; context.strokeStyle = "#17846b"; context.stroke();
+      context.lineWidth = 6; context.lineCap = "round"; context.lineJoin = "round"; context.strokeStyle = "#b6ee65"; context.stroke();
       const end = toCanvas(points.at(-1));
-      context.fillStyle = "#f5f5ef"; context.beginPath(); context.arc(...end, 8, 0, Math.PI * 2); context.fill();
-      context.lineWidth = 3; context.strokeStyle = "#17846b"; context.stroke();
+      context.fillStyle = "#161a1c"; context.beginPath(); context.arc(...end, 8, 0, Math.PI * 2); context.fill();
+      context.lineWidth = 3; context.strokeStyle = "#b6ee65"; context.stroke();
     }
-    context.fillStyle = "#192d26"; context.beginPath(); context.arc(270, 385, 19, 0, Math.PI * 2); context.fill();
-    context.fillStyle = "#d5ed8d"; context.beginPath(); context.moveTo(270, 374); context.lineTo(278, 392); context.lineTo(270, 388); context.lineTo(262, 392); context.closePath(); context.fill();
+    context.fillStyle = "#b6ee65"; context.beginPath(); context.arc(270, 385, 19, 0, Math.PI * 2); context.fill();
+    context.fillStyle = "#0d0e10"; context.beginPath(); context.moveTo(270, 374); context.lineTo(278, 392); context.lineTo(270, 388); context.lineTo(262, 392); context.closePath(); context.fill();
   }
   const selectedPreset = () => scene?.presets?.find((item) => item.id === preset);
   const pathLength = () => points.slice(1).reduce((sum, point, i) => sum + Math.hypot(point[0] - points[i][0], point[1] - points[i][1]), 0);
