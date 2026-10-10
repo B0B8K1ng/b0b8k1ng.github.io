@@ -1,3 +1,5 @@
+import { initMethodAnimation } from "./method-animation.js?v=method-v7-20261010";
+
 const escapeHTML = (value) =>
   String(value).replace(
     /[&<>"']/g,
@@ -16,13 +18,11 @@ export function initResearch(paper, getLanguage) {
   const rows = paper.results.direct_prediction.rows;
   const state = { domain: "id", idMetric: "lpips" };
   const t = (en, zh) => (getLanguage().startsWith("zh") ? zh : en);
+  method.innerHTML = `<figure class="method-paper-figure method-animated-figure"><div id="method-animation"></div><a class="method-original-link" href="assets/paper/figure-3-training.png" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M3 3l6 6m12-6-6 6M3 21l6-6m12 6-6-6"/></svg></a></figure>`;
+  const methodAnimation = initMethodAnimation(element("method-animation"), getLanguage);
   function renderMethod() {
-    const label = t("Open the original method figure at full resolution", "查看完整尺寸的方法原图");
-    const alt = t(
-      "OpenNWM architecture from the paper: a latent action model learns motion from video, and a diffusion world model predicts future observations conditioned on actions and visual context.",
-      "论文中的 OpenNWM 架构原图：潜在动作模型从视频学习运动，扩散世界模型根据动作与视觉上下文预测未来观测。",
-    );
-    method.innerHTML = `<figure class="method-paper-figure"><a class="method-figure-link" href="assets/paper/figure-2-framework.png" target="_blank" rel="noopener" aria-label="${escapeHTML(label)}"><img src="assets/paper/figure-2-framework.png" width="2352" height="720" alt="${escapeHTML(alt)}" loading="lazy" decoding="async"></a></figure>`;
+    method.querySelector(".method-original-link").setAttribute("aria-label", t("Open the original training figure at full resolution", "查看完整尺寸的训练原图"));
+    methodAnimation.render();
   }
 
   function domains() {
