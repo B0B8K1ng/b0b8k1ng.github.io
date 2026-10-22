@@ -98,10 +98,12 @@ export async function initCinematic(getLanguage) {
         else chapters.push({ ...scene });
       }
     }
-    hero.poster = mediaUrl(film.journey?.poster || "assets/hero/journey-poster.webp");
-    hero.src = mediaUrl(film.journey?.src || "assets/hero/journey.mp4");
+    const poster = mediaUrl(film.journey?.poster || "assets/hero/journey-poster.webp");
+    const source = mediaUrl(film.journey?.src || "assets/hero/journey.mp4");
+    if (hero.poster !== poster) hero.poster = poster;
+    if (hero.src !== source) hero.src = source;
   } else {
-    hero.src = mediaUrl("assets/hero/journey.mp4");
+    if (!hero.getAttribute("src")) hero.src = mediaUrl("assets/hero/journey.mp4");
   }
   render();
   return { render };
