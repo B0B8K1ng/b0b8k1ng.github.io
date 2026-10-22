@@ -22,7 +22,8 @@ export function initResearch(paper, getLanguage) {
       "OpenNWM architecture from the paper: a latent action model learns motion from video, and a diffusion world model predicts future observations conditioned on actions and visual context.",
       "论文中的 OpenNWM 架构原图：潜在动作模型从视频学习运动，扩散世界模型根据动作与视觉上下文预测未来观测。",
     );
-    method.innerHTML = `<figure class="method-paper-figure"><a class="method-figure-link" href="assets/paper/figure-2-framework.png" target="_blank" rel="noopener" aria-label="${escapeHTML(label)}"><img src="assets/paper/figure-2-framework.png" width="2352" height="720" alt="${escapeHTML(alt)}" loading="lazy" decoding="async"></a></figure>`;
+    method.querySelector(".method-figure-link").setAttribute("aria-label", label);
+    method.querySelector("img").alt = alt;
   }
 
   function domains() {

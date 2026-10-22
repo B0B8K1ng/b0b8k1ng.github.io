@@ -99,7 +99,7 @@
     <main id="main">
       <section class="hero cinematic-hero" id="opening-film" data-planet="wall" aria-labelledby="hero-title">
         <div class="cinematic-background" aria-hidden="true">
-          <video id="hero-video" muted loop playsinline preload="metadata" poster="assets/hero/journey-poster.webp?v=wall-moon-mars-v5"></video>
+          <video id="hero-video" src="assets/hero/journey.mp4?v=fixed-wall-moon-mars-v5-c8e1deeae799" autoplay muted loop playsinline preload="auto" poster="assets/hero/journey-poster.webp?v=fixed-wall-moon-mars-v5-c8e1deeae799"></video>
           <div class="cinematic-shade"></div>
         </div>
         <nav class="journey-navigation" aria-label="Opening film navigation">
@@ -161,7 +161,13 @@
             OpenNWM learns latent actions from video to pretrain a world model, then aligns it with physical controls for prediction and navigation.
           </p>
         </div>
-        <div class="method-layout method-overview" id="method-overview"></div>
+        <div class="method-layout method-overview" id="method-overview">
+          <figure class="method-paper-figure">
+            <a class="method-figure-link" href="assets/paper/figure-2-framework.png" target="_blank" rel="noopener" aria-label="Open the original method figure at full resolution">
+              <img src="assets/paper/figure-2-framework.png" width="2352" height="720" alt="OpenNWM architecture from the paper: a latent action model learns motion from video, and a diffusion world model predicts future observations conditioned on actions and visual context.">
+            </a>
+          </figure>
+        </div>
       </section>
 
       <section
