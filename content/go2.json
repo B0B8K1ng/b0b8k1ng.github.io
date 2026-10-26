@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "status": "ready",
+  "recorded_date": "2026-10-26",
+  "episode_id": "episode_20261026T091121_148a01b5",
+  "full": {
+    "id": "full",
+    "title": "Full comparison",
+    "title_zh": "完整对比",
+    "description": "86 visual goals across the recorded route. Both models receive the same context, goal images and CEM budget.",
+    "description_zh": "沿完整路线评估 86 个视觉目标。两个模型使用相同的历史观测、目标图像与 CEM 预算。",
+    "duration_s": 172.0,
+    "video": "assets/go2/comparison_full.mp4",
+    "poster": "assets/go2/poster_full.webp"
+  },
+  "clips": [
+    {
+      "id": "clip_01_office_exit",
+      "title": "Leaving the office",
+      "title_zh": "离开办公室",
+      "duration_s": 8,
+      "start_time_s": 16,
+      "description": "00:16–00:24 · 4 consecutive visual goals. Recorded motion and both model futures share one timeline.",
+      "description_zh": "00:16–00:24 · 连续 4 个视觉目标。真实运动与两个模型的预测共用同一时间轴。",
+      "video": "assets/go2/clip_01_office_exit/comparison.mp4",
+      "poster": "assets/go2/clip_01_office_exit/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.1620071912833127,
+          "rpe_m": 0.051458478489313154
+        },
+        "nwm": {
+          "ate_m": 0.2733350388909235,
+          "rpe_m": 0.06982603961960798
+        }
+      },
+      "evaluated_goal_ids": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "downloads": {
+        "ego": "assets/go2/clip_01_office_exit/gt_ego.mp4",
+        "third_person": "assets/go2/clip_01_office_exit/gt_third_person.mp4",
+        "opennwm": "assets/go2/clip_01_office_exit/opennwm.mp4",
+        "nwm": "assets/go2/clip_01_office_exit/nwm.mp4"
+      }
+    },
+    {
+      "id": "clip_02_corridor",
+      "title": "Along the corridor",
+      "title_zh": "沿走廊前进",
+      "duration_s": 8,
+      "start_time_s": 40,
+      "description": "00:40–00:48 · 4 consecutive visual goals. Recorded motion and both model futures share one timeline.",
+      "description_zh": "00:40–00:48 · 连续 4 个视觉目标。真实运动与两个模型的预测共用同一时间轴。",
+      "video": "assets/go2/clip_02_corridor/comparison.mp4",
+      "poster": "assets/go2/clip_02_corridor/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.19037644793124683,
+          "rpe_m": 0.040617507304883824
+        },
+        "nwm": {
+          "ate_m": 0.16074639552512296,
+          "rpe_m": 0.03724926313232011
+        }
+      },
+      "evaluated_goal_ids": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "downloads": {
+        "ego": "assets/go2/clip_02_corridor/gt_ego.mp4",
+        "third_person": "assets/go2/clip_02_corridor/gt_third_person.mp4",
+        "opennwm": "assets/go2/clip_02_corridor/opennwm.mp4",
+        "nwm": "assets/go2/clip_02_corridor/nwm.mp4"
+      }
+    },
+    {
+      "id": "clip_03_corner",
+      "title": "Around the corner",
+      "title_zh": "转过拐角",
+      "duration_s": 8,
+      "start_time_s": 58,
+      "description": "00:58–01:06 · 4 consecutive visual goals. Recorded motion and both model futures share one timeline.",
+      "description_zh": "00:58–01:06 · 连续 4 个视觉目标。真实运动与两个模型的预测共用同一时间轴。",
+      "video": "assets/go2/clip_03_corner/comparison.mp4",
+      "poster": "assets/go2/clip_03_corner/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.228001828951189,
+          "rpe_m": 0.05036382376698618
+        },
+        "nwm": {
+          "ate_m": 0.37170733881948215,
+          "rpe_m": 0.08376780356649316
+        }
+      },
+      "evaluated_goal_ids": [
+        29,
+        30,
+        31,
+        32
+      ],
+      "downloads": {
+        "ego": "assets/go2/clip_03_corner/gt_ego.mp4",
+        "third_person": "assets/go2/clip_03_corner/gt_third_person.mp4",
+        "opennwm": "assets/go2/clip_03_corner/opennwm.mp4",
+        "nwm": "assets/go2/clip_03_corner/nwm.mp4"
+      }
+    },
+    {
+      "id": "clip_04_foyer_exit",
+      "title": "Leaving the foyer",
+      "title_zh": "离开门厅",
+      "duration_s": 8,
+      "start_time_s": 76,
+      "description": "01:16–01:24 · 4 consecutive visual goals. Recorded motion and both model futures share one timeline.",
+      "description_zh": "01:16–01:24 · 连续 4 个视觉目标。真实运动与两个模型的预测共用同一时间轴。",
+      "video": "assets/go2/clip_04_foyer_exit/comparison.mp4",
+      "poster": "assets/go2/clip_04_foyer_exit/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.20675539796374504,
+          "rpe_m": 0.047635974229094144
+        },
+        "nwm": {
+          "ate_m": 0.3724246067386092,
+          "rpe_m": 0.08342968991816414
+        }
+      },
+      "evaluated_goal_ids": [
+        38,
+        39,
+        40,
+        41
+      ],
+      "downloads": {
+        "ego": "assets/go2/clip_04_foyer_exit/gt_ego.mp4",
+        "third_person": "assets/go2/clip_04_foyer_exit/gt_third_person.mp4",
+        "opennwm": "assets/go2/clip_04_foyer_exit/opennwm.mp4",
+        "nwm": "assets/go2/clip_04_foyer_exit/nwm.mp4"
+      }
+    },
+    {
+      "id": "clip_05_glass_door",
+      "title": "At the glass door",
+      "title_zh": "经过玻璃门",
+      "duration_s": 8,
+      "start_time_s": 110,
+      "description": "01:50–01:58 · 4 consecutive visual goals. Recorded motion and both model futures share one timeline.",
+      "description_zh": "01:50–01:58 · 连续 4 个视觉目标。真实运动与两个模型的预测共用同一时间轴。",
+      "video": "assets/go2/clip_05_glass_door/comparison.mp4",
+      "poster": "assets/go2/clip_05_glass_door/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.2622994755067399,
+          "rpe_m": 0.05666624030148813
+        },
+        "nwm": {
+          "ate_m": 0.3183610099241969,
+          "rpe_m": 0.0686588096658265
+        }
+      },
+      "evaluated_goal_ids": [
+        55,
+        56,
+        57,
+        58
+      ],
+      "downloads": {
+        "ego": "assets/go2/clip_05_glass_door/gt_ego.mp4",
+        "third_person": "assets/go2/clip_05_glass_door/gt_third_person.mp4",
+        "opennwm": "assets/go2/clip_05_glass_door/opennwm.mp4",
+        "nwm": "assets/go2/clip_05_glass_door/nwm.mp4"
+      }
+    },
+    {
+      "id": "clip_06_turnaround",
+      "title": "Turning back",
+      "title_zh": "转身返回",
+      "duration_s": 8,
+      "start_time_s": 132,
+      "description": "02:12–02:20 · 4 consecutive visual goals. Recorded motion and both model futures share one timeline.",
+      "description_zh": "02:12–02:20 · 连续 4 个视觉目标。真实运动与两个模型的预测共用同一时间轴。",
+      "video": "assets/go2/clip_06_turnaround/comparison.mp4",
+      "poster": "assets/go2/clip_06_turnaround/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.32097868956376135,
+          "rpe_m": 0.06740007159561998
+        },
+        "nwm": {
+          "ate_m": 0.37301602463809624,
+          "rpe_m": 0.07662520882406773
+        }
+      },
+      "evaluated_goal_ids": [
+        66,
+        67,
+        68,
+        69
+      ],
+      "downloads": {
+        "ego": "assets/go2/clip_06_turnaround/gt_ego.mp4",
+        "third_person": "assets/go2/clip_06_turnaround/gt_third_person.mp4",
+        "opennwm": "assets/go2/clip_06_turnaround/opennwm.mp4",
+        "nwm": "assets/go2/clip_06_turnaround/nwm.mp4"
+      }
+    },
+    {
+      "id": "clip_07_return",
+      "title": "Returning to the office",
+      "title_zh": "返回办公室",
+      "duration_s": 8,
+      "start_time_s": 156,
+      "description": "02:36–02:44 · 4 consecutive visual goals. Recorded motion and both model futures share one timeline.",
+      "description_zh": "02:36–02:44 · 连续 4 个视觉目标。真实运动与两个模型的预测共用同一时间轴。",
+      "video": "assets/go2/clip_07_return/comparison.mp4",
+      "poster": "assets/go2/clip_07_return/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.21756611431447656,
+          "rpe_m": 0.045731621296265255
+        },
+        "nwm": {
+          "ate_m": 0.2269320818046465,
+          "rpe_m": 0.04800822564304582
+        }
+      },
+      "evaluated_goal_ids": [
+        78,
+        79,
+        80,
+        81
+      ],
+      "downloads": {
+        "ego": "assets/go2/clip_07_return/gt_ego.mp4",
+        "third_person": "assets/go2/clip_07_return/gt_third_person.mp4",
+        "opennwm": "assets/go2/clip_07_return/opennwm.mp4",
+        "nwm": "assets/go2/clip_07_return/nwm.mp4"
+      }
+    }
+  ],
+  "summary": {
+    "metrics": {
+      "opennwm": {
+        "ate_m": 0.23944644927374598,
+        "rpe_m": 0.05348944677055846
+      },
+      "nwm": {
+        "ate_m": 0.2881763187056337,
+        "rpe_m": 0.06384423191708104
+      }
+    },
+    "evaluated_goal_count": 86
+  },
+  "protocol": {
+    "evaluation": "Offline visual-goal navigation",
+    "evaluation_zh": "离线视觉目标导航",
+    "goal_interval_s": 2,
+    "planner": "CEM",
+    "note": "Independent 2 s plans reset to recorded context; predicted paths were not executed on the robot. GT uses onboard odometry; cameras are approximately aligned. ATE/RPE are mean errors in meters, using the paper definitions. This recording uses 32 CEM candidates, 5 elites, 2 updates and 50-step DDPM: a practical budget, not an exact rerun of the paper benchmark.",
+    "note_zh": "每段 2 秒规划均从真实记录的历史观测重新开始，预测轨迹未在机器人上执行。GT 来自机载里程计，双相机为近似对齐。ATE/RPE 沿用论文定义，以米制均值汇总。本次使用 32 个 CEM 候选、5 个精英、2 次更新与 50 步 DDPM；推理预算不同于论文基准，并非原表格的精确复现。"
+  },
+  "report": "assets/go2/report.json"
+}
