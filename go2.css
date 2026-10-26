@@ -1,0 +1,74 @@
+/* The recorded robot and both model futures share one synchronized film. */
+.go2-section[hidden] { display: none; }
+.go2-section { padding-top: 24px; }
+.go2-heading { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 30px; }
+.go2-heading .eyebrow { display: block; color: var(--accent); margin-bottom: 18px; }
+.go2-heading h2 { margin: 0; white-space: pre-line; }
+.go2-heading > p { max-width: 385px; margin: 0 0 3px; color: var(--muted); font-size: 15px; line-height: 1.65; }
+.go2-cinema { border: 1px solid #394239; border-radius: 20px; overflow: hidden; background: #111513; box-shadow: 0 20px 80px #00000026; }
+.go2-film-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 22px; background: linear-gradient(100deg, #b6ee6509, transparent); }
+.go2-film-label { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; letter-spacing: .2px; color: #e6eddf; }
+.go2-film-label::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.go2-film-status { color: var(--muted); font-size: 11px; text-align: right; }
+.go2-screen { position: relative; background: #080b0d; aspect-ratio: 16 / 9; }
+.go2-screen video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.go2-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; border: 0; color: white; background: linear-gradient(0deg, #050b0c45, #050b0c08 60%); cursor: pointer; }
+.go2-play[hidden] { display: none; }
+.go2-play > span { display: inline-flex; align-items: center; gap: 12px; background: #111a13dc; border: 1px solid #b6ee6580; padding: 14px 23px 14px 16px; border-radius: 40px; box-shadow: 0 8px 35px #0005; font: 600 13px var(--sans); backdrop-filter: blur(12px); transition: transform .18s, background .18s; }
+.go2-play:hover > span { transform: translateY(-2px); background: #263520f0; }
+.go2-play svg { width: 30px; height: 30px; fill: var(--accent); }
+.go2-media-error { position: absolute; inset: auto 20px 24px; padding: 12px 16px; background: #161a1cf0; border: 1px solid var(--line); border-radius: 10px; font-size: 13px; }
+.go2-media-error[hidden] { display: none; }
+.go2-scene-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 18px; border-top: 1px solid #ffffff12; background: #141917; }
+.go2-scene-tab { min-width: 0; display: flex; align-items: center; gap: 11px; padding: 13px 14px; border: 1px solid #ffffff16; border-radius: 10px; text-align: left; background: transparent; color: #c0c7c1; cursor: pointer; transition: border-color .16s, background .16s; }
+.go2-scene-tab:hover { border-color: #b6ee6560; background: #b6ee6508; }
+.go2-scene-tab[aria-pressed="true"] { background: #b6ee6512; border-color: #b6ee6580; color: #ecf7df; }
+.go2-scene-index { font: 11px var(--mono); color: #8d9a8d; }
+.go2-scene-tab[aria-pressed="true"] .go2-scene-index { color: var(--accent); }
+.go2-scene-text { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.go2-scene-text strong { font: 500 12px/1.4 var(--sans); }
+.go2-scene-text small { font: 10px/1.3 var(--sans); color: #8d9a8d; }
+.go2-details { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; padding: 27px 28px 24px; border-top: 1px solid #ffffff12; }
+.go2-caption h3 { margin: 0 0 9px; font: 500 20px/1.35 var(--sans); letter-spacing: -.25px; }
+.go2-caption p { max-width: 420px; margin: 0; font: 13px/1.65 var(--sans); color: var(--muted); }
+.go2-downloads { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 18px; margin-top: 17px; }
+.go2-downloads a { display: inline-flex; align-items: center; gap: 5px; color: #bdccba; font-size: 11px; border-bottom: 1px solid #bdccba35; padding-bottom: 2px; }
+.go2-downloads a:hover { color: var(--accent); border-color: var(--accent); }
+.go2-downloads a::after { content: "↗"; color: var(--accent); }
+.go2-metrics { align-self: start; border-collapse: collapse; width: 100%; font-size: 12px; }
+.go2-metrics caption { text-align: left; color: #aab4aa; font-size: 10px; letter-spacing: .6px; padding-bottom: 10px; }
+.go2-metrics th, .go2-metrics td { text-align: right; padding: 10px 0 10px 14px; border-bottom: 1px solid #ffffff10; font-variant-numeric: tabular-nums; }
+.go2-metrics thead th { color: #8d9a8d; font-size: 10px; font-weight: 400; padding-top: 0; }
+.go2-metrics tbody th { font-weight: 500; }
+.go2-metrics th:first-child { text-align: left; padding-left: 0; }
+.go2-model { display: inline-flex; align-items: center; gap: 8px; }
+.go2-model::before { content: ""; width: 15px; height: 3px; border-radius: 1px; background: #87b8ff; }
+.go2-model-opennwm::before { background: var(--accent); }
+.go2-metrics .go2-best { color: var(--accent); }
+.go2-protocol { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.go2-protocol-tags { display: flex; gap: 10px 20px; flex-wrap: wrap; color: #98a098; font-size: 11px; }
+.go2-protocol-tags span { display: inline-flex; align-items: center; gap: 7px; }
+.go2-protocol-tags span::before { content: ""; width: 3px; height: 3px; background: #73836e; border-radius: 50%; }
+.go2-protocol-link { display: inline-flex; gap: 7px; align-items: center; color: var(--accent); font-size: 11px; }
+.go2-method-note { margin: 14px 0 0; color: #89918d; font-size: 11px; line-height: 1.65; max-width: 880px; }
+@media (max-width: 760px) {
+  .go2-heading { display: block; }
+  .go2-heading > p { margin-top: 18px; max-width: 510px; }
+  .go2-details { grid-template-columns: 1fr; gap: 24px; padding: 22px; }
+  .go2-cinema { border-radius: 15px; }
+  .go2-scene-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; gap: 7px; }
+  .go2-scene-tab { padding: 10px; gap: 7px; }
+  .go2-film-bar { padding: 13px 16px; }
+}
+@media (max-width: 450px) {
+  .go2-heading h2 { font-size: 32px; }
+  .go2-heading > p { font-size: 13px; }
+  .go2-film-status { font-size: 9px; }
+  .go2-film-label { font-size: 10px; }
+  .go2-scene-text strong { font-size: 11px; }
+  .go2-play > span { padding: 9px 16px 9px 10px; font-size: 11px; gap: 7px; }
+  .go2-play svg { width: 24px; height: 24px; }
+  .go2-details { padding: 19px 16px; }
+  .go2-caption h3 { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .go2-play > span, .go2-scene-tab { transition: none; } }
