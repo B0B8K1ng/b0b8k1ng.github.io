@@ -40,6 +40,8 @@
     "maximum_ego_frame_rounding_s": 0.09806170600000996
   },
   "visualization": {
+    "layout_version": 2,
+    "layout": "Third-person main view; equal-size first-person GT and model views below; trajectory, goal and metrics in a fixed right column.",
     "fps": 24,
     "model_sample_fps": 4,
     "interpolation": false,
