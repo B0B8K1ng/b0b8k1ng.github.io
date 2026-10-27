@@ -1,5 +1,5 @@
 .go2-section[hidden] { display: none; }
-.go2-section { width: min(1440px, calc(100% - 72px)); max-width: 1440px; padding-top: 24px; scroll-margin-top: 92px; }
+.go2-section { width: min(1200px, calc(100% - 128px)); max-width: 1200px; margin-inline: auto; padding-inline: 0; padding-top: 24px; scroll-margin-top: 92px; }
 .go2-heading { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 30px; }
 .go2-heading .eyebrow { display: block; color: var(--accent); margin-bottom: 14px; }
 .go2-heading h2 { margin: 0; }
@@ -22,14 +22,14 @@
 .go2-media-error { position: absolute; left: 14px; right: 14px; bottom: 12px; margin: 0; padding: 9px 12px; background: #111817e8; color: #d3d9d1; font: 12px/1.5 var(--sans); }
 .go2-media-error[hidden] { display: none; }
 @media (max-width: 900px) {
-  .go2-section { width: calc(100% - 48px); }
+  .go2-section { width: calc(100% - 64px); }
   .go2-heading { gap: 22px; }
   .go2-heading-meta { gap: 16px; font-size: 11px; }
   .go2-grid { gap: 26px 18px; }
   .go2-clip h3 { font-size: 14px; }
 }
 @media (max-width: 680px) {
-  .go2-section { width: calc(100% - 36px); }
+  .go2-section { width: calc(100% - 40px); }
   .go2-heading { display: block; margin-bottom: 24px; }
   .go2-heading h2 { font-size: 32px; }
   .go2-heading-meta { margin-top: 17px; padding-bottom: 0; }
