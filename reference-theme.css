@@ -304,3 +304,35 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
   .dataset-stats .stat-value { font-size: 28px; }
   .dataset-stats .stat-label { font-size: 11px; }
 }
+
+/* Keep the author line in the title flow, above resources and the film timeline. */
+.cinematic-hero { height: auto; min-height: max(780px, calc(100svh - 104px)); max-height: none; }
+.hero-center { padding: 92px 32px 130px; }
+.hero-center h1 { margin-bottom: 20px; }
+.hero-authorship { max-width: 850px; margin: 30px auto 0; padding: 20px 24px; border: 1px solid #ffffff12; border-radius: 18px; background: #080c10a8; backdrop-filter: blur(6px); text-shadow: 0 1px 12px #0009; }
+.hero-lab { margin: 0 0 14px; color: var(--accent); font: 600 14px/1.5 var(--sans); letter-spacing: .8px; }
+.hero-authors, .hero-affiliations { display: flex; flex-wrap: wrap; justify-content: center; list-style: none; padding: 0; }
+.hero-authors { gap: 8px 23px; margin: 0 auto; max-width: 760px; color: #fff; font: 500 17px/1.6 var(--sans); }
+.hero-authors li, .hero-affiliations li { white-space: nowrap; }
+.hero-authorship sup { position: relative; top: -.1em; margin-left: 3px; font-size: .66em; line-height: 0; color: var(--accent); }
+.hero-affiliations { gap: 7px 20px; margin: 19px auto 0; max-width: 740px; color: #e4e7e5; font: 400 14px/1.65 var(--sans); }
+.hero-affiliations sup { margin-left: 0; margin-right: 4px; }
+.hero-affiliations abbr { text-decoration: none; }
+.hero-author-notes { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px 22px; margin: 14px 0 0; color: #c6cdca; font: 400 11px/1.6 var(--sans); }
+.hero-center .hero-links { position: static; margin: 30px auto 0; }
+@media (max-width: 800px) {
+  .cinematic-hero { min-height: 800px; }
+  .hero-center { padding: 90px 28px 130px; }
+  .hero-authors { font-size: 16px; gap: 7px 20px; }
+  .hero-affiliations { max-width: 580px; }
+}
+@media (max-width: 600px) {
+  .cinematic-hero { min-height: 0; max-height: none; }
+  .hero-center { padding: 84px 20px 112px; }
+  .hero-center h1 { margin-bottom: 17px; }
+  .hero-authorship { margin-top: 26px; padding: 18px 12px; border-radius: 14px; }
+  .hero-authors { max-width: 360px; font-size: 14px; gap: 8px 16px; }
+  .hero-affiliations { max-width: 360px; margin-top: 18px; font-size: 12px; gap: 6px 13px; }
+  .hero-author-notes { margin-top: 13px; font-size: 10px; gap: 5px 16px; }
+  .hero-center .hero-links { margin-top: 26px; }
+}
