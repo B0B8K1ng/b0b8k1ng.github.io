@@ -49,10 +49,7 @@
         81
       ],
       "downloads": {
-        "ego": "assets/go2/route_01_clip_01_lobby_corner/gt_ego.mp4",
-        "third_person": "assets/go2/route_01_clip_01_lobby_corner/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_01_clip_01_lobby_corner/opennwm.mp4",
-        "nwm": "assets/go2/route_01_clip_01_lobby_corner/nwm.mp4",
+        "metrics": "assets/go2/route_01_clip_01_lobby_corner/metrics.json",
         "trajectories": "assets/go2/route_01_clip_01_lobby_corner/trajectories.csv"
       }
     },
@@ -107,10 +104,7 @@
         137
       ],
       "downloads": {
-        "ego": "assets/go2/route_01_clip_02_glass_door_turn/gt_ego.mp4",
-        "third_person": "assets/go2/route_01_clip_02_glass_door_turn/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_01_clip_02_glass_door_turn/opennwm.mp4",
-        "nwm": "assets/go2/route_01_clip_02_glass_door_turn/nwm.mp4",
+        "metrics": "assets/go2/route_01_clip_02_glass_door_turn/metrics.json",
         "trajectories": "assets/go2/route_01_clip_02_glass_door_turn/trajectories.csv"
       }
     },
@@ -163,10 +157,7 @@
         143
       ],
       "downloads": {
-        "ego": "assets/go2/route_02_clip_01_woodland_curve/gt_ego.mp4",
-        "third_person": "assets/go2/route_02_clip_01_woodland_curve/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_02_clip_01_woodland_curve/opennwm.mp4",
-        "nwm": "assets/go2/route_02_clip_01_woodland_curve/nwm.mp4",
+        "metrics": "assets/go2/route_02_clip_01_woodland_curve/metrics.json",
         "trajectories": "assets/go2/route_02_clip_01_woodland_curve/trajectories.csv"
       }
     },
@@ -219,10 +210,7 @@
         277
       ],
       "downloads": {
-        "ego": "assets/go2/route_02_clip_02_fitness_path/gt_ego.mp4",
-        "third_person": "assets/go2/route_02_clip_02_fitness_path/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_02_clip_02_fitness_path/opennwm.mp4",
-        "nwm": "assets/go2/route_02_clip_02_fitness_path/nwm.mp4",
+        "metrics": "assets/go2/route_02_clip_02_fitness_path/metrics.json",
         "trajectories": "assets/go2/route_02_clip_02_fitness_path/trajectories.csv"
       }
     },
@@ -277,10 +265,7 @@
         59
       ],
       "downloads": {
-        "ego": "assets/go2/route_03_clip_01_tree_lined_sidewalk/gt_ego.mp4",
-        "third_person": "assets/go2/route_03_clip_01_tree_lined_sidewalk/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_03_clip_01_tree_lined_sidewalk/opennwm.mp4",
-        "nwm": "assets/go2/route_03_clip_01_tree_lined_sidewalk/nwm.mp4",
+        "metrics": "assets/go2/route_03_clip_01_tree_lined_sidewalk/metrics.json",
         "trajectories": "assets/go2/route_03_clip_01_tree_lined_sidewalk/trajectories.csv"
       }
     },
@@ -335,10 +320,7 @@
         233
       ],
       "downloads": {
-        "ego": "assets/go2/route_03_clip_02_courtyard_turn/gt_ego.mp4",
-        "third_person": "assets/go2/route_03_clip_02_courtyard_turn/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_03_clip_02_courtyard_turn/opennwm.mp4",
-        "nwm": "assets/go2/route_03_clip_02_courtyard_turn/nwm.mp4",
+        "metrics": "assets/go2/route_03_clip_02_courtyard_turn/metrics.json",
         "trajectories": "assets/go2/route_03_clip_02_courtyard_turn/trajectories.csv"
       }
     },
@@ -393,10 +375,7 @@
         151
       ],
       "downloads": {
-        "ego": "assets/go2/route_04_clip_01_gallery_turn/gt_ego.mp4",
-        "third_person": "assets/go2/route_04_clip_01_gallery_turn/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_04_clip_01_gallery_turn/opennwm.mp4",
-        "nwm": "assets/go2/route_04_clip_01_gallery_turn/nwm.mp4",
+        "metrics": "assets/go2/route_04_clip_01_gallery_turn/metrics.json",
         "trajectories": "assets/go2/route_04_clip_01_gallery_turn/trajectories.csv"
       }
     },
@@ -451,10 +430,7 @@
         241
       ],
       "downloads": {
-        "ego": "assets/go2/route_04_clip_02_cafe_turn/gt_ego.mp4",
-        "third_person": "assets/go2/route_04_clip_02_cafe_turn/gt_third_person.mp4",
-        "opennwm": "assets/go2/route_04_clip_02_cafe_turn/opennwm.mp4",
-        "nwm": "assets/go2/route_04_clip_02_cafe_turn/nwm.mp4",
+        "metrics": "assets/go2/route_04_clip_02_cafe_turn/metrics.json",
         "trajectories": "assets/go2/route_04_clip_02_cafe_turn/trajectories.csv"
       }
     }

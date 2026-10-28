@@ -1,5 +1,5 @@
 const root = document.querySelector("#go2-navigation");
-const revision = "expanded-gallery-v1-20261028";
+const revision = "go2-arrows-v2-20261028";
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[character]);

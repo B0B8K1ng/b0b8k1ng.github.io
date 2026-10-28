@@ -34,10 +34,7 @@ Version 2 contract (angle-bracket strings are field descriptions, not data):
         "nwm": {"ate_m": "<number>", "rpe_m": "<number>"}
       },
       "downloads": {
-        "ego": "assets/go2/<clipid>/gt_ego.mp4",
-        "third_person": "assets/go2/<clipid>/gt_third_person.mp4",
-        "opennwm": "assets/go2/<clipid>/opennwm.mp4",
-        "nwm": "assets/go2/<clipid>/nwm.mp4",
+        "metrics": "assets/go2/<clipid>/metrics.json",
         "trajectories": "assets/go2/<clipid>/trajectories.csv"
       }
     }
@@ -48,7 +45,7 @@ Version 2 contract (angle-bracket strings are field descriptions, not data):
 
 The page shows each clip's video and title immediately after the opening film.
 There are no route/duration badges, report links, video links or planning labels.
-Metrics and per-model downloads remain in the manifest and report; the video
+Metrics and trajectory downloads remain in the manifest and report; the video
 shows ATE and RPE with downward arrows to indicate lower error is better.
 Protocol details and selection criteria belong in the report. Preserve exact
 metric aggregation and per-goal values; omit missing values instead of
@@ -67,6 +64,74 @@ additional fields in the manifest; the gallery ignores legacy `full`,
 Retain recordings, full aligned originals, source hashes and model outputs in
 the NAS archive. Publish only reviewed films, posters and scrubbed reports;
 do not include credentials or private absolute paths.
+
+## Web publication from NAS masters
+
+`tools/publish_go2_gallery.py` reads a renderer gallery containing
+`website_manifest.json`, `report.json`, and one directory per clip. It creates
+separate 1920×1080 H.264 web copies of `comparison.mp4` at CRF 22 (medium preset,
+unchanged frame count/rate, no audio, `yuv420p`, `+faststart`). Posters, per-clip
+`metrics.json`, `trajectories.csv`, and the full report are copied byte-for-byte.
+The website manifest keeps the same clips, order, timestamps and metrics but
+advertises only the metrics/CSV downloads above. Independent GT and model
+rollouts remain in the NAS gallery and are not republished.
+
+Run with an explicit runtime after the master gallery and its metrics pass
+review. This command updates local files only; it does not commit or deploy:
+
+```bash
+/file_system/vepfs/algorithm/dujun.nie/miniconda3/bin/python tools/publish_go2_gallery.py \
+  --source /file_system/nas/algorithm/dujun.nie/opennwm_go2_showcase_20261027/gallery_expanded \
+  --retained-source /file_system/nas/algorithm/dujun.nie/opennwm_go2_showcase_20261027/gallery \
+  --website /file_system/vepfs/algorithm/dujun.nie/code/OpenNWM/website \
+  --website /file_system/vepfs/algorithm/dujun.nie/code/OpenNWM-website \
+  --crf 22 --preset medium --jobs 2
+```
+
+`--jobs 4` is also supported. The default encoder is the explicit FFmpeg 7.0.2
+binary used by the camera preparation pipeline; `--ffmpeg` and `--ffprobe`
+accept absolute executable paths. Each encode prints its exact command, PID,
+working directory and log path. Separate web copies and validation receipts
+live in `source.parent/web_gallery_cache/<source-directory>/crf22_medium/`;
+no master is overwritten. Validated unchanged copies are reused only after
+their source, encoder settings and output SHA-256 hashes match.
+
+Add `--prepare-only` to encode, validate and check both site budgets without
+changing any website file. The resulting validation report says
+`published: false` and `prepare_only: true`; the cache videos can be reviewed
+before rerunning the same command without that flag. Successful publication
+sets `published: true`.
+
+Before touching either website, the helper verifies all required files,
+decodes each newly encoded film, checks duration/frame count/codec/faststart,
+and checks the final size of every target against 950,000,000 bytes (decimal
+950 MB). The calculation includes all files packaged by the current Pages
+workflow, not just Go2 videos. Each web film must also remain below 95 MiB.
+It stops if CRF 22 does not fit; it does not silently lower quality or omit
+clips. Use `--max-site-mb` only when intentionally changing the site budget.
+
+Only existing `gt_ego.mp4`, `gt_third_person.mp4`, `opennwm.mp4`, and `nwm.mp4`
+under individual Go2 clip folders are eligible for removal from the website.
+Every removal must first match an intact NAS original by size and SHA-256;
+a missing/different original aborts publication. Search starts in `--source`,
+then any explicitly supplied `--retained-source` directories in order. This
+allows a regenerated master to differ bytewise while proving the original
+published copy remains intact in the older NAS gallery. The validation report
+records the exact matching archive path and hash for each removal.
+NAS symlinks must not point
+back into a website, and destination symlinks are rejected. Other website
+assets are preserved and counted against the budget. All new files use atomic
+replacement; the manifest is written after its assets, and redundant videos
+are removed only after their links disappear from the manifest.
+
+The resulting `source.parent/webpublish_validation.json` records per-clip
+master/web hashes, decode validation, removed website copies with original
+hashes, and the measured final size of each site. Override its location with
+`--validation`; this private report belongs outside the public websites.
+The renderer's NAS `website_manifest.json` and inventory remain unchanged;
+the web manifest intentionally differs in its download entries and videos.
+Use the publication validation report for web-copy checks instead of the
+master validator's byte-identical-video comparison.
 
 Deploy only the Go2 changes through the separate public checkout
 `/file_system/vepfs/algorithm/dujun.nie/code/OpenNWM-website`, remote
