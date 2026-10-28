@@ -18,7 +18,7 @@ async function init() {
   const clips = (manifest.clips || []).filter((clip) => clip && asset(clip.video));
   if (!clips.length) return;
 
-  root.innerHTML = `<div class="go2-heading"><h2 id="go2-title"></h2></div>
+  root.innerHTML = `<div class="go2-heading"><div><span id="go2-section-number" class="eyebrow section-number"></span><h2 id="go2-title"></h2></div></div>
     <div class="go2-grid">${clips.map((clip, index) => `<figure class="go2-clip" data-clip="${escape(clip.id || index)}"><div class="go2-screen"><video id="go2-video-${index}" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback tabindex="-1"></video><p class="go2-media-error" role="status" hidden></p></div><figcaption><h3></h3></figcaption></figure>`).join("")}</div>`;
   root.hidden = false;
   const cards = [...root.querySelectorAll(".go2-clip")];
@@ -50,6 +50,7 @@ async function init() {
   function retryPending() { pending.forEach(tryPlay); }
 
   function renderText() {
+    root.querySelector("#go2-section-number").textContent = t("03 / REAL WORLD", "03 / 真机");
     root.querySelector("#go2-title").textContent = t("Real-world navigation.", "真实场景导航。");
     cards.forEach((card, index) => {
       const clip = clips[index];

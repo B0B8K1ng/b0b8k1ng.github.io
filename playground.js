@@ -10,7 +10,13 @@ export async function initPlayground(getLanguage) {
   const t = (en, zh) => getLanguage() === "zh" ? zh || en : en;
   const canvas = $("#trajectory-canvas"), context = canvas.getContext("2d");
   const video = $("#playground-video");
-  const motion = matchMedia("(prefers-reduced-motion: reduce)");
+  video.autoplay = true; video.muted = true; video.defaultMuted = true;
+  video.loop = true; video.playsInline = true; video.controls = false;
+  let videoVisible = false;
+  function updatePlayback() {
+    if (videoVisible && !document.hidden && !video.hidden && video.getAttribute("src")) video.play().catch(() => {});
+    else video.pause();
+  }
   let data, scene, preset = "forward", points = defaultPaths.forward.map((point) => [...point]);
   let live = false, busy = false, drawing = false, activePointer = null, version = 0, pollTimer, controller;
   let healthVersion = 0, serviceChecking = false;
@@ -55,12 +61,10 @@ export async function initPlayground(getLanguage) {
     $("#service-retry").disabled = serviceChecking || busy;
     if (!scene) {
       $("#generate-path").disabled = true;
-      $("#play-preset").disabled = true;
       return;
     }
     $("#prediction-mode").textContent = mode === "live" ? t("LIVE MODEL OUTPUT", "实时模型预测") : mode === "preset" ? t("PRECOMPUTED", "预计算结果") : t("STARTING VIEW", "初始视野");
     $("#generate-path").disabled = !live || busy || drawing || !validPath();
-    $("#play-preset").disabled = busy || !selectedPreset()?.video;
     $("#path-clear").disabled = busy;
     $("#playground-service-note").textContent = live ? t("Custom generation takes a few minutes.", "自定义生成需要几分钟。") : t("Connect the live service to generate a custom path.", "连接实时服务后可生成自定义路线。");
     const messages = {
@@ -94,7 +98,10 @@ export async function initPlayground(getLanguage) {
     if (busy) return;
     resetOutput(); preset = id;
     points = (selectedPreset()?.points || defaultPaths[id]).map((point) => [...point]);
-    message = "ready"; draw(); renderStatus();
+    const item = selectedPreset();
+    message = item?.video ? "preset" : "ready";
+    if (item?.video) showVideo(item.video, item.poster, "preset");
+    draw(); renderStatus();
   }
   function selectScene(id) {
     resetOutput(); scene = data.scenes.find((item) => item.id === id) || data.scenes[0];
@@ -138,12 +145,8 @@ export async function initPlayground(getLanguage) {
     mode = outputMode; video.src = src; video.poster = poster || scene.poster || scene.image;
     video.hidden = false; $("#playground-initial").hidden = true;
     $("#prediction-placeholder").hidden = true; $("#generation-overlay").hidden = true;
-    video.load(); if (!motion.matches) video.play().catch(() => {}); renderStatus();
+    video.load(); updatePlayback(); renderStatus();
   }
-  $("#play-preset").addEventListener("click", () => {
-    const item = selectedPreset(); if (!item?.video || busy) return;
-    resetOutput(); message = "preset"; showVideo(item.video, item.poster, "preset");
-  });
   async function health() {
     const checkVersion = ++healthVersion;
     serviceChecking = true; renderStatus();
@@ -200,8 +203,17 @@ export async function initPlayground(getLanguage) {
     if (!video.getAttribute("src")) return;
     message = "failed"; errorDetail = t("The prediction video could not load.", "预测视频加载失败。"); renderStatus();
   });
-  new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) video.pause(); }, { threshold: .01 }).observe(video);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) video.pause(); else if (!busy) health(); });
+  video.addEventListener("play", () => {
+    if (!videoVisible || document.hidden || video.hidden) video.pause();
+  });
+  new IntersectionObserver(([entry]) => {
+    videoVisible = entry.isIntersecting && entry.intersectionRatio >= .01;
+    updatePlayback();
+  }, { threshold: [0, .01] }).observe(video);
+  document.addEventListener("visibilitychange", () => {
+    updatePlayback();
+    if (!document.hidden && !busy) health();
+  });
   draw();
   try {
     const response = await fetch("content/playground.json?v=earth-space-v3-20260930", { cache: "no-cache" });
@@ -211,7 +223,6 @@ export async function initPlayground(getLanguage) {
     selectScene(data.defaultScene || data.scenes[0].id);
   } catch {
     $("#playground-status").textContent = t("Demo scenes could not load. Please reload the page.", "演示场景加载失败，请刷新页面。");
-    $("#play-preset").disabled = true;
   }
   await health();
   return { render };

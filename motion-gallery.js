@@ -16,21 +16,10 @@ export function initMotionGallery(demos, getLanguage) {
   const root = document.querySelector("#motion-gallery");
   if (!root) return { render() {} };
   const t = (en, zh) => getLanguage() === "zh" ? zh || en : en;
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-  let globallyPaused = reducedMotion.matches;
   const items = [];
-  root.innerHTML = '<div class="motion-gallery-toolbar"><button type="button" class="motion-gallery-toggle"></button></div><div class="motion-gallery-grid"></div>';
+  root.innerHTML = '<div class="motion-gallery-grid"></div>';
   const grid = root.querySelector(".motion-gallery-grid");
-  const toggle = root.querySelector(".motion-gallery-toggle");
-  const playIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z"/></svg>';
-  const pauseIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>';
 
-  function updateButton(item) {
-    const label = item.playing ? t("Pause", "暂停") : t("Play", "播放");
-    item.button.innerHTML = item.playing ? pauseIcon : playIcon;
-    item.button.setAttribute("aria-label", `${label} · ${t(item.demo.title, item.demo.titleZh)}`);
-    item.button.setAttribute("aria-pressed", String(item.playing));
-  }
   function updateTrajectory(item) {
     const time = item.leader.getAttribute("src") ? item.leader.currentTime : item.demo.posterTime || 0;
     const index = Math.min(item.points.length - 1, Math.max(0, Math.floor(time * item.demo.fps + .001)));
@@ -50,7 +39,6 @@ export function initMotionGallery(demos, getLanguage) {
     item.phase = "paused";
     clearInterval(item.syncTimer);
     item.videos.forEach((video) => { video.pause(); video.playbackRate = 1; });
-    updateButton(item);
   }
   function seekPair(item, time) {
     for (const video of item.videos) {
@@ -127,12 +115,11 @@ export function initMotionGallery(demos, getLanguage) {
         video.load();
       }
     });
-    updateButton(item);
     holdPair(item, time);
   }
   function resumeVisible() {
     items.forEach((item) => {
-      if (globallyPaused || item.userPaused || !item.visible || document.hidden) pause(item);
+      if (!item.visible || document.hidden) pause(item);
       else play(item);
     });
   }
@@ -144,31 +131,31 @@ export function initMotionGallery(demos, getLanguage) {
     const card = document.createElement("article");
     card.className = `motion-card${demo.environment === "lunar" ? " motion-card-lunar" : ""}`;
     card.dataset.demo = demo.id;
-    const video = (key) => `<video data-model="${key}" muted playsinline preload="none" width="${Number(demo.width) || 224}" height="${Number(demo.height) || 224}" data-source="${escape(demo[key])}" poster="${escape(demo[`${key}Poster`] || demo.poster)}"></video>`;
+    const video = (key) => `<video data-model="${key}" autoplay muted loop playsinline preload="none" width="${Number(demo.width) || 224}" height="${Number(demo.height) || 224}" data-source="${escape(demo[key])}" poster="${escape(demo[`${key}Poster`] || demo.poster)}"></video>`;
     const lunarMark = demo.environment === "lunar" ? '<svg class="motion-moon-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.3A8.8 8.8 0 0 1 9.7 3.5a8.8 8.8 0 1 0 10.8 10.8Z"/></svg>' : "";
-    card.innerHTML = `<header class="motion-card-heading"><div class="motion-card-title"><h3 id="motion-title-${escape(demo.id)}"></h3>${demo.fineTuned ? '<span class="motion-adaptation-label"></span>' : ""}</div><div class="motion-card-actions"><button type="button" class="motion-card-toggle"></button>${lunarMark}</div></header><div class="motion-card-media"><div class="motion-comparison" style="--wipe:50%"><div class="motion-video-layer motion-prediction-layer">${video("prediction")}<span class="motion-video-label motion-label-prediction">OpenNWM</span></div><div class="motion-video-layer motion-truth-layer">${video("gt")}<span class="motion-video-label motion-label-gt"></span></div><div class="motion-wipe-handle" aria-hidden="true"><span>‹ ›</span></div><input class="motion-wipe-input" type="range" min="0" max="100" step="1" value="50"></div><figure class="motion-trajectory"><svg viewBox="0 0 132 224" role="img"><path class="motion-path-grid" d="M22 0v224M44 0v224M66 0v224M88 0v224M110 0v224M0 28h132M0 56h132M0 84h132M0 112h132M0 140h132M0 168h132M0 196h132"/><polyline class="motion-path-full" points="${points.map((point) => point.join(",")).join(" ")}"/><polyline class="motion-path-progress"/><circle class="motion-path-start" cx="${points[0][0]}" cy="${points[0][1]}" r="4"/><circle class="motion-path-cursor" r="5"/></svg><figcaption></figcaption></figure></div>`;
+    card.innerHTML = `<header class="motion-card-heading"><div class="motion-card-title"><h3 id="motion-title-${escape(demo.id)}"></h3>${demo.fineTuned ? '<span class="motion-adaptation-label"></span>' : ""}</div><div class="motion-card-actions">${lunarMark}</div></header><div class="motion-card-media"><div class="motion-comparison" style="--wipe:50%"><div class="motion-video-layer motion-prediction-layer">${video("prediction")}<span class="motion-video-label motion-label-prediction">OpenNWM</span></div><div class="motion-video-layer motion-truth-layer">${video("gt")}<span class="motion-video-label motion-label-gt"></span></div><div class="motion-wipe-handle" aria-hidden="true"><span>‹ ›</span></div><input class="motion-wipe-input" type="range" min="0" max="100" step="1" value="50"></div><figure class="motion-trajectory"><svg viewBox="0 0 132 224" role="img"><path class="motion-path-grid" d="M22 0v224M44 0v224M66 0v224M88 0v224M110 0v224M0 28h132M0 56h132M0 84h132M0 112h132M0 140h132M0 168h132M0 196h132"/><polyline class="motion-path-full" points="${points.map((point) => point.join(",")).join(" ")}"/><polyline class="motion-path-progress"/><circle class="motion-path-start" cx="${points[0][0]}" cy="${points[0][1]}" r="4"/><circle class="motion-path-cursor" r="5"/></svg><figcaption></figcaption></figure></div>`;
     card.setAttribute("aria-labelledby", `motion-title-${demo.id}`);
     grid.append(card);
     const leader = card.querySelector('[data-model="gt"]');
     const item = {
-      demo, card, points, leader, button: card.querySelector("button"),
+      demo, card, points, leader,
       videos: [leader, card.querySelector('[data-model="prediction"]')],
       comparison: card.querySelector(".motion-comparison"), slider: card.querySelector("input"),
       cursor: card.querySelector(".motion-path-cursor"), progress: card.querySelector(".motion-path-progress"),
-      visible: false, playing: false, userPaused: false, generation: 0,
+      visible: false, playing: false, generation: 0,
       phase: "paused", syncTime: 0, syncTimer: null, pendingSeek: new Set(),
     };
     item.videos.forEach((element) => { element.muted = true; });
     item.slider.addEventListener("input", () => updateWipe(item));
-    item.button.addEventListener("click", () => {
-      if (item.playing) { item.userPaused = true; pause(item); }
-      else { item.userPaused = false; play(item); }
-    });
     leader.addEventListener("timeupdate", () => {
       updateTrajectory(item);
       synchronize(item);
     });
     item.videos.forEach((video) => {
+      // Native autoplay and loop must obey the shared decoder barrier.
+      video.addEventListener("play", () => {
+        if (!item.playing || !item.visible || document.hidden || !["starting", "running"].includes(item.phase)) video.pause();
+      });
       ["loadedmetadata", "canplay", "canplaythrough", "progress"].forEach((event) => video.addEventListener(event, () => startReadyPair(item)));
       video.addEventListener("waiting", () => {
         if (item.playing && (item.phase === "running" || item.phase === "starting") && video.readyState < 3) holdPair(item);
@@ -196,13 +183,11 @@ export function initMotionGallery(demos, getLanguage) {
       const item = items.find((candidate) => candidate.card === entry.target);
       item.visible = entry.isIntersecting && entry.intersectionRatio >= .15;
       if (!item.visible) pause(item);
-      else if (!globallyPaused && !item.userPaused) play(item);
+      else play(item);
     }
   }, { threshold: [0, .15] });
   items.forEach((item) => observer.observe(item.card));
   function render() {
-    toggle.textContent = globallyPaused ? t("Play all", "全部播放") : t("Pause all", "全部暂停");
-    toggle.setAttribute("aria-pressed", String(!globallyPaused));
     items.forEach((item) => {
       const title = t(item.demo.title, item.demo.titleZh);
       item.card.querySelector("h3").textContent = title;
@@ -214,21 +199,9 @@ export function initMotionGallery(demos, getLanguage) {
       item.slider.setAttribute("aria-label", t(`Compare Ground truth and OpenNWM: ${title}`, `滑动对比真实画面与 OpenNWM：${title}`));
       item.videos.forEach((element) => element.setAttribute("aria-label", `${title} · ${element.dataset.model === "gt" ? t("Ground truth", "真实画面") : "OpenNWM"}`));
       updateWipe(item);
-      updateButton(item);
     });
   }
-  toggle.addEventListener("click", () => {
-    globallyPaused = !globallyPaused;
-    if (!globallyPaused) items.forEach((item) => { item.userPaused = false; });
-    resumeVisible();
-    render();
-  });
   document.addEventListener("visibilitychange", resumeVisible);
-  reducedMotion.addEventListener("change", () => {
-    globallyPaused = reducedMotion.matches;
-    resumeVisible();
-    render();
-  });
   render();
   return { render };
 }
