@@ -30289,7 +30289,7 @@
   "protocol": {
     "evaluation": "Offline visual-goal planning; predictions were not executed on the robot.",
     "reference": "Recorded onboard odometry in meters; approximate visual camera alignment.",
-    "selection": "Continuous 20\u201330 s clips preselected for scene coverage and unobstructed third-person view before evaluation.",
+    "selection": "Continuous 20–30 s clips preselected for scene coverage and unobstructed third-person view before evaluation.",
     "planning": "Each local plan starts from recorded context; both models share goals, horizon and CEM budget within each clip.",
     "metrics": "Paper ATE/RPE definitions, averaged across complete local plans. Different planning horizons are reported separately.",
     "sampling": "Original DDPM checkpoints; no DMD2. Budget and exact settings are retained per clip."
@@ -30308,46 +30308,5 @@
     "model": "Exact saved generated frames, repeated at output FPS; no image enhancement or replacement.",
     "sampling": "Nearest 4 Hz sample shared by GT/model/trajectory; third-person follows aligned continuous time.",
     "trajectory": "Forward up, physical left to the left. Equal metric scale shared by all three paths, fit per local plan; no smoothing."
-  },
-  "summary": {
-    "duration_s": 216.0,
-    "horizon_s": 1,
-    "aggregation": "Unweighted mean over independent local-plan windows; no per-clip selection by model output.",
-    "models": {
-      "opennwm": {
-        "windows": 216,
-        "means": {
-          "ate": 1.4391702897782523,
-          "rpe_trans": 0.5766212589322517,
-          "pos_diff_norm": 2.0846692854193627,
-          "yaw_diff_norm": 0.07236013348365018,
-          "ate_m": 0.10952445859845285,
-          "rpe_m": 0.04388232000720634,
-          "endpoint_m": 0.15864854664110611,
-          "endpoint_yaw_deg": 4.145930253616426
-        }
-      },
-      "nwm": {
-        "windows": 216,
-        "means": {
-          "ate": 1.6256414671856683,
-          "rpe_trans": 0.6547725766674144,
-          "pos_diff_norm": 2.370452780345524,
-          "yaw_diff_norm": 0.14309920715559785,
-          "ate_m": 0.12371538158707991,
-          "rpe_m": 0.049829830753150256,
-          "endpoint_m": 0.1803973853855359,
-          "endpoint_yaw_deg": 8.198980621684026
-        }
-      }
-    }
-  },
-  "quality": {
-    "planning_horizon_s": 1,
-    "selection": "The same one-second horizon is used for both models across all eight preselected clips after paired 1 s / 2 s visual review.",
-    "limitations": "One-second plans limit autoregressive drift; structural hallucinations remain in the unaltered model rollouts. Metrics compare offline plans with recorded Go2 odometry, not executed navigation.",
-    "metric_comparison": "Shorter-horizon errors are inherently easier; do not compare these one-second errors directly with two-second results as evidence of improved navigation.",
-    "comparison_limitations": "The1s and2s diagnostics share actual start times and recorded context, but have different goal frames, CEM horizons and ID-based random seeds. They are practical qualitative protocol checks, not a noise-matched horizon ablation. ATE/RPE across horizons must not be interpreted as a controlled accuracy improvement.",
-    "generated_frame_editing": false
   }
 }
