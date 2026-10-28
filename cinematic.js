@@ -56,21 +56,15 @@ export async function initCinematic(getLanguage) {
   hero.addEventListener("play", () => { cancelAnimationFrame(frame); drawFrame(); });
   hero.addEventListener("pause", () => { cancelAnimationFrame(frame); frame = 0; updateHeroScene(); });
   ["timeupdate", "seeking", "seeked", "loadedmetadata", "emptied"].forEach((event) => hero.addEventListener(event, updateHeroScene));
-  seek.addEventListener("input", () => { hero.currentTime = Number(seek.value); updateHeroScene(); });
+  seek.addEventListener("input", () => seekTo(Number(seek.value)));
   function seekTo(time) {
     hero.currentTime = time;
     updateHeroScene();
+    hero.play().catch(() => {});
   }
   $("#journey-chapters").addEventListener("click", (event) => {
     const button = event.target.closest("[data-start]");
     if (button) seekTo(Number(button.dataset.start));
-  });
-  $("#watch-video-wall")?.addEventListener("click", () => {
-    const wall = chapters.find((chapter) => chapter.planet === "wall");
-    if (wall) {
-      seekTo(wall.start);
-      if (hero.paused) $("#hero-pause").click();
-    }
   });
   function renderNavigation() {
     const duration = filmDuration();
@@ -84,7 +78,6 @@ export async function initCinematic(getLanguage) {
 
   function render() {
     renderNavigation();
-    if (film?.counts) $("#mosaic-counts").textContent = t(`NAVANYWHERE / ${film.counts.sources} SOURCES / ${film.counts.clips} SEQUENCES`, `NAVANYWHERE / ${film.counts.sources} 个来源 / ${film.counts.clips} 段序列`);
   }
   const response = await fetch("content/cinematic.json?v=main-figure-v8-20261010", { cache: "no-cache" }).catch(() => null);
   if (response?.ok) {
