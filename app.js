@@ -219,7 +219,8 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const response = await fetch(`content/${name}.json?v=main-figure-v8-20261010`);
+        const revision = name === "paper" ? "authors-v1-20261028" : "main-figure-v8-20261010";
+        const response = await fetch(`content/${name}.json?v=${revision}`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
       }),

@@ -4,10 +4,18 @@
     "short_title": "OpenNWM",
     "title": "OpenNWM: A Generalist Navigation World Model with Latent Action Pretraining",
     "authors": [
-      "Anonymous authors"
+      "Dujun Nie",
+      "Ruiqi Song",
+      "Zixuan Wang",
+      "Hanqing Wang",
+      "Yifan Han",
+      "Baiyong Ding",
+      "Wenzhao Zheng",
+      "Hangbin Wu",
+      "Long Chen"
     ],
     "publication_status": "Under review as a conference paper at ICLR 2027",
-    "review_status": "Paper under double-blind review",
+    "review_status": "The downloadable PDF is the anonymized review version.",
     "publication_year": null,
     "venue": null,
     "doi": null,
@@ -15,7 +23,57 @@
     "source": {
       "page": 1
     },
-    "note": "The supplied manuscript does not identify authors or affiliations and does not state an accepted venue, DOI, arXiv URL, or publication year."
+    "note": "Author order and contribution markers follow the author-supplied title-page image. Affiliations incorporate the authors’ corrections. The downloadable PDF does not state an accepted venue, DOI, arXiv URL, or publication year.",
+    "affiliations": {
+      "1": "CASIA",
+      "2": "UCAS",
+      "3": "HKUST (Guangzhou)",
+      "4": "Shanghai Jiao Tong University",
+      "5": "UC Berkeley",
+      "6": "Tongji University"
+    },
+    "author_affiliations": {
+      "Dujun Nie": [
+        1,
+        2
+      ],
+      "Ruiqi Song": [
+        1,
+        6
+      ],
+      "Zixuan Wang": [
+        1,
+        2
+      ],
+      "Hanqing Wang": [
+        3
+      ],
+      "Yifan Han": [
+        1,
+        2,
+        4
+      ],
+      "Baiyong Ding": [
+        1
+      ],
+      "Wenzhao Zheng": [
+        5
+      ],
+      "Hangbin Wu": [
+        6
+      ],
+      "Long Chen": [
+        1
+      ]
+    },
+    "equal_contributors": [
+      "Dujun Nie",
+      "Ruiqi Song"
+    ],
+    "corresponding_authors": [
+      "Long Chen"
+    ],
+    "research_group": "OpenSpace Lab"
   },
   "overview": {
     "tagline": "Learn navigation dynamics from action-free video. Adapt them to physical actions.",
@@ -1020,8 +1078,8 @@
     }
   },
   "citation": {
-    "bibtex": "@unpublished{opennwm,\n  title = {OpenNWM: A Generalist Navigation World Model with Latent Action Pretraining},\n  author = {Anonymous Authors},\n  note = {Under review as a conference paper at ICLR 2027}\n}",
-    "note": "Provisional citation preserving the supplied manuscript’s anonymous review status; no publication year or permanent identifier is stated.",
+    "bibtex": "@unpublished{opennwm,\n  title = {OpenNWM: A Generalist Navigation World Model with Latent Action Pretraining},\n  author = {Nie, Dujun and Song, Ruiqi and Wang, Zixuan and Wang, Hanqing and Han, Yifan and Ding, Baiyong and Zheng, Wenzhao and Wu, Hangbin and Chen, Long},\n  note = {Under review as a conference paper at ICLR 2027}\n}",
+    "note": "Author names follow the author-supplied title-page image. Publication status follows the supplied manuscript; no publication year or permanent identifier is stated.",
     "source": {
       "page": 1
     }
