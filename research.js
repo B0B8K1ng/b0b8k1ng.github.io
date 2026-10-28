@@ -10,11 +10,7 @@ const escapeHTML = (value) =>
 export function initResearch(paper, getLanguage) {
   const element = (id) => document.getElementById(id);
   const method = element("method-overview");
-  const domainSelect = element("result-domain");
-  const metricTabs = element("metric-tabs");
-  const chart = element("result-chart");
-  const rows = paper.results.direct_prediction.rows;
-  const state = { domain: "id", idMetric: "lpips" };
+  const results = element("paper-results");
   const t = (en, zh) => (getLanguage().startsWith("zh") ? zh : en);
   function renderMethod() {
     const label = t("Open the original method figure at full resolution", "查看完整尺寸的方法原图");
@@ -26,79 +22,118 @@ export function initResearch(paper, getLanguage) {
     method.querySelector("img").alt = alt;
   }
 
-  function domains() {
-    return [
-      ["id", t("In-domain average", "域内平均")],
-      ["go_stanford", t("Go Stanford · OOD", "Go Stanford · 域外")],
-      ["tum", t("TUM RGB-D · OOD", "TUM RGB-D · 域外")],
-      ["planetary_rover", t("Planetary Rover · OOD", "行星探测车 · 域外")],
-      ["office_go2", t("Office-Go2 · OOD", "Office-Go2 · 域外")],
-    ];
+  const metric = (key, label, direction = "lower", digits = 3) => ({
+    key, label, direction, digits,
+  });
+
+  function table({ title, rows, columns, label = (row) => row.model, labelTitle, note = "" }) {
+    const best = columns.map(({ key, direction }) => {
+      const values = rows.map((row) => row[key]).filter(Number.isFinite);
+      return direction === "higher" ? Math.max(...values) : Math.min(...values);
+    });
+    const headers = columns.map(({ label: name, direction }) =>
+      `${name} ${direction === "higher" ? "↑" : "↓"}`,
+    );
+    return `<div class="results-table-card">
+      <table class="results-table${columns.length > 4 ? " results-table--wide" : ""}">
+        <caption>${escapeHTML(title)}</caption>
+        <thead><tr><th scope="col">${escapeHTML(labelTitle || t("Model", "模型"))}</th>${headers.map((name) => `<th scope="col">${escapeHTML(name)}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((row) => `<tr${row.id === "opennwm" ? ' class="results-ours"' : ""}><th scope="row">${escapeHTML(label(row))}</th>${columns.map(({ key, digits }, i) => {
+          const value = row[key];
+          if (!Number.isFinite(value)) return `<td data-label="${escapeHTML(headers[i])}" aria-label="${escapeHTML(t("Not reported", "未报告"))}">—</td>`;
+          const number = value.toFixed(digits);
+          return `<td data-label="${escapeHTML(headers[i])}">${value === best[i] ? `<strong>${number}</strong>` : number}</td>`;
+        }).join("")}</tr>`).join("")}</tbody>
+      </table>${note ? `<p class="results-table-note">${escapeHTML(note)}</p>` : ""}
+    </div>`;
+  }
+
+  function group(id, title, tables, note = "") {
+    return `<section class="results-group" aria-labelledby="${id}-title">
+      <h3 id="${id}-title">${escapeHTML(title)}</h3>
+      <div class="results-table-grid${tables.length === 1 ? " results-table-grid--single" : ""}">${tables.join("")}</div>
+      ${note ? `<p class="results-group-note">${escapeHTML(note)}</p>` : ""}
+    </section>`;
   }
 
   function renderResults() {
-    const isID = state.domain === "id";
-    const metric = isID ? state.idMetric : "psnr";
-    const metricName = { lpips: "LPIPS", dreamsim: "DreamSim", psnr: "PSNR" }[
-      metric
+    if (!results) return;
+    const data = paper.results;
+    const prediction = data.direct_prediction;
+    const modelName = (row) => row.id === "opennwm" ? "OpenNWM" : row.model;
+    const predictionTables = [
+      table({
+        title: t("In-domain · 4 s", "域内 · 4 秒"),
+        rows: prediction.rows,
+        columns: [metric("id_lpips", "LPIPS"), metric("id_dreamsim", "DreamSim"), metric("id_psnr", "PSNR (dB)", "higher")],
+        note: prediction.id_datasets.join(" · "),
+      }),
+      table({
+        title: t("Out-of-domain · PSNR (dB)", "域外 · PSNR (dB)"),
+        rows: prediction.rows,
+        columns: [metric("go_stanford_psnr", "Go Stanford", "higher"), metric("tum_psnr", "TUM RGB-D", "higher"), metric("planetary_rover_psnr", "Planetary Rover", "higher"), metric("office_go2_psnr", "Office-Go2", "higher")],
+      }),
     ];
-    const key = `${state.domain}_${metric}`;
-    const higher = metric === "psnr";
-    const label = domains().find(([id]) => id === state.domain)[1];
-    const values = rows.map((row) => row[key]);
-    const maximum = Math.max(...values);
-    const axisMaximum = higher
-      ? Math.ceil(maximum / 2) * 2
-      : Math.ceil(maximum * 10) / 10;
-    const best = higher ? maximum : Math.min(...values);
-    domainSelect.innerHTML = domains()
-      .map(
-        ([id, name]) =>
-          `<option value="${id}"${id === state.domain ? " selected" : ""}>${escapeHTML(name)}</option>`,
-      )
-      .join("");
-    domainSelect.setAttribute(
-      "aria-label",
-      t("Evaluation dataset", "评测数据集"),
+    const navigationTables = [
+      ["recon", "RECON"], ["scand", "SCAND"],
+      ["office_go2", t("Office-Go2 · Out-of-domain", "Office-Go2 · 域外")], ["tartan_drive", "TartanDrive"],
+    ].map(([key, title]) => table({
+      title,
+      rows: data.navigation.rows,
+      columns: [metric(`${key}_ate`, "ATE (m)", "lower", 2), metric(`${key}_rpe`, "RPE (m)", "lower", 2)],
+    }));
+    const ablationColumns = [
+      metric("direct_lpips", "Direct LPIPS"), metric("autoregressive_lpips", "Autoregressive LPIPS"),
+      metric("recon_ate", "RECON ATE (m)"), metric("recon_rpe", "RECON RPE (m)"),
+      metric("scand_ate", "SCAND ATE (m)"), metric("scand_rpe", "SCAND RPE (m)"),
+    ];
+    const ablationNote = t(
+      "Direct: Office-Go2, 4 s. Autoregressive: Go Stanford, 4 FPS, up to 4 s.",
+      "直接预测：Office-Go2，4 秒。自回归预测：Go Stanford，4 FPS，最长 4 秒。",
     );
-    metricTabs.setAttribute("aria-label", t("Prediction metric", "预测指标"));
-    metricTabs.querySelectorAll("[data-metric]").forEach((button) => {
-      const active = button.dataset.metric === metric;
-      button.hidden = !isID && button.dataset.metric !== "psnr";
-      button.disabled = button.hidden;
-      button.classList.toggle("active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
-    chart.setAttribute("role", "list");
-    chart.setAttribute(
-      "aria-label",
-      `${label}: ${metricName}, ${t(higher ? "higher is better" : "lower is better", higher ? "越高越好" : "越低越好")}`,
-    );
-    chart.innerHTML = rows
-      .map((row) => {
-        const value = row[key];
-        const model = row.id === "nwm-xl-ego4d" ? "NWM†" : row.model;
-        const number = value.toFixed(3);
-        const accessible = `${model}: ${metricName} ${number}${higher ? " dB" : ""}${value === best ? t(", best reported", "，已报告最优") : ""}`;
-        return `<div class="chart-row${row.id === "opennwm" ? " ours" : ""}" role="listitem" aria-label="${escapeHTML(accessible)}"><span class="chart-model-label" aria-hidden="true">${escapeHTML(model)}</span><div class="chart-track" aria-hidden="true"><div class="chart-bar" style="--value:${(value / axisMaximum) * 100}%"></div></div><span class="chart-number" aria-hidden="true">${number}</span></div>`;
-      })
-      .join("");
-    element("chart-footnote").textContent = "NWM†: CDiT-XL + Ego4D";
-    element("chart-direction").textContent = higher
-      ? t("HIGHER IS BETTER ↑", "越高越好 ↑")
-      : t("LOWER IS BETTER ↓", "越低越好 ↓");
+    results.innerHTML = [
+      group("future-prediction-results", t("Future prediction", "未来预测"), predictionTables, "NWM†: CDiT-XL + Ego4D"),
+      group("navigation-results", t("Navigation", "导航"), navigationTables, t("— Not reported", "— 未报告")),
+      group("lam-results", t("Latent action reconstruction", "潜在动作重建"), [table({
+        title: t("In-domain and out-of-domain", "域内与域外"),
+        rows: data.lam_reconstruction.rows,
+        label: modelName,
+        columns: [metric("id_psnr", "ID PSNR (dB)", "higher"), metric("id_lpips", "ID LPIPS"), metric("ood_psnr", "OOD PSNR (dB)", "higher"), metric("ood_lpips", "OOD LPIPS")],
+        note: t("ID: RECON · SCAND · HuRoN. OOD: Go Stanford.", "域内：RECON · SCAND · HuRoN。域外：Go Stanford。"),
+      })]),
+      group("conditioning-results", t("Time and latent action conditioning", "时间与潜在动作条件"), [table({
+        title: t("Conditioning ablation", "条件消融"),
+        labelTitle: t("Conditioning", "条件"),
+        label: (row) => row.time && row.latent ? t("Time + latent action", "时间 + 潜在动作") : row.time ? t("Time only", "仅时间") : row.latent ? t("Latent action only", "仅潜在动作") : t("Neither", "均不使用"),
+        rows: data.conditioning_ablation.rows,
+        columns: ablationColumns,
+        note: ablationNote,
+      })]),
+      group("lam-supervision-results", t("Visual and physical supervision", "视觉与物理监督"), [table({
+        title: t("LAM supervision ablation", "LAM 监督消融"),
+        labelTitle: t("Supervision", "监督"),
+        label: (row) => row.label,
+        rows: data.lam_supervision_ablation.rows,
+        columns: ablationColumns,
+        note: ablationNote,
+      })]),
+      group("semantic-results", t("Latent action semantic consistency", "潜在动作语义一致性"), [table({
+        title: "Macro-6 Recall (%)",
+        labelTitle: t("Supervision", "监督"),
+        label: (row) => row.label,
+        rows: data.semantic_consistency.rows,
+        columns: [metric("recon", "RECON", "higher", 0), metric("sacson", "SACSoN", "higher", 0), metric("scand", "SCAND", "higher", 0), metric("tartan_drive", "TartanDrive · OOD", "higher", 0), metric("go_stanford", "Go Stanford · OOD", "higher", 0)],
+      })]),
+      group("scaling-results", t("Scaling action-free pretraining", "无动作标注预训练数据规模"), [table({
+        title: "RECON · 4 s",
+        labelTitle: t("Pretraining data", "预训练数据"),
+        label: (row) => `${row.unlabeled_data_percent}%`,
+        rows: data.scaling.points,
+        columns: [metric("dreamsim", "DreamSim", "lower", 5)],
+      })]),
+    ].join("");
   }
 
-  domainSelect.addEventListener("change", () => {
-    state.domain = domainSelect.value;
-    renderResults();
-  });
-  metricTabs.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-metric]");
-    if (!button || button.disabled || state.domain !== "id") return;
-    state.idMetric = button.dataset.metric;
-    renderResults();
-  });
   const render = () => {
     renderMethod();
     renderResults();

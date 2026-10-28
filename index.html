@@ -20,14 +20,15 @@
     <meta property="og:type" content="website" />
     <title>OpenNWM — A Generalist Navigation World Model</title>
     <link rel="icon" type="image/svg+xml" href="assets/mark.svg?v=main-figure-v8-20261010" />
-    <link rel="stylesheet" href="style.css?v=main-figure-v8-20261010" />
+    <link rel="stylesheet" href="style.css?v=all-sources-v1-20261028" />
     <link rel="stylesheet" href="method.css?v=main-figure-v8-20261010" />
     <link rel="stylesheet" href="motion-gallery.css?v=main-figure-v8-20261010" />
     <link rel="stylesheet" href="navigation.css?v=main-figure-v8-20261010" />
-    <link rel="stylesheet" href="reference-theme.css?v=main-figure-v8-20261010" />
-    <link rel="stylesheet" href="go2.css?v=grid-v4-inset-20261027" />
-    <script src="app.js?v=main-figure-v8-20261010" type="module"></script>
-    <script src="go2.js?v=grid-v3-20261027" type="module"></script>
+    <link rel="stylesheet" href="reference-theme.css?v=dataset-stats-v1-20261028" />
+    <link rel="stylesheet" href="results.css?v=all-results-v1-20261028" />
+    <link rel="stylesheet" href="go2.css?v=expanded-gallery-v1-20261028" />
+    <script src="app.js?v=hero-autoplay-v1-20261028" type="module"></script>
+    <script src="go2.js?v=expanded-gallery-v1-20261028" type="module"></script>
   </head>
   <body>
     <svg class="svg-definitions" aria-hidden="true">
@@ -65,8 +66,9 @@
         ></a
       >
       <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="#go2-navigation" data-en="Real world" data-zh="真实世界">Real world</a>
         <a href="#method" data-en="Method" data-zh="方法">Method</a>
-        <a href="#in-motion" data-en="Prediction" data-zh="视觉预测">Prediction</a>
+        <a href="#in-motion" data-en="Future prediction" data-zh="未来预测">Future prediction</a>
         <a href="#navigation" data-en="Navigation" data-zh="导航">Navigation</a>
         <a href="#results" data-en="Results" data-zh="指标结果">Results</a>
         <a href="#playground" data-en="Demo" data-zh="Demo">Demo</a>
@@ -126,14 +128,11 @@
         </div>
         <div class="hero-bottom section-shell">
           <span class="hero-scene" id="hero-scene">NavAnywhere</span>
-          <div class="hero-film-controls"><a class="hero-scroll" href="#method"><span class="scroll-line"></span><span data-en="EXPLORE THE WORLD MODEL" data-zh="探索世界模型">EXPLORE THE WORLD MODEL</span></a><button class="round-button" id="hero-pause" aria-label="Pause background video"><svg><use href="#pause"/></svg></button></div>
+          <div class="hero-film-controls"><a class="hero-scroll" href="#go2-navigation"><span class="scroll-line"></span><span data-en="EXPLORE REAL-WORLD NAVIGATION" data-zh="探索真实世界导航">EXPLORE REAL-WORLD NAVIGATION</span></a></div>
         </div>
       </section>
-      <div class="stats-strip section-shell hero-stats">
-        <div><span class="stat-value">17.5<span>M</span></span><span class="stat-label" data-en="visual observations" data-zh="视觉观测">visual observations</span></div>
-        <div><span class="stat-value">15</span><span class="stat-label" data-en="heterogeneous sources" data-zh="异构数据来源">heterogeneous sources</span></div>
-        <div><span class="stat-value">70.8<span>K</span></span><span class="stat-label" data-en="navigation sequences" data-zh="导航序列">navigation sequences</span></div>
-      </div>
+      <section class="go2-section section-shell section-space" id="go2-navigation" aria-labelledby="go2-title" hidden></section>
+
 
       <section
         class="method-section section-shell section-space"
@@ -181,9 +180,9 @@
           <div>
             <span
               class="eyebrow section-number"
-              data-en="02 / PREDICTION"
-              data-zh="02 / 视觉预测"
-              >02 / PREDICTION</span
+              data-en="02 / FUTURE PREDICTION"
+              data-zh="02 / 未来预测"
+              >02 / FUTURE PREDICTION</span
             >
             <h2
               id="motion-title"
@@ -208,73 +207,10 @@
         <div id="navigation-content"></div>
       </section>
 
-      <section class="go2-section section-shell section-space" id="go2-navigation" aria-labelledby="go2-title" hidden></section>
-
-      <section
-        class="results-section section-space"
-        id="results"
-        aria-labelledby="results-title"
-      >
+      <section class="results-section section-space" id="results" aria-labelledby="results-title">
         <div class="section-shell">
-          <div class="section-heading reveal">
-            <div>
-              <span
-                class="eyebrow section-number"
-                data-en="04 / RESULTS"
-                data-zh="04 / 指标结果"
-                >04 / RESULTS</span
-              >
-              <h2
-                id="results-title"
-                data-en="Visual prediction.&#10;Navigation performance."
-                data-zh="视觉预测与导航，&#10;用指标衡量。"
-              >
-                Visual prediction.<br />Navigation performance.
-              </h2>
-            </div>
-            <p
-              data-en="Prediction quality and navigation accuracy across the paper’s benchmarks."
-              data-zh="集中展示论文中的视觉预测质量与导航精度。"
-            >
-              Prediction quality and navigation accuracy across the paper’s benchmarks.
-            </p>
-          </div>
-          <div class="results-layout">
-            <div class="chart-panel">
-              <div class="chart-header">
-                <span
-                  data-en="Visual prediction"
-                  data-zh="视觉预测"
-                  >Visual prediction</span
-                ><select id="result-domain" aria-label="Benchmark domain">
-                  <option value="id">In-domain</option>
-                  <option value="ood">Out-of-domain</option>
-                </select>
-              </div>
-              <div
-                class="chart-metric-tabs"
-                id="metric-tabs"
-                role="group"
-                aria-label="Evaluation metric"
-              >
-                <button data-metric="lpips" class="active" aria-pressed="true">
-                  LPIPS ↓</button
-                ><button data-metric="dreamsim" aria-pressed="false">
-                  DreamSim ↓</button
-                ><button data-metric="psnr" aria-pressed="false">PSNR ↑</button>
-              </div>
-              <div
-                id="result-chart"
-                class="result-chart"
-                aria-live="polite"
-              ></div>
-              <div class="chart-footnote">
-                <span id="chart-footnote"></span
-                ><span id="chart-direction" class="mono"></span>
-              </div>
-            </div>
-            <div id="navigation-benchmarks"></div>
-          </div>
+          <h2 class="eyebrow section-number" id="results-title" data-en="04 / RESULTS" data-zh="04 / 指标结果">04 / RESULTS</h2>
+          <div id="paper-results" class="paper-results"></div>
         </div>
       </section>
 
@@ -309,9 +245,9 @@
             <div>
               <span
                 class="eyebrow section-number"
-                data-en="06 / NAVANYWHERE"
-                data-zh="06 / NAVANYWHERE 数据集"
-                >06 / NAVANYWHERE</span
+                data-en="06 / NavAnywhere Dataset"
+                data-zh="06 / NavAnywhere 数据集"
+                >06 / NavAnywhere Dataset</span
               >
               <h2
                 id="dataset-title"
@@ -340,89 +276,13 @@
               ></a>
             </div>
           </div>
-          <div class="film-source-note"><span class="eyebrow" id="mosaic-counts">NAVANYWHERE / A WORLD OF EXPERIENCE</span><a class="text-link" href="#opening-film" id="watch-video-wall"><span data-en="Watch the video wall" data-zh="观看视频墙">Watch the video wall</span><svg><use href="#arrow-up"/></svg></a></div>
-          <div class="dataset-overview">
-            <div class="dataset-note">
-              <span class="big-serif">1,188.65<span>h</span></span
-              ><span data-en="of source-video experience" data-zh="源视频时长"
-                >of source-video experience</span
-              >
-            </div>
-            <div class="distribution">
-              <div class="distribution-label">
-                <span data-en="A spectrum of places" data-zh="丰富的环境分布"
-                  >A spectrum of places</span
-                ><span id="distribution-value" class="mono">5 SCENE TYPES</span>
-              </div>
-              <div
-                class="distribution-bar"
-                id="distribution-bar"
-                aria-label="NavAnywhere scene composition"
-              ></div>
-              <div class="distribution-legend" id="distribution-legend"></div>
-            </div>
-          </div>
-          <div class="dataset-controls">
-            <div
-              class="filter-tabs"
-              id="dataset-filters"
-              role="group"
-              aria-label="Filter dataset examples"
-            >
-              <button
-                class="active"
-                data-filter="all"
-                aria-pressed="true"
-                data-en="All environments"
-                data-zh="全部环境"
-              >
-                All environments</button
-              ><button
-                data-filter="urban"
-                aria-pressed="false"
-                data-en="Urban"
-                data-zh="城市街道"
-              >
-                Urban</button
-              ><button
-                data-filter="indoor"
-                aria-pressed="false"
-                data-en="Indoor"
-                data-zh="室内空间"
-              >
-                Indoor</button
-              ><button
-                data-filter="nature"
-                aria-pressed="false"
-                data-en="Nature"
-                data-zh="自然地形"
-              >
-                Nature</button
-              ><button
-                data-filter="robot"
-                aria-pressed="false"
-                data-en="Robot view"
-                data-zh="机器人视角"
-              >
-                Robot view
-              </button>
-            </div>
-            <span class="dataset-count mono" id="dataset-count"></span>
+          <div class="dataset-stats">
+            <div><span class="stat-value">17.5<span>M</span></span><span class="stat-label" data-en="visual observations" data-zh="视觉观测">visual observations</span></div>
+            <div><span class="stat-value">15</span><span class="stat-label" data-en="heterogeneous sources" data-zh="异构数据来源">heterogeneous sources</span></div>
+            <div><span class="stat-value">70.8<span>K</span></span><span class="stat-label" data-en="navigation sequences" data-zh="导航序列">navigation sequences</span></div>
+            <div><span class="stat-value">1,188.65<span>h</span></span><span class="stat-label" data-en="of source-video experience" data-zh="源视频时长">of source-video experience</span></div>
           </div>
           <div id="dataset-grid" class="dataset-grid"></div>
-          <div class="dataset-footer">
-            <p
-              data-en="15 NavAnywhere sources · 4 additional post-training sources"
-              data-zh="15 个 NavAnywhere 来源 · 4 个额外后训练来源"
-            >
-              15 NavAnywhere sources · 4 additional post-training sources
-            </p>
-            <button class="text-link" id="dataset-expand">
-              <span data-en="Show all sources" data-zh="展开全部来源"
-                >Show all sources</span
-              ><span>＋</span>
-            </button>
-          </div>
         </div>
       </section>
 
@@ -465,12 +325,6 @@
               ><svg><use href="#arrow-up" /></svg
             ></a>
           </div>
-          <span
-            class="resource-access"
-            data-en="The code repository currently requires collaborator access."
-            data-zh="代码仓库目前需要协作者访问权限。"
-            >The code repository currently requires collaborator access.</span
-          >
         </div>
         <div class="citation-card">
           <div>
@@ -522,37 +376,6 @@
       ><a href="#" class="back-top" aria-label="Back to top">↑</a>
     </footer>
 
-    <dialog
-      id="dataset-dialog"
-      class="dataset-dialog"
-      aria-labelledby="dialog-title"
-    >
-      <div class="dialog-top">
-        <span class="eyebrow" id="dialog-source"></span
-        ><button
-          class="icon-button"
-          id="dialog-close"
-          aria-label="Close dataset preview"
-        >
-          <svg><use href="#close" /></svg>
-        </button>
-      </div>
-      <div class="dialog-media">
-        <img id="dialog-image" alt="" /><video
-          id="dialog-video"
-          controls
-          playsinline
-          muted
-          preload="none"
-          hidden
-        ></video><span id="dialog-media-status" class="dialog-media-status" role="status" hidden></span>
-      </div>
-      <div class="dialog-copy">
-        <h3 id="dialog-title"></h3>
-        <p id="dialog-description"></p>
-        <div class="dialog-facts" id="dialog-facts"></div>
-      </div>
-    </dialog>
     <div id="page-status" role="status" class="sr-only"></div>
     <noscript
       ><p class="no-script">

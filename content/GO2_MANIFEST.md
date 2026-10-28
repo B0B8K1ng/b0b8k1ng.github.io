@@ -46,14 +46,16 @@ Version 2 contract (angle-bracket strings are field descriptions, not data):
 }
 ```
 
-The page shows the clip title, route number, duration and direct video link.
-Route numbers follow the first occurrence of each `episode`. Metrics and
-per-model downloads remain in the manifest and report; the video itself shows
-its comparison. Protocol details belong in the report rather than long page
-notes. Preserve the exact metric aggregation and per-goal values; omit missing
-values instead of inventing examples. A short “Offline planning” label keeps
-the displayed scope explicit. `duration_s` is the encoded film duration;
-record any difference from source motion time in the report.
+The page shows each clip's video and title immediately after the opening film.
+There are no route/duration badges, report links, video links or planning labels.
+Metrics and per-model downloads remain in the manifest and report; the video
+shows ATE and RPE with downward arrows to indicate lower error is better.
+Protocol details and selection criteria belong in the report. Preserve exact
+metric aggregation and per-goal values; omit missing values instead of
+inventing examples. `duration_s` is the encoded film duration; record any
+difference from source motion time in the report. Videos load and play near
+the viewport and resume automatically on return, keeping a large gallery
+responsive without user-operated playback controls.
 
 Browser-facing asset paths must be relative to `website/`, begin with
 `assets/go2/`, and contain only letters, digits, underscores, hyphens, dots and

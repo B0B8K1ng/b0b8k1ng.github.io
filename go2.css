@@ -1,38 +1,25 @@
 .go2-section[hidden] { display: none; }
 .go2-section { width: min(1200px, calc(100% - 128px)); max-width: 1200px; margin-inline: auto; padding-inline: 0; padding-top: 24px; scroll-margin-top: 92px; }
-.go2-heading { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 30px; }
-.go2-heading .eyebrow { display: block; color: var(--accent); margin-bottom: 14px; }
+.go2-heading { margin-bottom: 30px; }
 .go2-heading h2 { margin: 0; }
-.go2-heading-meta { display: flex; align-items: center; gap: 22px; padding-bottom: 5px; white-space: nowrap; font-size: 12px; }
-.go2-mode { display: inline-flex; align-items: center; gap: 8px; color: #aab4aa; }
-.go2-mode::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
-.go2-report { color: #aab4aa; }
-.go2-report[hidden] { display: none; }
-.go2-report:hover, .go2-download:hover { color: var(--accent); }
 .go2-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 24px; }
 .go2-clip { min-width: 0; margin: 0; }
 .go2-screen { position: relative; overflow: hidden; border: 1px solid #2d3735; border-radius: 6px; background: #0d1214; aspect-ratio: 16 / 9; }
 .go2-screen video { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 .go2-screen video::-webkit-media-controls { display: none !important; }
 .go2-clip figcaption { padding: 14px 1px 0; }
-.go2-clip-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; }
 .go2-clip h3 { margin: 0; color: #e2e8e1; font: 500 16px/1.45 var(--sans); letter-spacing: -.15px; }
-.go2-download { flex-shrink: 0; color: #96a292; font: 12px/1.5 var(--sans); }
-.go2-clip-meta { margin: 5px 0 0; color: #819087; font: 11px/1.5 var(--mono); font-variant-numeric: tabular-nums; }
 .go2-media-error { position: absolute; left: 14px; right: 14px; bottom: 12px; margin: 0; padding: 9px 12px; background: #111817e8; color: #d3d9d1; font: 12px/1.5 var(--sans); }
 .go2-media-error[hidden] { display: none; }
 @media (max-width: 900px) {
   .go2-section { width: calc(100% - 64px); }
-  .go2-heading { gap: 22px; }
-  .go2-heading-meta { gap: 16px; font-size: 11px; }
   .go2-grid { gap: 26px 18px; }
   .go2-clip h3 { font-size: 14px; }
 }
 @media (max-width: 680px) {
   .go2-section { width: calc(100% - 40px); }
-  .go2-heading { display: block; margin-bottom: 24px; }
+  .go2-heading { margin-bottom: 24px; }
   .go2-heading h2 { font-size: 32px; }
-  .go2-heading-meta { margin-top: 17px; padding-bottom: 0; }
   .go2-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .go2-clip h3 { font-size: 15px; }
   .go2-clip figcaption { padding-top: 11px; }
