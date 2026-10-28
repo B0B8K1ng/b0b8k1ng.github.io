@@ -1,8 +1,8 @@
-import { initResearch } from "./research.js?v=all-results-v1-20261028";
-import { initMotionGallery } from "./motion-gallery.js?v=main-figure-v8-20261010";
-import { initNavigation } from "./navigation.js?v=main-figure-v8-20261010";
+import { initResearch } from "./research.js?v=paper-flow-v1-20261028";
+import { initMotionGallery } from "./motion-gallery.js?v=paper-flow-v1-20261028";
+import { initNavigation } from "./navigation.js?v=paper-flow-v1-20261028";
 import { initCinematic } from "./cinematic.js?v=hero-autoplay-v1-20261028";
-import { initPlayground } from "./playground.js?v=main-figure-v8-20261010";
+import { initPlayground } from "./playground.js?v=paper-flow-v1-20261028";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -63,7 +63,7 @@ const navObserver = new IntersectionObserver(
     for (const entry of entries)
       if (entry.isIntersecting) {
         $$(".desktop-nav a").forEach((link) =>
-          link.classList.toggle("active", link.hash === `#${entry.target.id}`),
+          link.classList.toggle("active", link.hash === `#${["in-motion", "navigation"].includes(entry.target.id) ? "simulation" : entry.target.id}`),
         );
       }
   },
