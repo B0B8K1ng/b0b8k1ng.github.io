@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "defaultDemo": "tartan-drive-36",
   "note": "Precomputed model outputs, not live generation. Videos contain the shared initial frame followed by every predicted frame, without interpolation. Curated qualitative examples do not replace aggregate test results.",
-  "timingNote": "A shared initial frame and all future frames are encoded at 4 FPS. 16 s and nominal 4 s prediction horizons produce 16.25 s and 4.25 s media. LuSNAR uses nearest-source sampling; its original nonuniform capture offsets are retained in each sample.",
+  "timingNote": "A shared initial frame and all future frames are encoded at 4 FPS. 16 s and nominal 4 s prediction horizons produce 16.25 s and 4.25 s media. LuSNAR uses nearest-source sampling; its original nonuniform capture offsets are retained in each sample. SynMars source timing is unknown; its 17-frame media plays at 4 FPS for display only.",
   "demos": [
     {
       "id": "tartan-drive-36",
@@ -3897,6 +3897,483 @@
       "prediction": "assets/space/lusnar-finetuned/moon-9/slider-prediction.mp4",
       "predictionPoster": "assets/space/lusnar-finetuned/moon-9/slider-prediction.webp",
       "poster": "assets/space/lusnar-finetuned/moon-9/slider-gt.webp"
+    },
+    {
+      "id": "synmars-finetuned-synmars-forward-9-0001",
+      "title": "Mars route 9 · clip 1",
+      "titleZh": "火星路线 9 · 片段 1",
+      "dataset": "SynMars-TW",
+      "datasetId": "synmars",
+      "domain": "held-out route",
+      "environment": "mars",
+      "fineTuned": true,
+      "sampleId": "synmars-forward-9-0001",
+      "fps": 4,
+      "duration": 4.25,
+      "frameCount": 17,
+      "width": 224,
+      "height": 224,
+      "includesInitialFrame": true,
+      "posterTime": 1,
+      "labels": {
+        "gt": "Simulation reference",
+        "prediction": "OpenNWM"
+      },
+      "model": "OpenNWM · SynMars few-shot fine-tuned EMA",
+      "checkpoint": {
+        "sha256": "d51c8ee18e1a6b5c208a6a80e2bf98d6b617fc705eccf02d7e460950f040971f"
+      },
+      "sourceManifest": "assets/space/synmars-finetuned/synmars-forward-9-0001/manifest.json",
+      "sourceInferenceManifestSha256": "80b97ec7a75fdd81bc7a6c8969c716b9a7edfaa1a9c2f1ccc2f07492aba34a74",
+      "protocol": "Each of 16 future views is predicted directly from the same four observed RGB frames and its anchor-relative visually estimated action. Future reference RGB is used only offline to annotate these oracle actions, never as image-model context.",
+      "selection": "Predeclared test windows beginning at source frames 1, 361 and 721 of forward_9; selected before pose estimation, fine-tuning and inference, without ranking predictions.",
+      "limitations": "Actions are visual pose estimates, not recorded controls or ground-truth poses. Reference future RGB informs the offline oracle action annotation; pose estimation can also use intermediate RGB within the same source-frame interval. Monocular translation is normalized per clip to a median adjacent step of 0.25 relative units, not meters. Source timestamps and physical speed are unknown; 4 FPS is playback speed only. Held-out route IDs do not establish geographically separate terrain. Direct predictions are not an autoregressive rollout or evidence of physical navigation performance.",
+      "training": {
+        "steps": 1000,
+        "windows": 30,
+        "targetPairs": 480,
+        "scenes": [
+          "forward_1",
+          "forward_2",
+          "forward_3",
+          "forward_4",
+          "forward_5"
+        ]
+      },
+      "conditioningTrajectory": {
+        "estimated": true,
+        "positions": [
+          [
+            0,
+            0
+          ],
+          [
+            0.22737427764240142,
+            -0.08640731809830215
+          ],
+          [
+            0.4501508067846443,
+            -0.15677554506713393
+          ],
+          [
+            0.6668085644270785,
+            -0.06693318366130414
+          ],
+          [
+            0.9299932492018598,
+            -0.09970955230244738
+          ],
+          [
+            1.157903262801129,
+            -0.12295462407484134
+          ],
+          [
+            1.4263306530929638,
+            -0.08702051728067933
+          ],
+          [
+            1.6752711822239903,
+            -0.064028932821044
+          ],
+          [
+            2.0734977792858578,
+            0.0003759691988407532
+          ],
+          [
+            2.2751786024545244,
+            0.06349519855109803
+          ],
+          [
+            2.560751458977334,
+            0.08567184679535078
+          ],
+          [
+            2.821492824253712,
+            0.10071985374564235
+          ],
+          [
+            3.070825739783732,
+            0.23804583074921076
+          ],
+          [
+            3.3503526837271083,
+            0.3624159357952238
+          ],
+          [
+            3.668056120134833,
+            0.3450866137992238
+          ],
+          [
+            3.945182237955561,
+            0.3049747190445782
+          ],
+          [
+            4.016971442526153,
+            0.28447337784106513
+          ]
+        ],
+        "sampleTimesSeconds": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0,
+          1.25,
+          1.5,
+          1.75,
+          2.0,
+          2.25,
+          2.5,
+          2.75,
+          3.0,
+          3.25,
+          3.5,
+          3.75,
+          4.0
+        ],
+        "axes": "Forward and left in relative action units; monocular estimated scale, not meters.",
+        "timeSemantics": "Playback offsets only. Source capture times and physical duration are unavailable.",
+        "sourceFile": "assets/space/synmars-finetuned/synmars-forward-9-0001/manifest.json",
+        "poseSource": "VGGT-Omega offline visual pose estimates",
+        "poseSourceSha256": "b26973372237a86b7a481646ef00c510675f5268ff928722dd01255c6e78eb70",
+        "sourceSha256": "8be3f01f71dd246ef1989aee1c5948125e1d0d2e1226b379ecb45fd691837bae"
+      },
+      "assetProvenance": {
+        "gt": {
+          "sha256": "b0a3bc7e334a12a3c130c3ac25ce59b5eba894a5e57b43010a10670e563ce532",
+          "sourceFramesSha256": "32d7e47c7356e36655698d34a34a821d8bdf2cc04f9e67d43073aaaaa2efe7a7",
+          "frameCount": 17
+        },
+        "prediction": {
+          "sha256": "2fad38bfb25fd1ad53ff9b35d300b5b1b91b1e94658e96858669caa4bec33090",
+          "sourceFramesSha256": "cad6c67ecc0360a2d09fcba606265de684bdc8d0e02857ff6ddc0b1219d65130",
+          "frameCount": 17
+        }
+      },
+      "gt": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-gt.mp4",
+      "gtPoster": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-gt.webp",
+      "prediction": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-prediction.mp4",
+      "predictionPoster": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-prediction.webp",
+      "sourceManifestSha256": "8be3f01f71dd246ef1989aee1c5948125e1d0d2e1226b379ecb45fd691837bae",
+      "poster": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-gt.webp"
+    },
+    {
+      "id": "synmars-finetuned-synmars-forward-9-0361",
+      "title": "Mars route 9 · clip 2",
+      "titleZh": "火星路线 9 · 片段 2",
+      "dataset": "SynMars-TW",
+      "datasetId": "synmars",
+      "domain": "held-out route",
+      "environment": "mars",
+      "fineTuned": true,
+      "sampleId": "synmars-forward-9-0361",
+      "fps": 4,
+      "duration": 4.25,
+      "frameCount": 17,
+      "width": 224,
+      "height": 224,
+      "includesInitialFrame": true,
+      "posterTime": 1,
+      "labels": {
+        "gt": "Simulation reference",
+        "prediction": "OpenNWM"
+      },
+      "model": "OpenNWM · SynMars few-shot fine-tuned EMA",
+      "checkpoint": {
+        "sha256": "d51c8ee18e1a6b5c208a6a80e2bf98d6b617fc705eccf02d7e460950f040971f"
+      },
+      "sourceManifest": "assets/space/synmars-finetuned/synmars-forward-9-0361/manifest.json",
+      "sourceInferenceManifestSha256": "80b97ec7a75fdd81bc7a6c8969c716b9a7edfaa1a9c2f1ccc2f07492aba34a74",
+      "protocol": "Each of 16 future views is predicted directly from the same four observed RGB frames and its anchor-relative visually estimated action. Future reference RGB is used only offline to annotate these oracle actions, never as image-model context.",
+      "selection": "Predeclared test windows beginning at source frames 1, 361 and 721 of forward_9; selected before pose estimation, fine-tuning and inference, without ranking predictions.",
+      "limitations": "Actions are visual pose estimates, not recorded controls or ground-truth poses. Reference future RGB informs the offline oracle action annotation; pose estimation can also use intermediate RGB within the same source-frame interval. Monocular translation is normalized per clip to a median adjacent step of 0.25 relative units, not meters. Source timestamps and physical speed are unknown; 4 FPS is playback speed only. Held-out route IDs do not establish geographically separate terrain. Direct predictions are not an autoregressive rollout or evidence of physical navigation performance.",
+      "training": {
+        "steps": 1000,
+        "windows": 30,
+        "targetPairs": 480,
+        "scenes": [
+          "forward_1",
+          "forward_2",
+          "forward_3",
+          "forward_4",
+          "forward_5"
+        ]
+      },
+      "conditioningTrajectory": {
+        "estimated": true,
+        "positions": [
+          [
+            0,
+            0
+          ],
+          [
+            0.2220139793216856,
+            -0.10001096154351272
+          ],
+          [
+            0.4240073198229768,
+            -0.2911508432992455
+          ],
+          [
+            0.6227278635255292,
+            -0.4599175061685823
+          ],
+          [
+            0.7779906186106852,
+            -0.6060885621254907
+          ],
+          [
+            0.9883060286454245,
+            -0.7509944771222397
+          ],
+          [
+            1.203037243874594,
+            -0.8510689813694572
+          ],
+          [
+            1.4540834545333021,
+            -0.932452610670577
+          ],
+          [
+            1.6929879422623306,
+            -1.014466328490671
+          ],
+          [
+            1.9260917414567609,
+            -1.0988627876838941
+          ],
+          [
+            2.159818543726753,
+            -1.1595165560981942
+          ],
+          [
+            2.398553423598484,
+            -1.2337166715470964
+          ],
+          [
+            2.613036893682963,
+            -1.32878144555333
+          ],
+          [
+            2.8689160587584466,
+            -1.4425863262817606
+          ],
+          [
+            3.0585614141058937,
+            -1.5727400053497007
+          ],
+          [
+            3.274429271446811,
+            -1.7184799712451204
+          ],
+          [
+            3.5888345968075046,
+            -1.8713753858920175
+          ]
+        ],
+        "sampleTimesSeconds": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0,
+          1.25,
+          1.5,
+          1.75,
+          2.0,
+          2.25,
+          2.5,
+          2.75,
+          3.0,
+          3.25,
+          3.5,
+          3.75,
+          4.0
+        ],
+        "axes": "Forward and left in relative action units; monocular estimated scale, not meters.",
+        "timeSemantics": "Playback offsets only. Source capture times and physical duration are unavailable.",
+        "sourceFile": "assets/space/synmars-finetuned/synmars-forward-9-0361/manifest.json",
+        "poseSource": "VGGT-Omega offline visual pose estimates",
+        "poseSourceSha256": "b53d34abda7b073b35f9526bfa3ee9aed326ca255632451559b6b3d1438aa1e3",
+        "sourceSha256": "874ecf9b0a77e21a133464d0a0475703ba3e8feb8eb857d77a4e969e3da3cf2b"
+      },
+      "assetProvenance": {
+        "gt": {
+          "sha256": "15e89a6e3ff62568eeb7c3bfa9c6dfd3194eb5e7573e6b3cf0b69e2024e528c4",
+          "sourceFramesSha256": "56be3d41a019f3fb9def3604663e21ea4fbefe50688a5a23815d39acfb9d965d",
+          "frameCount": 17
+        },
+        "prediction": {
+          "sha256": "f46695b1cf5984971ed3894cc1df681ab52de3b7e5459a1720b55284dedcec8d",
+          "sourceFramesSha256": "a0d724ae78caf2fd878a59f03c2ecbb97c77c9e47d0a97d111bd30d1350492ae",
+          "frameCount": 17
+        }
+      },
+      "gt": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-gt.mp4",
+      "gtPoster": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-gt.webp",
+      "prediction": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-prediction.mp4",
+      "predictionPoster": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-prediction.webp",
+      "sourceManifestSha256": "874ecf9b0a77e21a133464d0a0475703ba3e8feb8eb857d77a4e969e3da3cf2b",
+      "poster": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-gt.webp"
+    },
+    {
+      "id": "synmars-finetuned-synmars-forward-9-0721",
+      "title": "Mars route 9 · clip 3",
+      "titleZh": "火星路线 9 · 片段 3",
+      "dataset": "SynMars-TW",
+      "datasetId": "synmars",
+      "domain": "held-out route",
+      "environment": "mars",
+      "fineTuned": true,
+      "sampleId": "synmars-forward-9-0721",
+      "fps": 4,
+      "duration": 4.25,
+      "frameCount": 17,
+      "width": 224,
+      "height": 224,
+      "includesInitialFrame": true,
+      "posterTime": 1,
+      "labels": {
+        "gt": "Simulation reference",
+        "prediction": "OpenNWM"
+      },
+      "model": "OpenNWM · SynMars few-shot fine-tuned EMA",
+      "checkpoint": {
+        "sha256": "d51c8ee18e1a6b5c208a6a80e2bf98d6b617fc705eccf02d7e460950f040971f"
+      },
+      "sourceManifest": "assets/space/synmars-finetuned/synmars-forward-9-0721/manifest.json",
+      "sourceInferenceManifestSha256": "80b97ec7a75fdd81bc7a6c8969c716b9a7edfaa1a9c2f1ccc2f07492aba34a74",
+      "protocol": "Each of 16 future views is predicted directly from the same four observed RGB frames and its anchor-relative visually estimated action. Future reference RGB is used only offline to annotate these oracle actions, never as image-model context.",
+      "selection": "Predeclared test windows beginning at source frames 1, 361 and 721 of forward_9; selected before pose estimation, fine-tuning and inference, without ranking predictions.",
+      "limitations": "Actions are visual pose estimates, not recorded controls or ground-truth poses. Reference future RGB informs the offline oracle action annotation; pose estimation can also use intermediate RGB within the same source-frame interval. Monocular translation is normalized per clip to a median adjacent step of 0.25 relative units, not meters. Source timestamps and physical speed are unknown; 4 FPS is playback speed only. Held-out route IDs do not establish geographically separate terrain. Direct predictions are not an autoregressive rollout or evidence of physical navigation performance.",
+      "training": {
+        "steps": 1000,
+        "windows": 30,
+        "targetPairs": 480,
+        "scenes": [
+          "forward_1",
+          "forward_2",
+          "forward_3",
+          "forward_4",
+          "forward_5"
+        ]
+      },
+      "conditioningTrajectory": {
+        "estimated": true,
+        "positions": [
+          [
+            0,
+            0
+          ],
+          [
+            0.22490040482237014,
+            -0.02038805273948143
+          ],
+          [
+            0.4446707604868046,
+            -0.05041574763655203
+          ],
+          [
+            0.6736446623881538,
+            -0.08101515728291872
+          ],
+          [
+            0.9053974464067668,
+            -0.10936403934609218
+          ],
+          [
+            1.142329645230058,
+            -0.14380321122622128
+          ],
+          [
+            1.3814246256949558,
+            -0.216834644982448
+          ],
+          [
+            1.6280851483209644,
+            -0.2933385831631513
+          ],
+          [
+            1.8599827839979612,
+            -0.3679167454186477
+          ],
+          [
+            2.1036788447330843,
+            -0.4528357015556288
+          ],
+          [
+            2.3743201223724073,
+            -0.5461027740931405
+          ],
+          [
+            2.6250158075871446,
+            -0.6241138337139359
+          ],
+          [
+            2.8877536360202294,
+            -0.7094260789186683
+          ],
+          [
+            3.147319885633559,
+            -0.8455518213061329
+          ],
+          [
+            3.378335809086601,
+            -0.9977688094114916
+          ],
+          [
+            3.6269319832120885,
+            -1.1756556350614762
+          ],
+          [
+            3.8820574361385094,
+            -1.3515506359358493
+          ]
+        ],
+        "sampleTimesSeconds": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0,
+          1.25,
+          1.5,
+          1.75,
+          2.0,
+          2.25,
+          2.5,
+          2.75,
+          3.0,
+          3.25,
+          3.5,
+          3.75,
+          4.0
+        ],
+        "axes": "Forward and left in relative action units; monocular estimated scale, not meters.",
+        "timeSemantics": "Playback offsets only. Source capture times and physical duration are unavailable.",
+        "sourceFile": "assets/space/synmars-finetuned/synmars-forward-9-0721/manifest.json",
+        "poseSource": "VGGT-Omega offline visual pose estimates",
+        "poseSourceSha256": "eaa1c3ad26d713b5a70eaf19e368fa7c4250ff4b84aebc526938374b0cce1feb",
+        "sourceSha256": "774705afe339b2c04b48894e768e3f304b0466e113f149ef9a08026988064d24"
+      },
+      "assetProvenance": {
+        "gt": {
+          "sha256": "4118cb766f5a977e9a49a3d909902946832994cf46cf6ee9a2e157791f143d4a",
+          "sourceFramesSha256": "dbfd66aa2c5f03a97c61db26c1f4220297ba74d4efa78ccec05b4cbe11e32049",
+          "frameCount": 17
+        },
+        "prediction": {
+          "sha256": "07c6422e4853a54779a5e386f5d07dbeabf2cf420b0d301bbb40ec2af0ef9e27",
+          "sourceFramesSha256": "18eb4d4f29cd7c148b8c214b41243c4b530779b68015121c9657b93d561479fe",
+          "frameCount": 17
+        }
+      },
+      "gt": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-gt.mp4",
+      "gtPoster": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-gt.webp",
+      "prediction": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-prediction.mp4",
+      "predictionPoster": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-prediction.webp",
+      "sourceManifestSha256": "774705afe339b2c04b48894e768e3f304b0466e113f149ef9a08026988064d24",
+      "poster": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-gt.webp"
     }
   ]
 }
