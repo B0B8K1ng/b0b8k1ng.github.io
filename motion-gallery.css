@@ -7,6 +7,7 @@
 .motion-gallery-toggle:focus-visible,
 .motion-card-toggle:focus-visible { outline: 2px solid var(--accent,#b6ee65); outline-offset: 3px; }
 .motion-gallery-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
+.motion-lunar-footnote { grid-column: 1 / -1; margin: -4px 0 0; color: #b4b8bf; font: 400 12px/1.65 var(--sans,Arial,Helvetica,sans-serif); }
 .motion-card { min-width: 0; padding: 12px; border: 1px solid var(--line,#303638); border-radius: 12px; background: var(--surface,#161a1c); }
 .motion-card-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .motion-card-heading h3 { margin: 0; color: var(--ink,#eee); font: 600 15px/1.35 var(--sans,Arial,Helvetica,sans-serif); letter-spacing: 0; }

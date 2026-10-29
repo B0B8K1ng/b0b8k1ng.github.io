@@ -1,4 +1,4 @@
-import { registerMedia } from "./media-scheduler.js?v=mars-delivery-v1-20261029";
+import { registerMedia } from "./media-scheduler.js?v=timing-method-v1-20261029";
 
 const root = document.querySelector("#go2-navigation");
 const revision = "go2-curated-v2-20261029";
