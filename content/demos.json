@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "defaultDemo": "tartan-drive-36",
   "note": "Precomputed model outputs, not live generation. Videos contain the shared initial frame followed by every predicted frame, without interpolation. Curated qualitative examples do not replace aggregate test results.",
-  "timingNote": "A shared initial frame and all future frames are encoded at 4 FPS. 16 s and nominal 4 s prediction horizons produce 16.25 s and 4.25 s media. LuSNAR uses nearest-source sampling; its original nonuniform capture offsets are retained in each sample. SynMars source timing is unknown; its 17-frame media plays at 4 FPS for display only.",
+  "timingNote": "A shared initial frame and all future frames are encoded at 4 FPS. 16 s and nominal 4 s prediction horizons produce 16.25 s and 4.25 s media. LuSNAR uses nearest-source sampling; its original nonuniform capture offsets are retained in each sample. MarsLab plays at 1× simulation time: 4 FPS, one shared observed anchor and sixteen future samples over 4 seconds; the final frame is held for 0.25 seconds.",
   "demos": [
     {
       "id": "tartan-drive-36",
@@ -3899,15 +3899,15 @@
       "poster": "assets/space/lusnar-finetuned/moon-9/slider-gt.webp"
     },
     {
-      "id": "synmars-finetuned-synmars-forward-9-0001",
-      "title": "Mars route 9 · clip 1",
-      "titleZh": "火星路线 9 · 片段 1",
-      "dataset": "SynMars-TW",
-      "datasetId": "synmars",
-      "domain": "held-out route",
+      "id": "marslab-finetuned-marslab-test_00-0000",
+      "title": "Mars crater · route 1",
+      "titleZh": "火星陨石坑 · 路线 1",
+      "dataset": "MarsLab",
+      "datasetId": "marslab",
+      "domain": "held-out trajectory · same terrain",
       "environment": "mars",
       "fineTuned": true,
-      "sampleId": "synmars-forward-9-0001",
+      "sampleId": "marslab-test_00-0000",
       "fps": 4,
       "duration": 4.25,
       "frameCount": 17,
@@ -3919,154 +3919,158 @@
         "gt": "Simulation reference",
         "prediction": "OpenNWM"
       },
-      "model": "OpenNWM · SynMars few-shot fine-tuned EMA",
+      "model": "OpenNWM · MarsLab few-shot fine-tuned EMA",
       "checkpoint": {
-        "sha256": "d51c8ee18e1a6b5c208a6a80e2bf98d6b617fc705eccf02d7e460950f040971f"
+        "sha256": "c5f8ef71736db3f74f024f6a1f3ca9ee477f6c9946513d6435b8717ddc914b30"
       },
-      "sourceManifest": "assets/space/synmars-finetuned/synmars-forward-9-0001/manifest.json",
-      "sourceInferenceManifestSha256": "80b97ec7a75fdd81bc7a6c8969c716b9a7edfaa1a9c2f1ccc2f07492aba34a74",
-      "protocol": "Each of 16 future views is predicted directly from the same four observed RGB frames and its anchor-relative visually estimated action. Future reference RGB is used only offline to annotate these oracle actions, never as image-model context.",
-      "selection": "Predeclared test windows beginning at source frames 1, 361 and 721 of forward_9; selected before pose estimation, fine-tuning and inference, without ranking predictions.",
-      "limitations": "Actions are visual pose estimates, not recorded controls or ground-truth poses. Reference future RGB informs the offline oracle action annotation; pose estimation can also use intermediate RGB within the same source-frame interval. Monocular translation is normalized per clip to a median adjacent step of 0.25 relative units, not meters. Source timestamps and physical speed are unknown; 4 FPS is playback speed only. Held-out route IDs do not establish geographically separate terrain. Direct predictions are not an autoregressive rollout or evidence of physical navigation performance.",
+      "sourceManifest": "assets/space/marslab-finetuned/marslab-test_00-0000/manifest.json",
+      "sourceInferenceManifestSha256": "749bdd23851716d91c34e5eb415f04368c977870b9c0a99fe27bd2535f7a3419",
+      "protocol": "Each of sixteen future views is predicted directly from the same four observed RGB frames and its anchor-relative realized PhysX body displacement. The future reference images are not model context. This is action-conditioned direct prediction, not an autoregressive rollout or a navigation success evaluation.",
+      "selection": "The first 20-frame window of test_00, test_01 and test_02, fixed before training; all six held-out windows are evaluated without ranking predictions. Independent held-out trajectories share the training terrain.",
+      "limitations": [
+        "Independent held-out trajectories share the main_crater terrain; this is not cross-scene generalization.",
+        "Actions are realized PhysX body displacements, not a claim that commanded velocity exactly equals traveled motion.",
+        "A single translation scale fitted only on training poses is shared by validation and test; metric poses and commands are retained.",
+        "The SE(2) action interface discards vertical motion, pitch, and roll.",
+        "MarsLab scene and rover assets are run with a minimal Isaac Sim 4.1 recorder, not the complete official Isaac Sim 5.x application."
+      ],
+      "note": "Held-out trajectories on the same terrain, with simulator ground-truth poses. Fine-tuned on 30 clips for 1,000 updates; playback at 1× simulation time.",
+      "noteZh": "同一地形上未参与训练的独立轨迹，动作来自仿真器真实物理位姿；用 30 个片段微调 1,000 步，按 1× 仿真时间播放。",
       "training": {
         "steps": 1000,
         "windows": 30,
         "targetPairs": 480,
         "scenes": [
-          "forward_1",
-          "forward_2",
-          "forward_3",
-          "forward_4",
-          "forward_5"
+          "main_crater"
         ]
       },
       "conditioningTrajectory": {
-        "estimated": true,
+        "estimated": false,
         "positions": [
           [
             0,
             0
           ],
           [
-            0.22737427764240142,
-            -0.08640731809830215
+            0.17275789891100382,
+            0.0006154783396410124
           ],
           [
-            0.4501508067846443,
-            -0.15677554506713393
+            0.34555174479993667,
+            0.0024404163124166073
           ],
           [
-            0.6668085644270785,
-            -0.06693318366130414
+            0.518396854158269,
+            0.00459110288878678
           ],
           [
-            0.9299932492018598,
-            -0.09970955230244738
+            0.6893830849115711,
+            0.007869353540182839
           ],
           [
-            1.157903262801129,
-            -0.12295462407484134
+            0.8617128471075808,
+            0.011871710666887442
           ],
           [
-            1.4263306530929638,
-            -0.08702051728067933
+            1.029764740499602,
+            0.017234292784400973
           ],
           [
-            1.6752711822239903,
-            -0.064028932821044
+            1.1888716322326676,
+            0.024026349995087848
           ],
           [
-            2.0734977792858578,
-            0.0003759691988407532
+            1.359537106497567,
+            0.029696740745339845
           ],
           [
-            2.2751786024545244,
-            0.06349519855109803
+            1.5270932797448422,
+            0.03775887568913283
           ],
           [
-            2.560751458977334,
-            0.08567184679535078
+            1.6993723034868757,
+            0.04406648960285009
           ],
           [
-            2.821492824253712,
-            0.10071985374564235
+            1.872999014193122,
+            0.05157837436834978
           ],
           [
-            3.070825739783732,
-            0.23804583074921076
+            2.0427992904909367,
+            0.06212547900740628
           ],
           [
-            3.3503526837271083,
-            0.3624159357952238
+            2.2178558344114716,
+            0.0731740283449458
           ],
           [
-            3.668056120134833,
-            0.3450866137992238
+            2.3892630923096125,
+            0.08329697741449393
           ],
           [
-            3.945182237955561,
-            0.3049747190445782
+            2.560617208436157,
+            0.09527414305675619
           ],
           [
-            4.016971442526153,
-            0.28447337784106513
+            2.728249406575447,
+            0.10839708733305187
           ]
         ],
         "sampleTimesSeconds": [
           0.0,
-          0.25,
-          0.5,
-          0.75,
-          1.0,
-          1.25,
-          1.5,
-          1.75,
-          2.0,
-          2.25,
-          2.5,
-          2.75,
-          3.0,
-          3.25,
-          3.5,
-          3.75,
-          4.0
+          0.25000001303851604,
+          0.5000000260770321,
+          0.7500000391155481,
+          1.0000000521540642,
+          1.2500000651925802,
+          1.5000000782310963,
+          1.7500000912696123,
+          2.0000001043081284,
+          2.2500001173466444,
+          2.5000001303851604,
+          2.7500001434236765,
+          3.0000001564621925,
+          3.2500001695007086,
+          3.5000001825392246,
+          3.7500001955777407,
+          4.000000208616257
         ],
-        "axes": "Forward and left in relative action units; monocular estimated scale, not meters.",
-        "timeSemantics": "Playback offsets only. Source capture times and physical duration are unavailable.",
-        "sourceFile": "assets/space/synmars-finetuned/synmars-forward-9-0001/manifest.json",
-        "poseSource": "VGGT-Omega offline visual pose estimates",
-        "poseSourceSha256": "b26973372237a86b7a481646ef00c510675f5268ff928722dd01255c6e78eb70",
-        "sourceSha256": "8be3f01f71dd246ef1989aee1c5948125e1d0d2e1226b379ecb45fd691837bae"
+        "axes": "Forward and left displacement in meters, relative to the observed anchor.",
+        "timeSemantics": "Offsets from synchronized simulator camera/PhysX timestamps; 1× simulation time.",
+        "sourceFile": "assets/space/marslab-finetuned/marslab-test_00-0000/manifest.json",
+        "poseSource": "MarsLab / Isaac Sim PhysX body ground truth",
+        "poseSourceSha256": "edbb80d6dc43b9c47cd0963d3580d2b28008d52db08e1fbe2b9f7251a901faa0",
+        "sourceSha256": "2ace0ca8b902ca1b833277da958a9dfe7eddab44680b4c32e4cac2744c48a28a"
       },
       "assetProvenance": {
         "gt": {
-          "sha256": "b0a3bc7e334a12a3c130c3ac25ce59b5eba894a5e57b43010a10670e563ce532",
-          "sourceFramesSha256": "32d7e47c7356e36655698d34a34a821d8bdf2cc04f9e67d43073aaaaa2efe7a7",
+          "sha256": "4ec40466c20981acb3b72880dd59bd662033468d5d642f8634375d11cb7628aa",
+          "sourceFramesSha256": "4627ae4d717ff0fb73d700a45bdbf75a818f70411f4ffb0395b2fa30827d3de1",
           "frameCount": 17
         },
         "prediction": {
-          "sha256": "2fad38bfb25fd1ad53ff9b35d300b5b1b91b1e94658e96858669caa4bec33090",
-          "sourceFramesSha256": "cad6c67ecc0360a2d09fcba606265de684bdc8d0e02857ff6ddc0b1219d65130",
+          "sha256": "2812573efe31d88d6c87ad9eae823437c4ad691efad6b1c38451133481ff5578",
+          "sourceFramesSha256": "c41910a41ddb974679bc959f129c8a4e49d7450cf8dcad3270ed6809b081d2c1",
           "frameCount": 17
         }
       },
-      "gt": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-gt.mp4",
-      "gtPoster": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-gt.webp",
-      "prediction": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-prediction.mp4",
-      "predictionPoster": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-prediction.webp",
-      "sourceManifestSha256": "8be3f01f71dd246ef1989aee1c5948125e1d0d2e1226b379ecb45fd691837bae",
-      "poster": "assets/space/synmars-finetuned/synmars-forward-9-0001/slider-gt.webp"
+      "gt": "assets/space/marslab-finetuned/marslab-test_00-0000/slider-gt.mp4",
+      "gtPoster": "assets/space/marslab-finetuned/marslab-test_00-0000/slider-gt.webp",
+      "prediction": "assets/space/marslab-finetuned/marslab-test_00-0000/slider-prediction.mp4",
+      "predictionPoster": "assets/space/marslab-finetuned/marslab-test_00-0000/slider-prediction.webp",
+      "sourceManifestSha256": "2ace0ca8b902ca1b833277da958a9dfe7eddab44680b4c32e4cac2744c48a28a",
+      "poster": "assets/space/marslab-finetuned/marslab-test_00-0000/slider-gt.webp"
     },
     {
-      "id": "synmars-finetuned-synmars-forward-9-0361",
-      "title": "Mars route 9 · clip 2",
-      "titleZh": "火星路线 9 · 片段 2",
-      "dataset": "SynMars-TW",
-      "datasetId": "synmars",
-      "domain": "held-out route",
+      "id": "marslab-finetuned-marslab-test_01-0000",
+      "title": "Mars crater · route 2",
+      "titleZh": "火星陨石坑 · 路线 2",
+      "dataset": "MarsLab",
+      "datasetId": "marslab",
+      "domain": "held-out trajectory · same terrain",
       "environment": "mars",
       "fineTuned": true,
-      "sampleId": "synmars-forward-9-0361",
+      "sampleId": "marslab-test_01-0000",
       "fps": 4,
       "duration": 4.25,
       "frameCount": 17,
@@ -4078,154 +4082,158 @@
         "gt": "Simulation reference",
         "prediction": "OpenNWM"
       },
-      "model": "OpenNWM · SynMars few-shot fine-tuned EMA",
+      "model": "OpenNWM · MarsLab few-shot fine-tuned EMA",
       "checkpoint": {
-        "sha256": "d51c8ee18e1a6b5c208a6a80e2bf98d6b617fc705eccf02d7e460950f040971f"
+        "sha256": "c5f8ef71736db3f74f024f6a1f3ca9ee477f6c9946513d6435b8717ddc914b30"
       },
-      "sourceManifest": "assets/space/synmars-finetuned/synmars-forward-9-0361/manifest.json",
-      "sourceInferenceManifestSha256": "80b97ec7a75fdd81bc7a6c8969c716b9a7edfaa1a9c2f1ccc2f07492aba34a74",
-      "protocol": "Each of 16 future views is predicted directly from the same four observed RGB frames and its anchor-relative visually estimated action. Future reference RGB is used only offline to annotate these oracle actions, never as image-model context.",
-      "selection": "Predeclared test windows beginning at source frames 1, 361 and 721 of forward_9; selected before pose estimation, fine-tuning and inference, without ranking predictions.",
-      "limitations": "Actions are visual pose estimates, not recorded controls or ground-truth poses. Reference future RGB informs the offline oracle action annotation; pose estimation can also use intermediate RGB within the same source-frame interval. Monocular translation is normalized per clip to a median adjacent step of 0.25 relative units, not meters. Source timestamps and physical speed are unknown; 4 FPS is playback speed only. Held-out route IDs do not establish geographically separate terrain. Direct predictions are not an autoregressive rollout or evidence of physical navigation performance.",
+      "sourceManifest": "assets/space/marslab-finetuned/marslab-test_01-0000/manifest.json",
+      "sourceInferenceManifestSha256": "749bdd23851716d91c34e5eb415f04368c977870b9c0a99fe27bd2535f7a3419",
+      "protocol": "Each of sixteen future views is predicted directly from the same four observed RGB frames and its anchor-relative realized PhysX body displacement. The future reference images are not model context. This is action-conditioned direct prediction, not an autoregressive rollout or a navigation success evaluation.",
+      "selection": "The first 20-frame window of test_00, test_01 and test_02, fixed before training; all six held-out windows are evaluated without ranking predictions. Independent held-out trajectories share the training terrain.",
+      "limitations": [
+        "Independent held-out trajectories share the main_crater terrain; this is not cross-scene generalization.",
+        "Actions are realized PhysX body displacements, not a claim that commanded velocity exactly equals traveled motion.",
+        "A single translation scale fitted only on training poses is shared by validation and test; metric poses and commands are retained.",
+        "The SE(2) action interface discards vertical motion, pitch, and roll.",
+        "MarsLab scene and rover assets are run with a minimal Isaac Sim 4.1 recorder, not the complete official Isaac Sim 5.x application."
+      ],
+      "note": "Held-out trajectories on the same terrain, with simulator ground-truth poses. Fine-tuned on 30 clips for 1,000 updates; playback at 1× simulation time.",
+      "noteZh": "同一地形上未参与训练的独立轨迹，动作来自仿真器真实物理位姿；用 30 个片段微调 1,000 步，按 1× 仿真时间播放。",
       "training": {
         "steps": 1000,
         "windows": 30,
         "targetPairs": 480,
         "scenes": [
-          "forward_1",
-          "forward_2",
-          "forward_3",
-          "forward_4",
-          "forward_5"
+          "main_crater"
         ]
       },
       "conditioningTrajectory": {
-        "estimated": true,
+        "estimated": false,
         "positions": [
           [
             0,
             0
           ],
           [
-            0.2220139793216856,
-            -0.10001096154351272
+            0.1798191003952282,
+            -0.00021775271398908821
           ],
           [
-            0.4240073198229768,
-            -0.2911508432992455
+            0.36475169709455374,
+            -0.002651251487867691
           ],
           [
-            0.6227278635255292,
-            -0.4599175061685823
+            0.5500205538447801,
+            -0.004828315915559503
           ],
           [
-            0.7779906186106852,
-            -0.6060885621254907
+            0.7309584946647354,
+            -0.005098129645395882
           ],
           [
-            0.9883060286454245,
-            -0.7509944771222397
+            0.910443812807294,
+            -0.008470691306058292
           ],
           [
-            1.203037243874594,
-            -0.8510689813694572
+            1.0941983178853942,
+            -0.011961189946706086
           ],
           [
-            1.4540834545333021,
-            -0.932452610670577
+            1.2744837888886082,
+            -0.016842136587778084
           ],
           [
-            1.6929879422623306,
-            -1.014466328490671
+            1.456571637819148,
+            -0.024736921870137096
           ],
           [
-            1.9260917414567609,
-            -1.0988627876838941
+            1.632430780686904,
+            -0.031016599758038554
           ],
           [
-            2.159818543726753,
-            -1.1595165560981942
+            1.8094660519690093,
+            -0.037649387976951304
           ],
           [
-            2.398553423598484,
-            -1.2337166715470964
+            1.9844959028838947,
+            -0.045551550442996025
           ],
           [
-            2.613036893682963,
-            -1.32878144555333
+            2.1641779660448397,
+            -0.05490544462559971
           ],
           [
-            2.8689160587584466,
-            -1.4425863262817606
+            2.3441060971660983,
+            -0.06377208198362116
           ],
           [
-            3.0585614141058937,
-            -1.5727400053497007
+            2.525949431663285,
+            -0.07170769922504366
           ],
           [
-            3.274429271446811,
-            -1.7184799712451204
+            2.7075557489644915,
+            -0.08253698272515653
           ],
           [
-            3.5888345968075046,
-            -1.8713753858920175
+            2.8904125609352835,
+            -0.09263770456371956
           ]
         ],
         "sampleTimesSeconds": [
           0.0,
-          0.25,
-          0.5,
-          0.75,
-          1.0,
-          1.25,
-          1.5,
-          1.75,
-          2.0,
-          2.25,
-          2.5,
-          2.75,
-          3.0,
-          3.25,
-          3.5,
-          3.75,
-          4.0
+          0.25000001303851604,
+          0.5000000260770321,
+          0.7500000391155481,
+          1.0000000521540642,
+          1.2500000651925802,
+          1.5000000782310963,
+          1.7500000912696123,
+          2.0000001043081284,
+          2.2500001173466444,
+          2.5000001303851604,
+          2.7500001434236765,
+          3.0000001564621925,
+          3.2500001695007086,
+          3.5000001825392246,
+          3.7500001955777407,
+          4.000000208616257
         ],
-        "axes": "Forward and left in relative action units; monocular estimated scale, not meters.",
-        "timeSemantics": "Playback offsets only. Source capture times and physical duration are unavailable.",
-        "sourceFile": "assets/space/synmars-finetuned/synmars-forward-9-0361/manifest.json",
-        "poseSource": "VGGT-Omega offline visual pose estimates",
-        "poseSourceSha256": "b53d34abda7b073b35f9526bfa3ee9aed326ca255632451559b6b3d1438aa1e3",
-        "sourceSha256": "874ecf9b0a77e21a133464d0a0475703ba3e8feb8eb857d77a4e969e3da3cf2b"
+        "axes": "Forward and left displacement in meters, relative to the observed anchor.",
+        "timeSemantics": "Offsets from synchronized simulator camera/PhysX timestamps; 1× simulation time.",
+        "sourceFile": "assets/space/marslab-finetuned/marslab-test_01-0000/manifest.json",
+        "poseSource": "MarsLab / Isaac Sim PhysX body ground truth",
+        "poseSourceSha256": "28160878fb7588f9411b2f4a943e99263382820e4fb3472a2213458315cc4658",
+        "sourceSha256": "e238f9302d883b0b60e74948885446b4bcca31963c7235c0fb12bdb7c0d51b5f"
       },
       "assetProvenance": {
         "gt": {
-          "sha256": "15e89a6e3ff62568eeb7c3bfa9c6dfd3194eb5e7573e6b3cf0b69e2024e528c4",
-          "sourceFramesSha256": "56be3d41a019f3fb9def3604663e21ea4fbefe50688a5a23815d39acfb9d965d",
+          "sha256": "8f58d2541a72cea5942e0cb3f10355adc9869db6f0b30f342ab4866986351a30",
+          "sourceFramesSha256": "453eb967e135d2f3678123c9a5a744760fe161433c517468da5c3347bd03b395",
           "frameCount": 17
         },
         "prediction": {
-          "sha256": "f46695b1cf5984971ed3894cc1df681ab52de3b7e5459a1720b55284dedcec8d",
-          "sourceFramesSha256": "a0d724ae78caf2fd878a59f03c2ecbb97c77c9e47d0a97d111bd30d1350492ae",
+          "sha256": "441060a2fb446c1d511554635b5e28afa40d0cf25af5e287a12af76e9a572ce5",
+          "sourceFramesSha256": "de1f2690779bd149abfdf8e8bbf61232196152329ec0ccdedf257ebf36596594",
           "frameCount": 17
         }
       },
-      "gt": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-gt.mp4",
-      "gtPoster": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-gt.webp",
-      "prediction": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-prediction.mp4",
-      "predictionPoster": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-prediction.webp",
-      "sourceManifestSha256": "874ecf9b0a77e21a133464d0a0475703ba3e8feb8eb857d77a4e969e3da3cf2b",
-      "poster": "assets/space/synmars-finetuned/synmars-forward-9-0361/slider-gt.webp"
+      "gt": "assets/space/marslab-finetuned/marslab-test_01-0000/slider-gt.mp4",
+      "gtPoster": "assets/space/marslab-finetuned/marslab-test_01-0000/slider-gt.webp",
+      "prediction": "assets/space/marslab-finetuned/marslab-test_01-0000/slider-prediction.mp4",
+      "predictionPoster": "assets/space/marslab-finetuned/marslab-test_01-0000/slider-prediction.webp",
+      "sourceManifestSha256": "e238f9302d883b0b60e74948885446b4bcca31963c7235c0fb12bdb7c0d51b5f",
+      "poster": "assets/space/marslab-finetuned/marslab-test_01-0000/slider-gt.webp"
     },
     {
-      "id": "synmars-finetuned-synmars-forward-9-0721",
-      "title": "Mars route 9 · clip 3",
-      "titleZh": "火星路线 9 · 片段 3",
-      "dataset": "SynMars-TW",
-      "datasetId": "synmars",
-      "domain": "held-out route",
+      "id": "marslab-finetuned-marslab-test_02-0000",
+      "title": "Mars crater · route 3",
+      "titleZh": "火星陨石坑 · 路线 3",
+      "dataset": "MarsLab",
+      "datasetId": "marslab",
+      "domain": "held-out trajectory · same terrain",
       "environment": "mars",
       "fineTuned": true,
-      "sampleId": "synmars-forward-9-0721",
+      "sampleId": "marslab-test_02-0000",
       "fps": 4,
       "duration": 4.25,
       "frameCount": 17,
@@ -4237,143 +4245,147 @@
         "gt": "Simulation reference",
         "prediction": "OpenNWM"
       },
-      "model": "OpenNWM · SynMars few-shot fine-tuned EMA",
+      "model": "OpenNWM · MarsLab few-shot fine-tuned EMA",
       "checkpoint": {
-        "sha256": "d51c8ee18e1a6b5c208a6a80e2bf98d6b617fc705eccf02d7e460950f040971f"
+        "sha256": "c5f8ef71736db3f74f024f6a1f3ca9ee477f6c9946513d6435b8717ddc914b30"
       },
-      "sourceManifest": "assets/space/synmars-finetuned/synmars-forward-9-0721/manifest.json",
-      "sourceInferenceManifestSha256": "80b97ec7a75fdd81bc7a6c8969c716b9a7edfaa1a9c2f1ccc2f07492aba34a74",
-      "protocol": "Each of 16 future views is predicted directly from the same four observed RGB frames and its anchor-relative visually estimated action. Future reference RGB is used only offline to annotate these oracle actions, never as image-model context.",
-      "selection": "Predeclared test windows beginning at source frames 1, 361 and 721 of forward_9; selected before pose estimation, fine-tuning and inference, without ranking predictions.",
-      "limitations": "Actions are visual pose estimates, not recorded controls or ground-truth poses. Reference future RGB informs the offline oracle action annotation; pose estimation can also use intermediate RGB within the same source-frame interval. Monocular translation is normalized per clip to a median adjacent step of 0.25 relative units, not meters. Source timestamps and physical speed are unknown; 4 FPS is playback speed only. Held-out route IDs do not establish geographically separate terrain. Direct predictions are not an autoregressive rollout or evidence of physical navigation performance.",
+      "sourceManifest": "assets/space/marslab-finetuned/marslab-test_02-0000/manifest.json",
+      "sourceInferenceManifestSha256": "749bdd23851716d91c34e5eb415f04368c977870b9c0a99fe27bd2535f7a3419",
+      "protocol": "Each of sixteen future views is predicted directly from the same four observed RGB frames and its anchor-relative realized PhysX body displacement. The future reference images are not model context. This is action-conditioned direct prediction, not an autoregressive rollout or a navigation success evaluation.",
+      "selection": "The first 20-frame window of test_00, test_01 and test_02, fixed before training; all six held-out windows are evaluated without ranking predictions. Independent held-out trajectories share the training terrain.",
+      "limitations": [
+        "Independent held-out trajectories share the main_crater terrain; this is not cross-scene generalization.",
+        "Actions are realized PhysX body displacements, not a claim that commanded velocity exactly equals traveled motion.",
+        "A single translation scale fitted only on training poses is shared by validation and test; metric poses and commands are retained.",
+        "The SE(2) action interface discards vertical motion, pitch, and roll.",
+        "MarsLab scene and rover assets are run with a minimal Isaac Sim 4.1 recorder, not the complete official Isaac Sim 5.x application."
+      ],
+      "note": "Held-out trajectories on the same terrain, with simulator ground-truth poses. Fine-tuned on 30 clips for 1,000 updates; playback at 1× simulation time.",
+      "noteZh": "同一地形上未参与训练的独立轨迹，动作来自仿真器真实物理位姿；用 30 个片段微调 1,000 步，按 1× 仿真时间播放。",
       "training": {
         "steps": 1000,
         "windows": 30,
         "targetPairs": 480,
         "scenes": [
-          "forward_1",
-          "forward_2",
-          "forward_3",
-          "forward_4",
-          "forward_5"
+          "main_crater"
         ]
       },
       "conditioningTrajectory": {
-        "estimated": true,
+        "estimated": false,
         "positions": [
           [
             0,
             0
           ],
           [
-            0.22490040482237014,
-            -0.02038805273948143
+            0.17262425042495252,
+            0.0006161142290287136
           ],
           [
-            0.4446707604868046,
-            -0.05041574763655203
+            0.3460553851491928,
+            -0.0007543313327881829
           ],
           [
-            0.6736446623881538,
-            -0.08101515728291872
+            0.5154199634751048,
+            -0.0020362475155394216
           ],
           [
-            0.9053974464067668,
-            -0.10936403934609218
+            0.6772733947311439,
+            -0.003154055990296528
           ],
           [
-            1.142329645230058,
-            -0.14380321122622128
+            0.8491467209479718,
+            -0.001864123273333823
           ],
           [
-            1.3814246256949558,
-            -0.216834644982448
+            1.0120038939110076,
+            -0.0015217776117683601
           ],
           [
-            1.6280851483209644,
-            -0.2933385831631513
+            1.171007536410485,
+            -0.00260106056381193
           ],
           [
-            1.8599827839979612,
-            -0.3679167454186477
+            1.335884730464701,
+            -0.0015432785834754714
           ],
           [
-            2.1036788447330843,
-            -0.4528357015556288
+            1.4998061502603026,
+            -0.0013778104274110858
           ],
           [
-            2.3743201223724073,
-            -0.5461027740931405
+            1.670803140301448,
+            -0.0011682968601019472
           ],
           [
-            2.6250158075871446,
-            -0.6241138337139359
+            1.8316339244633968,
+            0.0002781838363237754
           ],
           [
-            2.8877536360202294,
-            -0.7094260789186683
+            1.9914917897185407,
+            0.0006486747664808945
           ],
           [
-            3.147319885633559,
-            -0.8455518213061329
+            2.1596911059436965,
+            0.0025530712191281224
           ],
           [
-            3.378335809086601,
-            -0.9977688094114916
+            2.3322910837015858,
+            0.0031700231779169252
           ],
           [
-            3.6269319832120885,
-            -1.1756556350614762
+            2.505493166713733,
+            0.0052753233124734344
           ],
           [
-            3.8820574361385094,
-            -1.3515506359358493
+            2.670620243823272,
+            0.008307754085796315
           ]
         ],
         "sampleTimesSeconds": [
           0.0,
-          0.25,
-          0.5,
-          0.75,
-          1.0,
-          1.25,
-          1.5,
-          1.75,
-          2.0,
-          2.25,
-          2.5,
-          2.75,
-          3.0,
-          3.25,
-          3.5,
-          3.75,
-          4.0
+          0.25000001303851604,
+          0.5000000260770321,
+          0.7500000391155481,
+          1.0000000521540642,
+          1.2500000651925802,
+          1.5000000782310963,
+          1.7500000912696123,
+          2.0000001043081284,
+          2.2500001173466444,
+          2.5000001303851604,
+          2.7500001434236765,
+          3.0000001564621925,
+          3.2500001695007086,
+          3.5000001825392246,
+          3.7500001955777407,
+          4.000000208616257
         ],
-        "axes": "Forward and left in relative action units; monocular estimated scale, not meters.",
-        "timeSemantics": "Playback offsets only. Source capture times and physical duration are unavailable.",
-        "sourceFile": "assets/space/synmars-finetuned/synmars-forward-9-0721/manifest.json",
-        "poseSource": "VGGT-Omega offline visual pose estimates",
-        "poseSourceSha256": "eaa1c3ad26d713b5a70eaf19e368fa7c4250ff4b84aebc526938374b0cce1feb",
-        "sourceSha256": "774705afe339b2c04b48894e768e3f304b0466e113f149ef9a08026988064d24"
+        "axes": "Forward and left displacement in meters, relative to the observed anchor.",
+        "timeSemantics": "Offsets from synchronized simulator camera/PhysX timestamps; 1× simulation time.",
+        "sourceFile": "assets/space/marslab-finetuned/marslab-test_02-0000/manifest.json",
+        "poseSource": "MarsLab / Isaac Sim PhysX body ground truth",
+        "poseSourceSha256": "41acea282f6c609b03daf70b39781e9b8de54d7444f52e9d69a1493b7a1c57be",
+        "sourceSha256": "8fcf1f3514055e683a512d03d05cb44089a6e09dd1022fab42655709692ef029"
       },
       "assetProvenance": {
         "gt": {
-          "sha256": "4118cb766f5a977e9a49a3d909902946832994cf46cf6ee9a2e157791f143d4a",
-          "sourceFramesSha256": "dbfd66aa2c5f03a97c61db26c1f4220297ba74d4efa78ccec05b4cbe11e32049",
+          "sha256": "f23a9758a488fd0b07ede8d08d1fb2f0f8f5308046b630abcbd0d9877154d7e0",
+          "sourceFramesSha256": "d45a9f732d21f825dc20d79f88bf5d8c4eea6e304c4dcc50909d46622db733f5",
           "frameCount": 17
         },
         "prediction": {
-          "sha256": "07c6422e4853a54779a5e386f5d07dbeabf2cf420b0d301bbb40ec2af0ef9e27",
-          "sourceFramesSha256": "18eb4d4f29cd7c148b8c214b41243c4b530779b68015121c9657b93d561479fe",
+          "sha256": "4a28d2ea61e9e52ca33cc69e0c4141a81da9cbe739dcb34d67a65878bff8cd15",
+          "sourceFramesSha256": "0c20aa655e64a94ace207cd9e6278626e82676d48379ebd6b1832edfe768410a",
           "frameCount": 17
         }
       },
-      "gt": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-gt.mp4",
-      "gtPoster": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-gt.webp",
-      "prediction": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-prediction.mp4",
-      "predictionPoster": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-prediction.webp",
-      "sourceManifestSha256": "774705afe339b2c04b48894e768e3f304b0466e113f149ef9a08026988064d24",
-      "poster": "assets/space/synmars-finetuned/synmars-forward-9-0721/slider-gt.webp"
+      "gt": "assets/space/marslab-finetuned/marslab-test_02-0000/slider-gt.mp4",
+      "gtPoster": "assets/space/marslab-finetuned/marslab-test_02-0000/slider-gt.webp",
+      "prediction": "assets/space/marslab-finetuned/marslab-test_02-0000/slider-prediction.mp4",
+      "predictionPoster": "assets/space/marslab-finetuned/marslab-test_02-0000/slider-prediction.webp",
+      "sourceManifestSha256": "8fcf1f3514055e683a512d03d05cb44089a6e09dd1022fab42655709692ef029",
+      "poster": "assets/space/marslab-finetuned/marslab-test_02-0000/slider-gt.webp"
     }
   ]
 }
