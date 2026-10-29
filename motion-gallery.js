@@ -1,4 +1,4 @@
-import { registerMedia } from "./media-scheduler.js?v=viewport-v1-20261029";
+import { registerMedia } from "./media-scheduler.js?v=mars-delivery-v1-20261029";
 
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -198,10 +198,10 @@ export function initMotionGallery(demos, getLanguage) {
       const adaptation = item.card.querySelector(".motion-adaptation-label");
       if (adaptation) {
         adaptation.textContent = isMars ? t("Held-out · fine-tuned", "留出测试 · 微调") : t("Lightly fine-tuned", "少量微调");
-        if (isMars) adaptation.title = t("With fixed observed context, OpenNWM predicts future frames from visually estimated actions. Ground truth shows the held-out future reference.", "使用固定观测上下文和视觉估计的动作预测未来帧，真实画面为留出测试中的未来参考帧。");
+        if (isMars) adaptation.title = t("OpenNWM predicts each future frame from four fixed observed frames and estimated actions. Offline pose estimation uses future reference frames to label those actions; they are not recorded controls.", "OpenNWM 使用固定的四帧观测和估计动作预测各未来帧。动作由包含未来参考帧的完整视频离线估计，并非记录的控制指令。");
       }
       const note = item.card.querySelector(".motion-card-note");
-      if (note) note.textContent = item.demo.note ? t(item.demo.note, item.demo.noteZh) : t("Actions estimated from video; scale is relative.", "动作由视频估计；尺度为相对值。");
+      if (note) note.textContent = item.demo.note ? t(item.demo.note, item.demo.noteZh) : t("Actions estimated offline from full clips; relative scale.", "动作由完整视频离线估计；尺度为相对值。");
       item.slider.setAttribute("aria-label", t(`Compare Ground truth and OpenNWM: ${title}`, `滑动对比真实画面与 OpenNWM：${title}`));
       item.videos.forEach((element) => element.setAttribute("aria-label", `${title} · ${element.dataset.model === "gt" ? t("Ground truth", "真实画面") : "OpenNWM"}`));
       updateWipe(item);

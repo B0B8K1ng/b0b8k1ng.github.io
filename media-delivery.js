@@ -1,12 +1,18 @@
 // This manifest selects a verified byte-for-byte mirror. Missing configuration
 // keeps ordinary relative URLs working for local previews and static hosting.
 let assetBase = "";
+let localAssetPrefixes = [];
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 3000);
 try {
-  const response = await fetch("content/media-delivery.json?v=delivery-v2-20261029", { signal: controller.signal });
+  const response = await fetch("content/media-delivery.json?v=mars-delivery-v1-20261029", { signal: controller.signal });
   if (response.ok) {
     const config = await response.json();
+    if (Array.isArray(config.localAssetPrefixes)) {
+      localAssetPrefixes = config.localAssetPrefixes.filter((prefix) => typeof prefix === "string")
+        .map((prefix) => prefix.trim().replace(/^\/+/, "").replace(/^assets\//, "").replace(/\/+$/, ""))
+        .filter(Boolean).map((prefix) => `${prefix}/`);
+    }
     if (config.enabled !== false && config.assetBaseUrl) {
       const base = new URL(config.assetBaseUrl);
       if (base.protocol === "https:") assetBase = base.href.replace(/\/?$/, "/");
@@ -18,7 +24,6 @@ finally { clearTimeout(timeout); }
 function assetPath(source) {
   if (!source) return null;
   const value = String(source);
-  if (/^assets\//.test(value)) return value.slice(7);
   try {
     const url = new URL(value, document.baseURI);
     const localBase = new URL("assets/", document.baseURI);
@@ -37,6 +42,10 @@ function assetPath(source) {
 
 export function mediaUrl(source) {
   const relative = assetPath(source);
+  // Compare whole directory prefixes, including for already mirrored URLs.
+  if (relative !== null && localAssetPrefixes.some((prefix) => relative.startsWith(prefix))) {
+    return originalMediaUrl(source);
+  }
   return assetBase && relative !== null ? new URL(`assets/${relative}`, assetBase).href : source;
 }
 
