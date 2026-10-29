@@ -2,11 +2,13 @@
   "schemaVersion": 1,
   "enabled": true,
   "assetBaseUrl": "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/",
+  "assetBaseOverrides": {
+    "space/marslab-finetuned/": "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/00e8d6ea493a5d132f1707bce427df888f26fbba/"
+  },
   "manifestSha256": "5091972f9e1135677f5554c38c05383a4cc431d5703aed7501eda29513ade219",
   "localAssetPrefixes": [
     "space/synmars-finetuned/",
-    "datasets/",
-    "space/marslab-finetuned/"
+    "datasets/"
   ],
   "localFallback": true
 }
