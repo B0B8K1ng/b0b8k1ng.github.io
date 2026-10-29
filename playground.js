@@ -1,5 +1,5 @@
-import { registerMedia } from "./media-scheduler.js?v=marslab-mirror-v1-20261029";
-import { setMediaUrl } from "./media-delivery.js?v=marslab-mirror-v1-20261029";
+import { registerMedia } from "./media-scheduler.js?v=marslab-gt-v1-20261029";
+import { setMediaUrl } from "./media-delivery.js?v=marslab-gt-v1-20261029";
 
 const $ = (selector) => document.querySelector(selector);
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
