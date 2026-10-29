@@ -1,9 +1,11 @@
-/* One table follows the paper's in-domain / out-of-domain comparison. */
-.paper-results { min-width: 0; margin-top: 12px; }
+/* The paper's future prediction and navigation tables, always expanded. */
+.paper-results { display: grid; gap: 24px; min-width: 0; margin-top: 12px; }
 .results-table-card { min-width: 0; padding: 24px 26px 19px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .results-table-scroll { overflow-x: auto; scrollbar-color: #5b6852 transparent; scrollbar-width: thin; }
-.results-table { width: 100%; min-width: 800px; border-collapse: collapse; table-layout: fixed; color: #cdd0d2; font: 400 13px/1.5 var(--sans); font-variant-numeric: tabular-nums; }
+.results-table { width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; color: #cdd0d2; font: 400 13px/1.5 var(--sans); font-variant-numeric: tabular-nums; }
 .results-model-column { width: 16%; }
+.results-params-column { width: 9%; }
+.results-navigation-table .results-model-column { width: 22%; }
 .results-table caption { padding: 0 0 20px; color: #e8ebeb; text-align: left; font-size: 14px; font-weight: 500; }
 .results-table th, .results-table td { padding: 14px 9px; text-align: center; vertical-align: middle; }
 .results-table thead th { color: #aeb7bb; font-size: 11px; font-weight: 500; line-height: 1.5; }
@@ -11,7 +13,7 @@
 .results-table thead tr:last-child th, .results-table thead th[rowspan] { border-bottom: 1px solid var(--line); }
 .results-table thead tr:first-child th[colspan] { padding-bottom: 5px; color: #d3dcd0; font-size: 12px; }
 .results-table thead tr:last-child th { padding-top: 6px; }
-.results-table th[scope="row"], .results-table th[rowspan] { padding-left: 12px; text-align: left; }
+.results-table th[scope="row"], .results-table thead th:first-child[rowspan] { padding-left: 12px; text-align: left; }
 .results-table tbody th { font-weight: 400; }
 .results-table tbody tr + tr { border-top: 1px solid #ffffff08; }
 .results-table .results-domain-start { border-left: 1px solid #ffffff0b; }
@@ -19,10 +21,12 @@
 .results-table tbody .results-ours th { font-weight: 600; }
 .results-table strong { color: #f0f2ef; font-weight: 700; }
 .results-table .results-ours strong { color: #cdf4b0; }
+.results-second { text-decoration: underline; text-underline-offset: 3px; }
 .results-table-note { margin: 15px 0 0; color: var(--muted); font: 400 11px/1.7 var(--sans); }
+.results-ranking-note { margin: -10px 0 0; color: var(--muted); font: 400 11px/1.7 var(--sans); }
 @media (max-width: 680px) {
   .results-table-card { padding: 18px 15px 15px; }
-  .results-table { min-width: 780px; font-size: 12px; }
+  .results-table { font-size: 12px; }
   .results-table caption { font-size: 13px; }
   .results-table th, .results-table td { padding: 12px 8px; }
 }

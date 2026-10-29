@@ -651,7 +651,8 @@
           "go_stanford_psnr": 11.323,
           "tum_psnr": 8.957,
           "planetary_rover_psnr": 11.739,
-          "office_go2_psnr": 10.75
+          "office_go2_psnr": 10.75,
+          "params_m": 279
         },
         {
           "id": "nwm-xl-ego4d",
@@ -662,7 +663,8 @@
           "go_stanford_psnr": 11.444,
           "tum_psnr": 8.884,
           "planetary_rover_psnr": 11.906,
-          "office_go2_psnr": 11.083
+          "office_go2_psnr": 11.083,
+          "params_m": 1099
         },
         {
           "id": "rae-nwm",
@@ -673,7 +675,8 @@
           "go_stanford_psnr": 11.528,
           "tum_psnr": 9.007,
           "planetary_rover_psnr": 9.449,
-          "office_go2_psnr": 10.5
+          "office_go2_psnr": 10.5,
+          "params_m": 867
         },
         {
           "id": "opennwm",
@@ -684,7 +687,8 @@
           "go_stanford_psnr": 11.591,
           "tum_psnr": 9.135,
           "planetary_rover_psnr": 12.574,
-          "office_go2_psnr": 11.047
+          "office_go2_psnr": 11.047,
+          "params_m": 280
         }
       ],
       "baseline_note": "NWM† denotes CDiT-XL + Ego4D.",
@@ -736,7 +740,8 @@
           "office_go2_ate": null,
           "office_go2_rpe": null,
           "tartan_drive_ate": 6.65,
-          "tartan_drive_rpe": 1.62
+          "tartan_drive_rpe": 1.62,
+          "params_m": 9
         },
         {
           "id": "nomad",
@@ -748,7 +753,8 @@
           "office_go2_ate": null,
           "office_go2_rpe": null,
           "tartan_drive_ate": 6.32,
-          "tartan_drive_rpe": 1.31
+          "tartan_drive_rpe": 1.31,
+          "params_m": 19
         },
         {
           "id": "nwm",
@@ -760,7 +766,8 @@
           "office_go2_ate": 3.03,
           "office_go2_rpe": 0.68,
           "tartan_drive_ate": 5.72,
-          "tartan_drive_rpe": 1.19
+          "tartan_drive_rpe": 1.19,
+          "params_m": 279
         },
         {
           "id": "rae-nwm",
@@ -772,7 +779,8 @@
           "office_go2_ate": 3.01,
           "office_go2_rpe": 0.67,
           "tartan_drive_ate": 5.99,
-          "tartan_drive_rpe": 1.25
+          "tartan_drive_rpe": 1.25,
+          "params_m": 867
         },
         {
           "id": "garrido",
@@ -784,7 +792,8 @@
           "office_go2_ate": null,
           "office_go2_rpe": null,
           "tartan_drive_ate": null,
-          "tartan_drive_rpe": null
+          "tartan_drive_rpe": null,
+          "params_m": null
         },
         {
           "id": "compact",
@@ -796,7 +805,8 @@
           "office_go2_ate": null,
           "office_go2_rpe": null,
           "tartan_drive_ate": null,
-          "tartan_drive_rpe": null
+          "tartan_drive_rpe": null,
+          "params_m": null
         },
         {
           "id": "opennwm",
@@ -808,7 +818,8 @@
           "office_go2_ate": 2.89,
           "office_go2_rpe": 0.65,
           "tartan_drive_ate": 5.53,
-          "tartan_drive_rpe": 1.16
+          "tartan_drive_rpe": 1.16,
+          "params_m": 280
         }
       ],
       "summary": "OpenNWM has the lowest reported ATE and best or tied-best RPE across RECON, SCAND, and Office-Go2.",
