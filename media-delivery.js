@@ -1,40 +1,21 @@
 // This manifest selects a verified byte-for-byte mirror. Missing configuration
 // keeps ordinary relative URLs working for local previews and static hosting.
 let assetBase = "";
-let assetBaseOverrides = [];
 let localAssetPrefixes = [];
-let deliveryEnabled = true;
-
-function assetPrefix(value) {
-  return value.trim().replace(/^\/+/, "").replace(/^assets\//, "").replace(/\/+$/, "");
-}
-
-function httpsBase(value) {
-  try {
-    const base = new URL(value);
-    return base.protocol === "https:" ? base.href.replace(/\/?$/, "/") : "";
-  } catch { return ""; }
-}
-
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 3000);
 try {
-  const response = await fetch("content/media-delivery.json?v=marslab-mirror-v1-20261029", { signal: controller.signal });
+  const response = await fetch("content/media-delivery.json?v=marslab-gt-v1-20261029", { signal: controller.signal });
   if (response.ok) {
     const config = await response.json();
-    deliveryEnabled = config.enabled !== false;
     if (Array.isArray(config.localAssetPrefixes)) {
       localAssetPrefixes = config.localAssetPrefixes.filter((prefix) => typeof prefix === "string")
-        .map(assetPrefix)
+        .map((prefix) => prefix.trim().replace(/^\/+/, "").replace(/^assets\//, "").replace(/\/+$/, ""))
         .filter(Boolean).map((prefix) => `${prefix}/`);
     }
-    assetBase = httpsBase(config.assetBaseUrl);
-    if (config.assetBaseOverrides && typeof config.assetBaseOverrides === "object") {
-      assetBaseOverrides = Object.entries(config.assetBaseOverrides).map(([prefix, value]) => ({
-        prefix: assetPrefix(prefix), base: httpsBase(value),
-      })).filter(({ prefix, base }) => prefix && base)
-        .map(({ prefix, base }) => ({ prefix: `${prefix}/`, base }))
-        .sort((a, b) => b.prefix.length - a.prefix.length);
+    if (config.enabled !== false && config.assetBaseUrl) {
+      const base = new URL(config.assetBaseUrl);
+      if (base.protocol === "https:") assetBase = base.href.replace(/\/?$/, "/");
     }
   }
 } catch { /* The local assets remain a complete fallback. */ }
@@ -49,10 +30,8 @@ function assetPath(source) {
     if (url.origin === localBase.origin && url.pathname.startsWith(localBase.pathname)) {
       return url.pathname.slice(localBase.pathname.length) + url.search + url.hash;
     }
-    // Keep all configured bases recognizable, including when delivery is disabled,
-    // so an already mirrored URL can still fall back to the site's own asset.
-    for (const base of [assetBase, ...assetBaseOverrides.map((entry) => entry.base)].filter(Boolean)) {
-      const mirrorBase = new URL("assets/", base);
+    if (assetBase) {
+      const mirrorBase = new URL("assets/", assetBase);
       if (url.origin === mirrorBase.origin && url.pathname.startsWith(mirrorBase.pathname)) {
         return url.pathname.slice(mirrorBase.pathname.length) + url.search + url.hash;
       }
@@ -64,13 +43,10 @@ function assetPath(source) {
 export function mediaUrl(source) {
   const relative = assetPath(source);
   // Compare whole directory prefixes, including for already mirrored URLs.
-  if (relative !== null && (!deliveryEnabled || localAssetPrefixes.some((prefix) => relative.startsWith(prefix)))) {
+  if (relative !== null && localAssetPrefixes.some((prefix) => relative.startsWith(prefix))) {
     return originalMediaUrl(source);
   }
-  const base = relative !== null
-    ? assetBaseOverrides.find((entry) => relative.startsWith(entry.prefix))?.base || assetBase
-    : "";
-  return base ? new URL(`assets/${relative}`, base).href : source;
+  return assetBase && relative !== null ? new URL(`assets/${relative}`, assetBase).href : source;
 }
 
 export function originalMediaUrl(source) {

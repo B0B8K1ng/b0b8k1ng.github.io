@@ -49,7 +49,7 @@ Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 
 为约 1×；RECON 缺少可确认的源时间，明确标注为 4 FPS 展示。卡片显示各自的播放
 时间依据，不能仅从浏览器的 `playbackRate=1` 判断是否为源视频原速。
 
-`content/media-delivery.json` 指定经过校验的 ModelScope 媒体镜像，默认固定版本为：
+`content/media-delivery.json` 指定经过校验的 ModelScope 媒体镜像，当前固定版本为：
 
 ```text
 https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/
@@ -59,20 +59,9 @@ https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3
 跨域加载。`media-delivery.js` 在配置缺失时使用本站路径，并在单个镜像资源失败时
 回退到本站副本。源素材和本站文件没有被替换为低清版本；论文主图另有像素完全一致
 的无损 WebP，原 PNG 保留供下载。公开校验清单为镜像根目录的 `media-manifest.json`。
-新火星素材通过 `assetBaseOverrides` 单独固定到以下提交，其他媒体仍使用上述版本：
-
-```text
-https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/00e8d6ea493a5d132f1707bce427df888f26fbba/
-```
-
-该提交仅新增 `assets/space/marslab-finetuned/` 的 15 个文件（631,244 字节），
-已有 353 个文件记录保持不变。默认版本的 `media-manifest.json` 不包含这批新文件；
-火星卡片各自的 `manifest.json` 保留来源与实验记录。小文件的 Range 请求返回
-正确的片段及 `Content-Range`，但服务使用 HTTP 200，须以实际浏览器播放和跳转检查
-确认兼容性，不能把它描述为标准的 206 响应。
-
-重新定时的数据集视频和保留的 SynMars 历史素材继续由 `localAssetPrefixes` 指向
-本站。所有目录映射均保留本站错误回退；禁用镜像配置时也会使用本站路径。
+重新定时的数据集视频和新火星素材尚未收录于该固定镜像；`localAssetPrefixes` 将
+`assets/datasets/`、`assets/space/marslab-finetuned/` 和保留的 SynMars 历史素材直接
+指向本站，待后续镜像版本收录后可移除相应项。
 
 ## 本地预览与部署
 
