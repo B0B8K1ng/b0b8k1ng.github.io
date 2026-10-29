@@ -1,5 +1,5 @@
-import { registerMedia } from "./media-scheduler.js?v=marslab-gt-v1-20261029";
-import { setMediaUrl } from "./media-delivery.js?v=marslab-gt-v1-20261029";
+import { registerMedia } from "./media-scheduler.js?v=planetary-curves-v1-20261029";
+import { setMediaUrl } from "./media-delivery.js?v=planetary-curves-v1-20261029";
 
 const escapeHTML = (value) =>
   String(value).replace(

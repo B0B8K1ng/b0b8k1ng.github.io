@@ -6,7 +6,9 @@
   "localAssetPrefixes": [
     "space/synmars-finetuned/",
     "datasets/",
-    "space/marslab-finetuned/"
+    "space/marslab-finetuned/",
+    "space/lusnar-curved-20261029/",
+    "space/marslab-curves-20261029/"
   ],
   "localFallback": true
 }

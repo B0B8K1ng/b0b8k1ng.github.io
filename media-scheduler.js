@@ -1,4 +1,4 @@
-import { setMediaUrl } from "./media-delivery.js?v=marslab-gt-v1-20261029";
+import { setMediaUrl } from "./media-delivery.js?v=planetary-curves-v1-20261029";
 
 // Share network and decoder capacity across the entire page. Media bytes and
 // playback cadence are unchanged; only their lifetime follows the viewport.

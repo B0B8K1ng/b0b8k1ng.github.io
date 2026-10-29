@@ -31,12 +31,14 @@ sources、70.8K navigation sequences 放在数据集介绍中。数据集卡片�
 兼容录制器运行物理仿真，采用简化照明。RGB 与车体真值位姿以 4 Hz 同步记录；动作
 由实际平面位移和转角计算，米制位姿及控制命令另行保留。使用 6 条训练轨迹的
 30 个片段（480 个目标对）微调 OpenNWM 1,000 步，1 条轨迹用于验证，3 条用于测试。
-网页固定展示三条测试轨迹各自的第一个片段，按 1× 仿真时间播放。这是同一地形上的
+网页固定展示三条测试轨迹各自的第一个片段，分别为左弯、右弯和 S 弯，按 1× 仿真时间播放。这是同一地形上的
 留出轨迹测试，不代表跨地形泛化。协议、全部测试结果与限制见
-[火星验证记录](content/MARSLAB_20261029_VALIDATION.md)。
+[火星弯道验证记录](content/MARSLAB_CURVES_20261029_VALIDATION.md)。
 
 Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 30 个片段微调
-1,000 步，Moon 6 用于验证，Moon 7–9 仅用于测试；画廊下方提供中英文方法脚注。
+1,000 步，Moon 6 用于验证，Moon 7–9 仅用于测试。当前三个片段在推理前按真实转弯
+幅度选定，沿用原微调权重；详情见[月球选样说明](content/LUNAR_CURVES_20261029_VALIDATION.md)。
+画廊下方提供中英文方法脚注。
 
 ## 媒体加载与播放
 
@@ -60,8 +62,8 @@ https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3
 回退到本站副本。源素材和本站文件没有被替换为低清版本；论文主图另有像素完全一致
 的无损 WebP，原 PNG 保留供下载。公开校验清单为镜像根目录的 `media-manifest.json`。
 重新定时的数据集视频和新火星素材尚未收录于该固定镜像；`localAssetPrefixes` 将
-`assets/datasets/`、`assets/space/marslab-finetuned/` 和保留的 SynMars 历史素材直接
-指向本站，待后续镜像版本收录后可移除相应项。
+`assets/datasets/`、`assets/space/lusnar-curved-20261029/`、`assets/space/marslab-curves-20261029/`
+和保留的 MarsLab / SynMars 历史素材直接指向本站。
 
 ## 本地预览与部署
 
