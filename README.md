@@ -1,52 +1,104 @@
-# OpenNWM 项目网页
+# OpenNWM 项目网站
 
-OpenNWM 的独立公开网站：论文方法、视频预测、目标导航、NavAnywhere 数据集与新环境迁移。原生 HTML / CSS / JavaScript，无前端依赖或构建步骤。
+原生 HTML、CSS 和 JavaScript 学术主页，无前端构建步骤。正式地址：
+[OpenNWM](https://b0b8k1ng.github.io/OpenNWM/)。此目录也可独立作为静态站部署；
+论文、字体、图片和视频均保留在 `assets/`，模型服务不属于静态站依赖。
 
-网站地址：<https://b0b8k1ng.github.io/OpenNWM/>。
+## 页面结构
 
-## 免费部署
+当前页面按以下顺序展示：
 
-公开仓库名称为 **B0B8K1ng/b0b8k1ng.github.io**，在 **Settings → Pages → Source** 选择 **GitHub Actions**。推送到 `main` 会自动部署；也可在 **Actions → Deploy website to GitHub Pages → Run workflow** 手动运行。
+1. 首页背景影片、OpenSpace Lab / OpenNWM 标识。
+2. 作者与单位。
+3. 论文 Figure 1 主图。
+4. 论文 Table 1 的未来预测结果、Table 2 的导航结果，以柱状图同时展示全部已有模型和指标。
+5. 真机导航：从四次记录的 40 个合格片段中精选 8 段，每次记录两段，覆盖室内外场景。
+6. Visualization：地球、月面、火星的未来预测对照，以及离线导航可视化。
+7. Demo：选择场景、绘制轨迹、提交真实模型推理并查看返回视频。
+8. NavAnywhere Dataset：桌面端每行五个视频，全部来源直接排列。
 
-网页源文件保持在仓库根目录，工作流将根目录的 HTML、CSS、JavaScript，以及 `assets/`、`content/` 发布到 `OpenNWM/`。用户站点根地址和旧的 `/OpenNWM-website/` 地址会跳转到 `/OpenNWM/`。
+论文结果取自 `content/paper.json`，保留原始数值、优劣方向、并列和缺失值；
+精选视频不改变论文汇总分数。数据集的 17.5M visual observations、15 pretraining
+sources、70.8K navigation sequences 放在数据集介绍中。数据集卡片包括 15 个
+预训练来源和 4 个额外有动作标注的来源，后者不计入 NavAnywhere 的 15 个来源。
 
-本仓库保存网站内容。训练与评测实现位于私人仓库 [B0B8K1ng/OpenNWM](https://github.com/B0B8K1ng/OpenNWM)，访问代码需要协作者权限。
+真机视频以第三人称为主体，同屏展示第一人称 GT、OpenNWM/NWM rollout 和参考/规划
+轨迹，桌面端两列、手机端一列。片段为 20–28 秒，视频中的 ATE/RPE 使用向下箭头。
+当前 8 段均在两项误差上相对 NWM 改善超过 13%；这是经评测后选择的定性展示，
+不能作为独立、无偏的模型基准。完整 40 段和原始推理记录继续保留。
 
-## 本地预览
+## 媒体加载与播放
 
-在本仓库根目录使用任意已有 Python 3：
+影片、真机和数据集视频静音自动播放，不提供开始/暂停按钮；首页保留进度展示。
+浏览器仍决定自动播放资格。`media-scheduler.js` 统一调度可见视频及同步视频组，
+只预载少量邻近内容，离屏或隐藏标签页时暂停并释放不需要的传输和解码资源，回到
+可见区域自动恢复。它不降低视频分辨率、码率或帧率。
 
-```bash
-python3 -m http.server 8000 --bind 127.0.0.1
+`content/media-delivery.json` 指定经过校验的 ModelScope 媒体镜像，当前固定版本为：
+
+```text
+https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/
 ```
 
-打开 <http://127.0.0.1:8000>。视频、字体和论文均在 `assets/` 中，浏览不依赖模型权重、原始数据或 GPU。
+镜像保持 `assets/...` 路径，文件与网站副本逐字节相同，支持视频 Range 请求和
+跨域加载。`media-delivery.js` 在配置缺失时使用本站路径，并在单个镜像资源失败时
+回退到本站副本。源素材和本站文件没有被替换为低清版本；论文主图另有像素完全一致
+的无损 WebP，原 PNG 保留供下载。公开校验清单为镜像根目录的 `media-manifest.json`。
 
-## 页面内容
+## 本地预览与部署
 
-首屏提供论文、Code 和 NavAnywhere 数据集入口。页面依次介绍方法、NavAnywhere、运动预测、预测基准、导航与交互体验，最后展示新环境迁移。默认英语，可手动切换中文。
+进入包含 `index.html` 的目录。源代码仓库中是 `website/`，独立网站仓库中是根目录：
 
-- **方法**：依照论文介绍像素与动作双重监督的潜在动作模型、无动作标注视频预训练，以及物理动作对齐与 CEM 导航规划；同时展示三阶段训练流程。
-- **In Motion**：9 条轨迹，以紧凑网格展示真实观测与 OpenNWM 预测，可拖动 GT / OpenNWM 分割滑块对照。
-- **导航**：3 组包含连续转弯或左右变向的目标图像导航结果，展示起点、目标、OpenNWM 预测与实际优化出的轨迹。素材来自独立离线规划实验，论文导航基准另行展示。
-- **NavAnywhere**：15 个预训练数据来源及 4 个后训练数据来源的连续帧视频；后者不计入 NavAnywhere 总量。
-- **Beyond Earth**：页面末尾展示 3 个月面仿真场景的微调结果，说明模型经少量微调迁移到预训练未见环境的能力。
+```bash
+cd /path/to/site
+conda run --no-capture-output -n base python -m http.server 8000 --bind 127.0.0.1
+```
 
-展示视频均来自已完成的推理归档。轨迹演示支持鼠标和触屏交互，公开静态站点播放预计算素材；任意轨迹的实时预测需要另行连接推理服务。本仓库不包含模型权重或推理服务。
+打开 <http://127.0.0.1:8000/>；按 `Ctrl+C` 停止。可用 Python 3 的绝对路径替换上方
+`conda run`。页面通过 HTTP 读取 JSON，请通过服务器预览。
 
-## 修改内容
+公开站由 [网站仓库](https://github.com/B0B8K1ng/b0b8k1ng.github.io) 的 GitHub Pages
+工作流部署到 `/OpenNWM/`。保持所有相对路径和目录层级即可迁移到其他静态服务器。
+推送前检查中英文、桌面/手机布局、媒体回退以及 Demo 的在线/离线状态。
 
-- `index.html`：布局与中英固定文案。
-- `style.css`、`method.css`：整体样式、手机布局与方法介绍。
-- `app.js`、`research.js`：视频、数据集、方法与结果交互。
-- `motion-gallery.js`、`motion-gallery.css`：9 条运动预测轨迹与 GT / OpenNWM 对照滑块。
-- `navigation.js`、`navigation.css`：目标导航结果展示。
-- `cinematic.js`、`playground.js`：首屏影片、月面迁移展示和轨迹交互。
-- `content/paper.json`：论文数据；出处见 `content/PAPER_SOURCES.md`。
-- `content/demos.json`、`content/navigation.json`、`content/datasets.json`：预测、导航和数据集素材路径与来源信息。
-- `content/cinematic.json`、`content/space.json`、`content/playground.json`：首屏影片、月面迁移和轨迹演示的场景与素材。
-- `assets/`：展示素材；字体许可见 `assets/fonts/*-OFL.txt`。
+## 自定义轨迹推理
 
-修改后提交并推送 `main`，等待 Pages 部署完成即可。所有素材路径相对于网站根目录。
+网页读取 `content/live-service.json` 中的 HTTPS API 地址，提交绘制的轨迹、轮询状态，
+完成后自动展示真实返回视频。当前服务使用单张本机 GPU、OpenNWM Stage 2 joint100k
+原始 DDPM 模型和 50 个扩散步，不使用 DMD2。输出 16 帧，以 4 FPS 展示；返回的
+manifest 记录轨迹、动作、权重校验值和实际采样配置。历史预计算场景使用 250 步
+DDPM，其协议与实时请求分别保存。
 
-论文当前为匿名稿件、ICLR 2027 审稿中，引用信息为临时版本。定量结果来自论文表格，展示视频为精选定性案例；出处与解释见 `content/PAPER_SOURCES.md` 和各素材清单。
+当前公网连接使用 Cloudflare quick tunnel，GPU 服务和隧道进程必须持续运行。
+重建隧道后地址可能改变，需要更新并发布 `content/live-service.json`。API 离线时
+仍可查看真实预计算结果；自绘轨迹不会被替换成预设结果。静态 Pages 本身不执行模型。
+
+部署、GPU 选择、队列与接口说明见源代码仓库的
+[推理服务文档](https://github.com/B0B8K1ng/OpenNWM/blob/main/website/server/README.md)。
+服务代码和运行环境由源代码仓库管理，独立静态网站无需包含 `server/`。
+
+## 内容维护与溯源
+
+| 文件 | 内容 |
+| --- | --- |
+| `index.html`、`reference-theme.css` | 页面结构、作者单位、中英文固定文案与主题 |
+| `research.js`、`results.css`、`content/paper.json` | 论文结果柱状图及原始数值 |
+| `content/go2.json`、`go2.js` | 当前精选真机片段与显示顺序 |
+| `content/demos.json`、`content/navigation.json` | 预测/离线规划视频、轨迹和推理来源 |
+| `content/playground.json`、`content/live-service.json` | Demo 场景、预计算结果及实时 API 地址 |
+| `content/datasets.json`、`content/cinematic.json` | 数据集视频及首页影片来源 |
+| `media-scheduler.js`、`media-delivery.js` | 可见区域播放调度、镜像加载与本站回退 |
+| `assets/` | 公开媒体、论文、本地字体和对应许可 |
+
+新增或替换媒体时，同步更新清单中的路径、稳定 ID、实际时长、采样协议和校验值。
+先检查 GPU 与磁盘容量，再运行需要推理或大规模输出的源仓库工具；源视频、完整对齐
+视频、模型输出和内部审计保留在 NAS，网站只使用最终展示素材及可公开的溯源信息。
+
+论文来源见 [PAPER_SOURCES.md](content/PAPER_SOURCES.md)，真机数据约定见
+[GO2_MANIFEST.md](content/GO2_MANIFEST.md)。历史方法与媒体审阅分别保留在
+[主图记录](content/MAIN_FIGURE_20261010_VALIDATION.md)、
+[预测记录](content/PREDICTION_20261010_VALIDATION.md)、
+[导航记录](content/REFINEMENT_20261010_VALIDATION.md)、
+[火星记录](content/SYNMARS_20261029_VALIDATION.md) 和
+[同步验证](content/REVISION_20261009_VALIDATION.md) 中；其中历史页面布局及部署状态
+不是当前页面规范。

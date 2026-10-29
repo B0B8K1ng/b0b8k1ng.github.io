@@ -1,11 +1,14 @@
-import { initResearch } from "./research.js?v=paper-tables12-v1-20261029";
-import { initMotionGallery } from "./motion-gallery.js?v=paper-flow-v1-20261028";
-import { initNavigation } from "./navigation.js?v=paper-flow-v1-20261028";
-import { initCinematic } from "./cinematic.js?v=hero-autoplay-v1-20261028";
-import { initPlayground } from "./playground.js?v=paper-flow-v1-20261028";
+import { registerMedia } from "./media-scheduler.js?v=viewport-v1-20261029";
+import { setMediaUrl } from "./media-delivery.js?v=delivery-v2-20261029";
+import { initResearch } from "./research.js?v=site-refresh-20261029-v2";
+import { initMotionGallery } from "./motion-gallery.js?v=site-refresh-20261029-v2";
+import { initNavigation } from "./navigation.js?v=site-refresh-20261029-v2";
+import { initCinematic } from "./cinematic.js?v=site-refresh-20261029-v2";
+import { initPlayground } from "./playground.js?v=site-refresh-20261029-v2";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
+$$('img[data-local-src]').forEach((image) => setMediaUrl(image, "src", image.dataset.localSrc));
 const motion = matchMedia("(prefers-reduced-motion: reduce)");
 let language = "en";
 const t = (en, zh) => (language === "zh" ? zh : en);
@@ -86,39 +89,6 @@ if (!motion.matches) {
   $$(".reveal").forEach((node) => reveal.observe(node));
 }
 
-// Background footage is a dataset sample, not a model prediction.
-const hero = $("#hero-video");
-hero.autoplay = true;
-hero.muted = true;
-hero.defaultMuted = true;
-hero.loop = true;
-hero.playsInline = true;
-hero.controls = false;
-let heroVisible = true;
-function updateHero() {
-  if (heroVisible && !document.hidden)
-    hero.play().catch(() => {});
-  else hero.pause();
-}
-hero.addEventListener("loadedmetadata", updateHero);
-hero.addEventListener("canplay", updateHero);
-new IntersectionObserver(
-  ([entry]) => {
-    heroVisible = entry.isIntersecting;
-    updateHero();
-  },
-  { threshold: 0.05 },
-).observe(hero);
-document.addEventListener("visibilitychange", updateHero);
-window.addEventListener("pageshow", updateHero);
-// Retry if browser policy deferred autoplay until a user interaction.
-function retryHeroPlayback() {
-  if (hero.paused) updateHero();
-}
-document.addEventListener("pointerdown", retryHeroPlayback, { passive: true });
-document.addEventListener("keydown", retryHeroPlayback);
-updateHero();
-
 // Every source is shown directly; the small tag identifies its training stage.
 const featured = [
   "walking-tours",
@@ -139,57 +109,20 @@ function orderedDatasets() {
     return rank(a) - rank(b);
   });
 }
-// Load card videos only near the viewport; play only visible previews.
-const visibleDatasetVideos = new Set();
-function updateDatasetVideos() {
-  $$("#dataset-grid video").forEach((video) => {
-    const shouldPlay = visibleDatasetVideos.has(video) && !document.hidden;
-    if (shouldPlay) video.play().catch(() => {});
-    else video.pause();
-  });
-}
-const datasetPreloadObserver = new IntersectionObserver((entries) => {
-  for (const entry of entries) {
-    if (!entry.isIntersecting) continue;
-    const video = entry.target;
-    if (!video.src && video.dataset.src) {
-      video.src = video.dataset.src;
-      video.load();
-    }
-    datasetPreloadObserver.unobserve(video);
-  }
-}, { rootMargin: "220px 0px" });
-const datasetPlaybackObserver = new IntersectionObserver((entries) => {
-  for (const entry of entries) {
-    if (entry.isIntersecting) visibleDatasetVideos.add(entry.target);
-    else visibleDatasetVideos.delete(entry.target);
-  }
-  updateDatasetVideos();
-}, { threshold: 0.15 });
-document.addEventListener("visibilitychange", updateDatasetVideos);
-window.addEventListener("pageshow", updateDatasetVideos);
-document.addEventListener("pointerdown", updateDatasetVideos, { passive: true });
-document.addEventListener("keydown", updateDatasetVideos);
+// One page-wide scheduler shares bandwidth and decoder capacity.
+let datasetMedia = [];
 function renderDatasets() {
-  $$("#dataset-grid video").forEach((video) => video.pause());
-  datasetPreloadObserver.disconnect();
-  datasetPlaybackObserver.disconnect();
-  visibleDatasetVideos.clear();
+  datasetMedia.forEach((entry) => entry.unregister());
+  datasetMedia = [];
   $("#dataset-grid").innerHTML = orderedDatasets()
     .map(
       (item) =>
-        `<article class="dataset-card" data-dataset="${escape(item.id)}"><div class="dataset-card-image"><video data-src="${escape(item.video || "")}" poster="${escape(item.image)}" autoplay muted loop playsinline preload="none" width="480" height="270" aria-label="${escape(item.name + t(" dataset video", " 数据集视频"))}"></video></div><div class="dataset-card-label"><h3>${escape(item.name)}</h3><span class="source-group">${item.group === "pretraining" ? t("PRETRAIN", "预训练") : t("POST-TRAIN", "后训练")}</span></div></article>`,
+        `<article class="dataset-card" data-dataset="${escape(item.id)}"><div class="dataset-card-image"><video data-src="${escape(item.video || "")}" data-poster="${escape(item.image)}" muted loop playsinline preload="none" width="480" height="270" aria-label="${escape(item.name + t(" dataset video", " 数据集视频"))}"></video></div><div class="dataset-card-label"><h3>${escape(item.name)}</h3><span class="source-group">${item.group === "pretraining" ? t("PRETRAIN", "预训练") : t("POST-TRAIN", "后训练")}</span></div></article>`,
     )
     .join("");
-  $$("#dataset-grid video").forEach((video) => {
-    video.muted = true;
-    video.defaultMuted = true;
-    video.controls = false;
-    video.addEventListener("loadeddata", updateDatasetVideos);
-    video.addEventListener("canplay", updateDatasetVideos);
-    datasetPreloadObserver.observe(video);
-    datasetPlaybackObserver.observe(video);
-  });
+  datasetMedia = $$("#dataset-grid video").map((video) =>
+    registerMedia({ element: video, videos: [video], cost: 1 }),
+  );
 }
 $("#copy-citation").addEventListener("click", async () => {
   const citation = $("#citation").textContent;
@@ -219,7 +152,8 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const revision = name === "paper" ? "paper-tables12-v1-20261029" : "main-figure-v8-20261010";
+        const revision = name === "paper" ? "paper-tables12-v1-20261029"
+          : name === "demos" ? "mars-pose-v1-20261029" : "main-figure-v8-20261010";
         const response = await fetch(`content/${name}.json?v=${revision}`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
@@ -230,7 +164,6 @@ async function init() {
     navigation = await initNavigation(paper, () => language);
     $("#citation").textContent = paper.citation.bibtex;
     translate();
-    updateHero();
   } catch (error) {
     const message = t(
       "Interactive content could not load. Serve this folder with a local HTTP server and reload.",

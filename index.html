@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0d0e10" />
     <meta
       name="description"
-      content="OpenNWM: A Generalist Navigation World Model with Latent Action Pretraining. Explore real prediction videos, NavAnywhere's 15 diverse sources, and the research behind the model."
+      content="OpenNWM: A Generalist Navigation World Model with Latent Action Pretraining. Explore real prediction videos, NavAnywhere's 15 pretraining sources, and the research behind the model."
     />
     <meta
       property="og:title"
@@ -19,16 +19,17 @@
     <meta property="og:image" content="assets/hero/journey-poster.webp?v=wall-moon-mars-v5" />
     <meta property="og:type" content="website" />
     <title>OpenNWM — A Generalist Navigation World Model</title>
+    <link rel="preconnect" href="https://modelscope.cn" crossorigin />
     <link rel="icon" type="image/svg+xml" href="assets/mark.svg?v=main-figure-v8-20261010" />
     <link rel="stylesheet" href="style.css?v=all-sources-v1-20261028" />
     <link rel="stylesheet" href="method.css?v=main-figure-v8-20261010" />
-    <link rel="stylesheet" href="motion-gallery.css?v=main-figure-v8-20261010" />
+    <link rel="stylesheet" href="motion-gallery.css?v=site-refresh-20261029-v2" />
     <link rel="stylesheet" href="navigation.css?v=main-figure-v8-20261010" />
-    <link rel="stylesheet" href="reference-theme.css?v=paper-flow-v1-20261028" />
-    <link rel="stylesheet" href="results.css?v=paper-tables12-v1-20261029" />
+    <link rel="stylesheet" href="reference-theme.css?v=site-refresh-20261029-v2" />
+    <link rel="stylesheet" href="results.css?v=site-refresh-20261029-v2" />
     <link rel="stylesheet" href="go2.css?v=go2-expanded40-v1-20261028" />
-    <script src="app.js?v=paper-tables12-v1-20261029" type="module"></script>
-    <script src="go2.js?v=paper-flow-v1-20261028" type="module"></script>
+    <script src="app.js?v=site-refresh-20261029-v2" type="module"></script>
+    <script src="go2.js?v=site-refresh-20261029-v2" type="module"></script>
   </head>
   <body>
     <svg class="svg-definitions" aria-hidden="true">
@@ -59,17 +60,16 @@
     </svg>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a href="#" class="brand" aria-label="OpenNWM home"
-        ><img src="assets/mark.svg?v=main-figure-v8-20261010" alt="" width="28" height="28" />OpenNWM<span
-          class="brand-dot"
-          >.</span
-        ></a
-      >
+      <a href="#" class="brand masthead-brand" aria-label="OpenSpace Lab · OpenNWM home">
+        <span class="masthead-lab">OpenSpace <span>Lab</span></span>
+        <span class="masthead-divider" aria-hidden="true"></span>
+        <span class="masthead-project">OpenNWM</span>
+      </a>
       <nav class="desktop-nav" aria-label="Main navigation">
         <a href="#method" data-en="Overview" data-zh="概览">Overview</a>
         <a href="#results" data-en="Results" data-zh="结果">Results</a>
         <a href="#go2-navigation" data-en="Real world" data-zh="真机">Real world</a>
-        <a href="#simulation" data-en="Simulation" data-zh="仿真">Simulation</a>
+        <a href="#simulation" data-en="Visualization" data-zh="可视化">Visualization</a>
         <a href="#playground" data-en="Demo" data-zh="Demo">Demo</a>
         <a href="#dataset" data-en="Dataset" data-zh="数据集">Dataset</a>
       </nav>
@@ -102,7 +102,7 @@
     <main id="main">
       <section class="hero cinematic-hero" id="opening-film" data-planet="wall" aria-labelledby="hero-title">
         <div class="cinematic-background" aria-hidden="true">
-          <video id="hero-video" src="assets/hero/journey.mp4?v=fixed-wall-moon-mars-v5-c8e1deeae799" autoplay muted loop playsinline preload="auto" poster="assets/hero/journey-poster.webp?v=fixed-wall-moon-mars-v5-c8e1deeae799"></video>
+          <video id="hero-video" src="https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/assets/hero/journey.mp4?v=fixed-wall-moon-mars-v5-c8e1deeae799" autoplay muted loop playsinline preload="auto" poster="https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/assets/hero/journey-poster.webp?v=fixed-wall-moon-mars-v5-c8e1deeae799"></video>
           <div class="cinematic-shade"></div>
         </div>
         <nav class="journey-navigation" aria-label="Opening film navigation">
@@ -123,7 +123,7 @@
             <a class="button button-hero" href="assets/paper/OpenNWM.pdf" target="_blank" rel="noopener"><span data-en="Read the paper" data-zh="阅读论文">Read the paper</span><svg><use href="#arrow-up"/></svg></a>
             <a class="button button-glass" href="https://github.com/B0B8K1ng/OpenNWM" target="_blank" rel="noopener"><span data-en="Code" data-zh="代码">Code</span><svg><use href="#arrow-up"/></svg></a>
             <a class="button button-glass" href="#playground"><svg><use href="#play"/></svg><span data-en="Try the demo" data-zh="体验交互演示">Try the demo</span></a>
-            <a class="button button-glass" href="https://modelscope.cn/datasets/LittleBoss/LAM-Data" target="_blank" rel="noopener"><span data-en="Dataset · NavAnywhere" data-zh="数据集 · NavAnywhere">Dataset · NavAnywhere</span><svg><use href="#arrow-up"/></svg></a>
+            <a class="button button-glass" href="https://modelscope.cn/datasets/LittleBoss/NavAnywhere" target="_blank" rel="noopener"><span data-en="Dataset · NavAnywhere" data-zh="数据集 · NavAnywhere">Dataset · NavAnywhere</span><svg><use href="#arrow-up"/></svg></a>
           </div>
         </div>
         <div class="hero-bottom section-shell">
@@ -161,7 +161,7 @@
       <section class="method-section section-shell section-space" id="method" aria-labelledby="method-title">
         <div class="section-heading reveal"><div><span class="eyebrow section-number" data-en="01 / OVERVIEW" data-zh="01 / 概览">01 / OVERVIEW</span><h2 id="method-title" data-en="Overview of OpenNWM" data-zh="OpenNWM 概览">Overview of OpenNWM</h2></div></div>
         <div class="method-layout method-overview" id="method-overview">
-          <figure class="method-paper-figure"><a class="method-figure-link" href="assets/paper/figure-1-overview.png" target="_blank" rel="noopener" aria-label="Open the paper overview at full resolution"><img src="assets/paper/figure-1-overview.png" width="2880" height="880" alt="Overview of OpenNWM: diverse action-free navigation videos, latent action pretraining, and generalizable prediction and planning."></a></figure>
+          <figure class="method-paper-figure"><a class="method-figure-link" href="assets/paper/figure-1-overview.png" target="_blank" rel="noopener" aria-label="Open the paper overview at full resolution"><img src="https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/assets/paper/figure-1-overview.webp" data-local-src="assets/paper/figure-1-overview.webp" width="2880" height="880" loading="lazy" decoding="async" alt="Overview of OpenNWM: diverse action-free navigation videos, latent action pretraining, and generalizable prediction and planning."></a></figure>
         </div>
       </section>
 
@@ -177,7 +177,7 @@
         id="in-motion"
         aria-labelledby="motion-title"
       >
-        <div class="section-heading reveal"><div><span class="eyebrow section-number" data-en="04 / MODEL SIMULATION" data-zh="04 / 模型仿真">04 / MODEL SIMULATION</span><h2 id="motion-title" data-en="Model simulation" data-zh="模型仿真">Model simulation</h2></div><p data-en="Predicted views along given paths, followed by offline plans toward visual goals." data-zh="沿给定轨迹预测未来画面，并通过离线规划探索通向视觉目标的路线。">Predicted views along given paths, followed by offline plans toward visual goals.</p></div>
+        <div class="section-heading reveal"><div><span class="eyebrow section-number" data-en="04 / VISUALIZATION" data-zh="04 / 可视化">04 / VISUALIZATION</span><h2 id="motion-title" data-en="Visualization" data-zh="可视化">Visualization</h2></div><p data-en="Predicted views along given paths, followed by offline plans toward visual goals." data-zh="沿给定轨迹预测未来画面，并通过离线规划探索通向视觉目标的路线。">Predicted views along given paths, followed by offline plans toward visual goals.</p></div>
         <h3 class="simulation-subtitle" data-en="Future prediction" data-zh="未来预测">Future prediction</h3>
         <div id="motion-gallery" class="motion-gallery"></div>
       </section>
@@ -240,7 +240,7 @@
               </p>
               <a
                 class="text-link"
-                href="https://modelscope.cn/datasets/LittleBoss/LAM-Data"
+                href="https://modelscope.cn/datasets/LittleBoss/NavAnywhere"
                 target="_blank"
                 rel="noopener"
                 ><span data-en="Explore the dataset" data-zh="获取数据集"
@@ -251,7 +251,7 @@
           </div>
           <div class="dataset-stats">
             <div><span class="stat-value">17.5<span>M</span></span><span class="stat-label" data-en="visual observations" data-zh="视觉观测">visual observations</span></div>
-            <div><span class="stat-value">15</span><span class="stat-label" data-en="heterogeneous sources" data-zh="异构数据来源">heterogeneous sources</span></div>
+            <div><span class="stat-value">15</span><span class="stat-label" data-en="pretraining sources" data-zh="预训练数据来源">pretraining sources</span></div>
             <div><span class="stat-value">70.8<span>K</span></span><span class="stat-label" data-en="navigation sequences" data-zh="导航序列">navigation sequences</span></div>
             <div><span class="stat-value">1,188.65<span>h</span></span><span class="stat-label" data-en="of source-video experience" data-zh="源视频时长">of source-video experience</span></div>
           </div>

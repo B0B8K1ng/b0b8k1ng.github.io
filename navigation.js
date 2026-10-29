@@ -1,3 +1,6 @@
+import { registerMedia } from "./media-scheduler.js?v=viewport-v1-20261029";
+import { setMediaUrl } from "./media-delivery.js?v=delivery-v2-20261029";
+
 const escapeHTML = (value) =>
   String(value).replace(
     /[&<>"']/g,
@@ -59,17 +62,8 @@ export async function initNavigation(paper, getLanguage) {
   );
   if (!response.ok) throw new Error(`Navigation data: HTTP ${response.status}`);
   const manifest = await response.json();
-  let observer;
-  const visible = new Set();
+  let mediaHandles = [];
   const benchmarkState = { domain: "recon", metric: "ate" };
-
-  function updatePlayback() {
-    root.querySelectorAll("video").forEach((video) => {
-      if (visible.has(video) && !document.hidden)
-        video.play().catch(() => {});
-      else video.pause();
-    });
-  }
 
   function benchmarkDomains() {
     return [
@@ -169,9 +163,8 @@ export async function initNavigation(paper, getLanguage) {
   });
 
   function render() {
-    observer?.disconnect();
-    visible.clear();
-    root.querySelectorAll("video").forEach((video) => video.pause());
+    mediaHandles.forEach((handle) => handle.unregister());
+    mediaHandles = [];
     root.innerHTML = `<div class="navigation-gallery-heading"><span>${t("Selected offline local plans", "精选离线局部规划")}</span><div class="navigation-legend"><span><i class="navigation-legend-plan"></i>OpenNWM</span><span><i class="navigation-legend-reference"></i>${t("Reference path", "参考轨迹")}</span></div></div>
       <div class="navigation-examples">${manifest.samples
         .map(
@@ -180,29 +173,18 @@ export async function initNavigation(paper, getLanguage) {
           ) => `<article class="navigation-example" data-sample-id="${escapeHTML(sample.id)}" data-fps="${sample.fps || manifest.media.fps}">
         <header><h3>${escapeHTML(sample.title[getLanguage().startsWith("zh") ? "zh" : "en"])}</h3><span>${escapeHTML(sample.dataset)}</span></header>
         <div class="navigation-media">
-          <figure><img src="${sample.start}" loading="lazy" width="224" height="224" alt="${escapeHTML(t(`${sample.title.en}: recorded start`, `${sample.title.zh}：起点观测`))}"><figcaption>${t("Start", "起点")}</figcaption></figure>
-          <figure><video src="${sample.video}" poster="${sample.poster}" width="224" height="224" preload="none" autoplay muted loop playsinline aria-label="${escapeHTML(t(`${sample.title.en}: OpenNWM imagined local plan`, `${sample.title.zh}：OpenNWM 规划预测`))}"></video><figcaption>OpenNWM</figcaption></figure>
-          <figure><img src="${sample.goal}" loading="lazy" width="224" height="224" alt="${escapeHTML(t(`${sample.title.en}: goal image`, `${sample.title.zh}：目标图像`))}"><figcaption>${t("Goal", "目标")}</figcaption></figure>
+          <figure><img data-src="${sample.start}" loading="lazy" decoding="async" width="224" height="224" alt="${escapeHTML(t(`${sample.title.en}: recorded start`, `${sample.title.zh}：起点观测`))}"><figcaption>${t("Start", "起点")}</figcaption></figure>
+          <figure><video data-src="${sample.video}" data-poster="${sample.poster}" width="224" height="224" preload="none" muted loop playsinline aria-label="${escapeHTML(t(`${sample.title.en}: OpenNWM imagined local plan`, `${sample.title.zh}：OpenNWM 规划预测`))}"></video><figcaption>OpenNWM</figcaption></figure>
+          <figure><img data-src="${sample.goal}" loading="lazy" decoding="async" width="224" height="224" alt="${escapeHTML(t(`${sample.title.en}: goal image`, `${sample.title.zh}：目标图像`))}"><figcaption>${t("Goal", "目标")}</figcaption></figure>
         </div>
         <div class="navigation-path-row">${trajectoryGraphic(sample, t)}</div>
       </article>`,
         )
         .join("")}</div>`;
     renderBenchmarks();
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(({ target, isIntersecting }) =>
-          isIntersecting ? visible.add(target) : visible.delete(target),
-        );
-        updatePlayback();
-      },
-      { threshold: 0.1 },
-    );
+    root.querySelectorAll("img[data-src]").forEach((image) => setMediaUrl(image, "src", image.dataset.src));
     root.querySelectorAll("video").forEach((video) => {
       video.muted = true;
-      video.addEventListener("play", () => {
-        if (!visible.has(video) || document.hidden) video.pause();
-      });
       const card = video.closest(".navigation-example");
       const graphic = card.querySelector(".navigation-path");
       const points = JSON.parse(graphic.dataset.points);
@@ -227,11 +209,9 @@ export async function initNavigation(paper, getLanguage) {
       video.addEventListener("timeupdate", updatePath);
       video.addEventListener("seeked", updatePath);
       updatePath();
-      observer.observe(video);
+      mediaHandles.push(registerMedia({ element: video, videos: [video] }));
     });
-    updatePlayback();
   }
-  document.addEventListener("visibilitychange", updatePlayback);
   render();
   return { render };
 }
