@@ -1,3 +1,6 @@
+import { registerMedia } from "./media-scheduler.js?v=viewport-v1-20261029";
+import { mediaUrl as deliveryUrl, setMediaUrl } from "./media-delivery.js?v=delivery-v2-20261029";
+
 const $ = (selector) => document.querySelector(selector);
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
@@ -79,7 +82,7 @@ export async function initCinematic(getLanguage) {
   function render() {
     renderNavigation();
   }
-  const response = await fetch("content/cinematic.json?v=main-figure-v8-20261010", { cache: "no-cache" }).catch(() => null);
+  const response = await fetch("content/cinematic-display.json?v=site-refresh-20261029-v2").catch(() => null);
   if (response?.ok) {
     film = await response.json();
     journeyScenes = (film.journeyScenes || film.journey?.scenes || []).map(normalizeScene).filter((scene) => Number.isFinite(scene.start)).sort((a, b) => a.start - b.start);
@@ -93,11 +96,16 @@ export async function initCinematic(getLanguage) {
     }
     const poster = mediaUrl(film.journey?.poster || "assets/hero/journey-poster.webp");
     const source = mediaUrl(film.journey?.src || "assets/hero/journey.mp4");
-    if (hero.poster !== poster) hero.poster = poster;
-    if (hero.src !== source) hero.src = source;
+    if (hero.poster !== deliveryUrl(poster)) setMediaUrl(hero, "poster", poster);
+    if (hero.src !== deliveryUrl(source)) setMediaUrl(hero, "src", source);
   } else {
     if (!hero.getAttribute("src")) hero.src = mediaUrl("assets/hero/journey.mp4");
   }
+  registerMedia({
+    element: hero, videos: [hero], priority: 3, cost: 4,
+    sources: [mediaUrl(film?.journey?.src || "assets/hero/journey.mp4")],
+    posters: [mediaUrl(film?.journey?.poster || "assets/hero/journey-poster.webp")],
+  });
   render();
   return { render };
 }

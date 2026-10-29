@@ -1,140 +1,127 @@
 # Go2 navigation gallery
 
-`go2.js` consumes `content/go2.json`. Use `status: "pending"` until the real
-films, posters and report have been checked. The ready gallery displays every
-item in `clips`, in manifest order: two columns on desktop and one on phones.
-There is no full-recording player or clip selector.
+`go2.js` reads `content/go2.json`. The current version is **3**, with `status:
+"ready"` and eight selected clips from four recordings. The gallery follows the
+paper overview and main results, before Visualization. It displays all selected
+clips together: two columns on desktop, one on phones. There is no full-recording
+player, clip selector, route/duration badge, report button or direct-video button.
 
-Each film contains the recorded third-person view, synchronized first-person
-GT and genuine model predictions, and recorded/planned trajectories. Encode
-H.264, `yuv420p`, `+faststart`, on a 16:9 canvas. All videos request muted,
-inline, looping autoplay; browsers retain control of autoplay eligibility.
-There are no playback controls or click-to-pause handlers. Playback retries
-when a video enters the viewport, the tab becomes visible, or a user gesture
-permits an earlier blocked request.
+## Current selection and protocol
 
-Version 2 contract (angle-bracket strings are field descriptions, not data):
+The archive contains 40 quality-approved clips. The current presentation selects
+two clips per recording, covering corridors, a lobby, a cafe, woodland and
+courtyards. All eight have more than 13% lower ATE **and** RPE for OpenNWM than
+NWM. Selection was made after measuring model performance; these are curated
+qualitative comparisons, not an independent benchmark. The paper's aggregate
+scores remain unchanged.
+
+The selected durations are 20–28 seconds. Both models use the same one-second
+local planning horizon, recorded starting contexts, goals and CEM budget within
+each clip. Original DDPM checkpoints are used, not DMD2. These are offline plans;
+the model predictions were not executed on the robot. Reference trajectories
+come from onboard odometry in meters, with approximate visual camera alignment.
+The original paired one-/two-second pilot, exact inference settings and all
+per-goal results remain in the archive and report.
+
+Each comparison film emphasizes the recorded third-person view and includes
+synchronized first-person GT, genuine OpenNWM/NWM rollouts, recorded/planned
+trajectories, and ATE/RPE values with downward arrows. Preserve the unaltered
+model-generated frames, including visible prediction errors. Do not introduce
+camera-obstructed intervals when replacing or expanding clips.
+
+`content/go2.json` is authoritative for the **current displayed selection**.
+`assets/go2/report.json` retains all 40 reviewed clips and their original protocol;
+its historical statements about retaining all clips describe the archive, not
+the eight-card gallery. Per-clip metrics and trajectory CSV files remain available
+through manifest paths even though the page does not show download controls.
+
+## Manifest contract
+
+Example field structure; actual metric values belong to the reviewed results:
 
 ```json
 {
-  "version": 2,
+  "version": 3,
   "status": "ready",
   "clips": [
     {
-      "id": "<stable clip id>",
-      "episode": "<stable recording id>",
-      "title": "<short scene or movement description>",
-      "title_zh": "<same title in Chinese>",
-      "duration_s": "<numeric encoded-video duration>",
-      "video": "assets/go2/<clipid>/comparison.mp4",
-      "poster": "assets/go2/<clipid>/poster.webp",
-      "goal_interval_s": "<numeric planning horizon, equal for both models in this clip>",
+      "id": "stable_clip_id",
+      "episode": "stable_recording_id",
+      "title": "Scene description",
+      "title_zh": "场景描述",
+      "duration_s": 24,
+      "start_time_s": 0,
+      "goal_interval_s": 1,
+      "video": "assets/go2/stable_clip_id/comparison.mp4",
+      "poster": "assets/go2/stable_clip_id/poster.webp",
       "metrics": {
-        "opennwm": {"ate_m": "<number>", "rpe_m": "<number>"},
-        "nwm": {"ate_m": "<number>", "rpe_m": "<number>"}
+        "opennwm": {"ate_m": null, "rpe_m": null},
+        "nwm": {"ate_m": null, "rpe_m": null}
       },
       "downloads": {
-        "metrics": "assets/go2/<clipid>/metrics.json",
-        "trajectories": "assets/go2/<clipid>/trajectories.csv"
+        "metrics": "assets/go2/stable_clip_id/metrics.json",
+        "trajectories": "assets/go2/stable_clip_id/trajectories.csv"
       }
     }
   ],
-  "report": "assets/go2/report.json"
+  "report": "assets/go2/report.json",
+  "selection": {
+    "kind": "curated qualitative comparisons",
+    "source_clip_count": 40,
+    "display_clip_count": 8,
+    "criteria": "Document the actual review and selection criteria."
+  }
 }
 ```
 
-The page shows each clip's video and title immediately after the opening film.
-There are no route/duration badges, report links, video links or planning labels.
-Metrics and trajectory downloads remain in the manifest and report; the video
-shows ATE and RPE with downward arrows to indicate lower error is better.
-Protocol details and selection criteria belong in the report. Preserve exact
-metric aggregation and per-goal values; omit missing values instead of
-inventing examples. `duration_s` is the encoded film duration; record any
-difference from source motion time in the report. Videos load and play near
-the viewport and resume automatically on return, keeping a large gallery
-responsive without user-operated playback controls.
+Replace the illustrative `null` metrics with verified numbers before publication;
+never invent missing results. Preserve exact aggregation, per-goal values and
+`evaluated_goal_ids` where present. `duration_s` is the encoded film duration;
+record any difference from source motion time in the report. Use `status:
+"pending"` for unreviewed material.
 
-Browser-facing asset paths must be relative to `website/`, begin with
-`assets/go2/`, and contain only letters, digits, underscores, hyphens, dots and
-slashes. Keep manifest paths free of cache query strings: `go2.js` adds the
-current publication revision when requesting assets. The renderer may retain
-additional fields in the manifest; the gallery ignores legacy `full`,
-`summary` and `protocol` display sections.
+Asset paths are relative to the website root, start with `assets/go2/`, and contain
+only letters, digits, underscores, hyphens, dots and slashes. Keep cache query
+strings out of the manifest; the frontend applies its publication revision.
+Additional provenance fields are allowed. Legacy `full`, `summary` and
+`protocol` sections are not rendered as separate gallery panels.
 
-Retain recordings, full aligned originals, source hashes and model outputs in
-the NAS archive. Publish only reviewed films, posters and scrubbed reports;
-do not include credentials or private absolute paths.
+## Playback and delivery
 
-## Web publication from NAS masters
+Films use 16:9 H.264 MP4, `yuv420p` and `+faststart`. The page requests muted,
+inline, looping autoplay without playback controls or click-to-pause handlers.
+The shared `media-scheduler.js` loads nearby clips, plays visible clips, and
+releases distant transfers/decoders. It resumes playback when the gallery
+returns to view. Browser autoplay restrictions still apply.
 
-`tools/publish_go2_gallery.py` reads a renderer gallery containing
-`website_manifest.json`, `report.json`, and one directory per clip. It creates
-separate 1920×1080 H.264 web copies of `comparison.mp4` at CRF 22 (medium preset,
-unchanged frame count/rate, no audio, `yuv420p`, `+faststart`). Posters, per-clip
-`metrics.json`, `trajectories.csv`, and the full report are copied byte-for-byte.
-The website manifest keeps the same clips, order, timestamps and metrics but
-advertises only the metrics/CSV downloads above. Independent GT and model
-rollouts remain in the NAS gallery and are not republished.
+`media-delivery.js` uses the pinned ModelScope mirror selected by
+`content/media-delivery.json`, with per-resource fallback to the site's own
+assets. The `site-20261029-v3` mirror includes exactly the eight selected Go2
+folders and all non-Go2 website assets. Its file bytes match the website copies;
+this delivery change performs no video re-encoding or quality reduction. All
+older website assets, full aligned recordings and NAS inference archives remain
+intact.
 
-Run with an explicit runtime after the master gallery and its metrics pass
-review. This command updates local files only; it does not commit or deploy:
+## Production and provenance
 
-```bash
-/file_system/vepfs/algorithm/dujun.nie/miniconda3/bin/python tools/publish_go2_gallery.py \
-  --source /file_system/nas/algorithm/dujun.nie/opennwm_go2_showcase_20261027/gallery_expanded \
-  --retained-source /file_system/nas/algorithm/dujun.nie/opennwm_go2_showcase_20261027/gallery \
-  --website /file_system/vepfs/algorithm/dujun.nie/code/OpenNWM/website \
-  --website /file_system/vepfs/algorithm/dujun.nie/code/OpenNWM-website \
-  --crf 22 --preset medium --jobs 2
-```
+Source tools are maintained in the [OpenNWM source repository](https://github.com/B0B8K1ng/OpenNWM):
 
-`--jobs 4` is also supported. The default encoder is the explicit FFmpeg 7.0.2
-binary used by the camera preparation pipeline; `--ffmpeg` and `--ffprobe`
-accept absolute executable paths. Each encode prints its exact command, PID,
-working directory and log path. Separate web copies and validation receipts
-live in `source.parent/web_gallery_cache/<source-directory>/crf22_medium/`;
-no master is overwritten. Validated unchanged copies are reused only after
-their source, encoder settings and output SHA-256 hashes match.
+- `tools/publish_go2_gallery.py` creates web copies from reviewed NAS masters,
+  preserves metrics/CSV/poster bytes, and validates decoding, durations, frame
+  counts, faststart and size budgets. Existing published web films were encoded
+  at 1920×1080, CRF 22, medium preset; original masters remain separate.
+- `tools/publish_website_media.py` stages the active website media, uploads
+  byte-identical files to ModelScope, verifies remote sizes/SHA256, and pins a
+  release tag. It does not change source video quality.
 
-Add `--prepare-only` to encode, validate and check both site budgets without
-changing any website file. The resulting validation report says
-`published: false` and `prepare_only: true`; the cache videos can be reviewed
-before rerunning the same command without that flag. Successful publication
-sets `published: true`.
+Do not rerun a full-gallery exporter merely to change the eight-card selection;
+that can replace the curated manifest. Review `content/go2.json` after any export.
+Keep original recordings, aligned complete videos, independent GT/model rollouts,
+source hashes and private validation logs in the NAS archive. Publication
+receipts must identify master/web hashes and any retained originals; do not
+remove original media or existing audit files while updating the presentation.
+Only scrubbed reports and portable relative paths belong on the public site.
 
-Before touching either website, the helper verifies all required files,
-decodes each newly encoded film, checks duration/frame count/codec/faststart,
-and checks the final size of every target against 950,000,000 bytes (decimal
-950 MB). The calculation includes all files packaged by the current Pages
-workflow, not just Go2 videos. Each web film must also remain below 95 MiB.
-It stops if CRF 22 does not fit; it does not silently lower quality or omit
-clips. Use `--max-site-mb` only when intentionally changing the site budget.
-
-Only existing `gt_ego.mp4`, `gt_third_person.mp4`, `opennwm.mp4`, and `nwm.mp4`
-under individual Go2 clip folders are eligible for removal from the website.
-Every removal must first match an intact NAS original by size and SHA-256;
-a missing/different original aborts publication. Search starts in `--source`,
-then any explicitly supplied `--retained-source` directories in order. This
-allows a regenerated master to differ bytewise while proving the original
-published copy remains intact in the older NAS gallery. The validation report
-records the exact matching archive path and hash for each removal.
-NAS symlinks must not point
-back into a website, and destination symlinks are rejected. Other website
-assets are preserved and counted against the budget. All new files use atomic
-replacement; the manifest is written after its assets, and redundant videos
-are removed only after their links disappear from the manifest.
-
-The resulting `source.parent/webpublish_validation.json` records per-clip
-master/web hashes, decode validation, removed website copies with original
-hashes, and the measured final size of each site. Override its location with
-`--validation`; this private report belongs outside the public websites.
-The renderer's NAS `website_manifest.json` and inventory remain unchanged;
-the web manifest intentionally differs in its download entries and videos.
-Use the publication validation report for web-copy checks instead of the
-master validator's byte-identical-video comparison.
-
-Deploy only the Go2 changes through the separate public checkout
-`/file_system/vepfs/algorithm/dujun.nie/code/OpenNWM-website`, remote
-`git@github.com:B0B8K1ng/b0b8k1ng.github.io.git`. Its `main` workflow publishes
-under `/OpenNWM/`. Preserve unrelated edits in both checkouts and verify
-`https://b0b8k1ng.github.io/OpenNWM/#go2-navigation` after deployment.
+After changing the selected clips, verify clip count/order, paired metrics,
+scene diversity, desktop/mobile layout, autoplay, mirror access and local fallback
+at [the real-world gallery](https://b0b8k1ng.github.io/OpenNWM/#go2-navigation).

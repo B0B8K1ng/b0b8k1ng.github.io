@@ -1,5 +1,7 @@
+import { registerMedia } from "./media-scheduler.js?v=viewport-v1-20261029";
+
 const root = document.querySelector("#go2-navigation");
-const revision = "go2-expanded40-v1-20261028";
+const revision = "go2-curated-v2-20261029";
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[character]);
@@ -19,35 +21,10 @@ async function init() {
   if (!clips.length) return;
 
   root.innerHTML = `<div class="go2-heading"><div><span id="go2-section-number" class="eyebrow section-number"></span><h2 id="go2-title"></h2></div></div>
-    <div class="go2-grid">${clips.map((clip, index) => `<figure class="go2-clip" data-clip="${escape(clip.id || index)}"><div class="go2-screen"><video id="go2-video-${index}" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback tabindex="-1"></video><p class="go2-media-error" role="status" hidden></p></div><figcaption><h3></h3></figcaption></figure>`).join("")}</div>`;
+    <div class="go2-grid">${clips.map((clip, index) => `<figure class="go2-clip" data-clip="${escape(clip.id || index)}"><div class="go2-screen"><video id="go2-video-${index}" muted loop playsinline preload="none" width="1920" height="1080" disablepictureinpicture disableremoteplayback tabindex="-1"></video><p class="go2-media-error" role="status" hidden></p></div><figcaption><h3></h3></figcaption></figure>`).join("")}</div>`;
   root.hidden = false;
   const cards = [...root.querySelectorAll(".go2-clip")];
   const videos = cards.map((card) => card.querySelector("video"));
-  const pending = new Set();
-  const nearbyVideos = new Set();
-  const playingAttempts = new WeakSet();
-
-  function tryPlay(video) {
-    if (document.hidden || !nearbyVideos.has(video) || !video.getAttribute("src") || !video.paused || playingAttempts.has(video)) return;
-    video.muted = true;
-    playingAttempts.add(video);
-    const attempt = video.play();
-    if (attempt) {
-      attempt.then(() => pending.delete(video)).catch(() => {
-        if (!document.hidden && nearbyVideos.has(video)) pending.add(video);
-      })
-        .finally(() => playingAttempts.delete(video));
-    } else {
-      playingAttempts.delete(video);
-    }
-  }
-  function updateVideo(video) {
-    if (document.hidden || !nearbyVideos.has(video)) {
-      pending.delete(video);
-      video.pause();
-    } else tryPlay(video);
-  }
-  function retryPending() { pending.forEach(tryPlay); }
 
   function renderText() {
     root.querySelector("#go2-section-number").textContent = t("03 / REAL WORLD", "03 / 真机");
@@ -61,44 +38,21 @@ async function init() {
     });
   }
 
-  // Keep every card in the layout, but only fetch and decode nearby clips.
-  const preloadObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    const video = entry.target;
-    if (!video.getAttribute("src")) {
-      video.src = video.dataset.src;
-      video.load();
-    }
-    preloadObserver.unobserve(video);
-    updateVideo(video);
-  }), { rootMargin: "600px 0px" });
-  const playbackObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
-    if (entry.isIntersecting) nearbyVideos.add(entry.target);
-    else nearbyVideos.delete(entry.target);
-    updateVideo(entry.target);
-  }), { rootMargin: "120px 0px", threshold: 0.01 });
   videos.forEach((video, index) => {
     video.muted = true;
     video.defaultMuted = true;
     video.controls = false;
     video.loop = true;
     video.playsInline = true;
-    video.dataset.src = mediaAsset(clips[index].video);
-    if (asset(clips[index].poster)) video.poster = mediaAsset(clips[index].poster);
     const error = cards[index].querySelector(".go2-media-error");
-    video.addEventListener("canplay", () => updateVideo(video));
-    video.addEventListener("play", () => {
-      if (document.hidden || !nearbyVideos.has(video)) video.pause();
+    video.addEventListener("playing", () => { error.hidden = true; });
+    video.addEventListener("error", () => { error.hidden = false; });
+    registerMedia({
+      element: cards[index].querySelector(".go2-screen"), videos: [video],
+      sources: [mediaAsset(clips[index].video)],
+      posters: [mediaAsset(clips[index].poster)], cost: 3, priority: 1,
     });
-    video.addEventListener("playing", () => { pending.delete(video); error.hidden = true; });
-    video.addEventListener("error", () => { pending.delete(video); error.hidden = false; });
-    preloadObserver.observe(video);
-    playbackObserver.observe(video);
   });
-  document.addEventListener("visibilitychange", () => videos.forEach(updateVideo));
-  window.addEventListener("pageshow", () => videos.forEach(updateVideo));
-  document.addEventListener("pointerdown", retryPending, { passive: true });
-  document.addEventListener("keydown", retryPending);
   new MutationObserver(renderText).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
   renderText();
 }

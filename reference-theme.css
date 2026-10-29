@@ -40,6 +40,11 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
 .site-header { height: 68px; padding: 0 44px; background: #0d0e10f5; border: 0; }
 .brand { font-size: 21px; font-weight: 700; letter-spacing: -.6px; }
 .brand-dot { display: none; }
+.masthead-brand { gap: 18px; flex-shrink: 0; white-space: nowrap; }
+.masthead-lab { font: 700 18px/1.2 var(--sans); letter-spacing: -.6px; }
+.masthead-lab > span { font-weight: 400; }
+.masthead-divider { width: 1px; height: 27px; background: #ffffff38; }
+.masthead-project { color: var(--accent); font: 600 18px/1.2 var(--sans); letter-spacing: -.5px; }
 .desktop-nav { margin-left: auto; margin-right: 34px; gap: 26px; }
 .desktop-nav a { color: #cbcdcf; font-size: 13px; font-weight: 400; }
 .header-actions { gap: 22px; }
@@ -308,15 +313,15 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
 /* Authors sit in their own quiet band below the opening film. */
 .authors-section { padding-top: 50px; padding-bottom: 42px; text-align: center; }
 .hero-authorship { max-width: 960px; margin: 0 auto; }
-.hero-lab { margin: 0 0 20px; color: var(--accent); font: 600 14px/1.5 var(--sans); letter-spacing: .8px; }
+.hero-lab { margin: 0 0 20px; color: var(--accent); font: 600 17px/1.5 var(--sans); letter-spacing: .3px; }
 .hero-authors, .hero-affiliations { display: flex; flex-wrap: wrap; justify-content: center; list-style: none; padding: 0; }
 .hero-authors { gap: 9px 26px; margin: 0 auto; max-width: 940px; color: var(--ink); font: 500 17px/1.6 var(--sans); }
 .hero-authors li, .hero-affiliations li { white-space: nowrap; }
 .hero-authorship sup { position: relative; top: -.1em; margin-left: 3px; color: var(--accent); font-size: .66em; line-height: 0; }
-.hero-affiliations { gap: 7px 22px; margin: 21px auto 0; max-width: 850px; color: #c1c7c6; font: 400 13px/1.65 var(--sans); }
+.hero-affiliations { gap: 9px 24px; margin: 23px auto 0; max-width: 950px; color: #d1d5d3; font: 400 17px/1.6 var(--sans); }
 .hero-affiliations sup { margin-left: 0; margin-right: 4px; }
 .hero-affiliations abbr { text-decoration: none; }
-.hero-author-notes { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px 22px; margin: 15px 0 0; color: var(--muted); font: 400 11px/1.6 var(--sans); }
+.hero-author-notes { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px 22px; margin: 18px 0 0; color: var(--muted); font: 400 14px/1.6 var(--sans); }
 .method-section { padding-top: 35px; }
 .simulation-section { scroll-margin-top: 88px; }
 .simulation-subtitle { margin: 0 0 24px; color: var(--ink); font: 500 clamp(21px, 2.2vw, 28px)/1.3 var(--sans); letter-spacing: -.4px; }
@@ -330,10 +335,13 @@ h2, .section-heading h2, .closing-copy h2, html[lang="zh-CN"] h2 {
 }
 @media (max-width: 600px) {
   .authors-section { padding-top: 37px; padding-bottom: 30px; }
-  .hero-lab { margin-bottom: 18px; font-size: 13px; }
-  .hero-authors { max-width: 370px; font-size: 14px; gap: 8px 19px; }
-  .hero-affiliations { max-width: 370px; margin-top: 19px; font-size: 11px; gap: 6px 14px; }
-  .hero-author-notes { margin-top: 15px; font-size: 10px; gap: 5px 16px; }
+  .masthead-brand { gap: 12px; }
+  .masthead-lab, .masthead-project { font-size: 15px; letter-spacing: -.5px; }
+  .masthead-divider { height: 23px; }
+  .hero-lab { margin-bottom: 18px; font-size: 15px; }
+  .hero-authors { max-width: 370px; font-size: 15px; gap: 9px 19px; }
+  .hero-affiliations { max-width: 370px; margin-top: 21px; font-size: 15px; gap: 9px 16px; }
+  .hero-author-notes { margin-top: 17px; font-size: 13px; gap: 5px 16px; }
   .method-section { padding-top: 22px; }
   .simulation-subtitle { margin-bottom: 20px; }
   .dataset-section .dataset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
