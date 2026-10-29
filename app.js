@@ -1,4 +1,4 @@
-import { initResearch } from "./research.js?v=paper-flow-v1-20261028";
+import { initResearch } from "./research.js?v=paper-tables12-v1-20261029";
 import { initMotionGallery } from "./motion-gallery.js?v=paper-flow-v1-20261028";
 import { initNavigation } from "./navigation.js?v=paper-flow-v1-20261028";
 import { initCinematic } from "./cinematic.js?v=hero-autoplay-v1-20261028";
@@ -219,7 +219,7 @@ async function init() {
   try {
     [datasets, demos, paper] = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
-        const revision = name === "paper" ? "authors-v1-20261028" : "main-figure-v8-20261010";
+        const revision = name === "paper" ? "paper-tables12-v1-20261029" : "main-figure-v8-20261010";
         const response = await fetch(`content/${name}.json?v=${revision}`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();
