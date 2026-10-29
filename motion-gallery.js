@@ -1,4 +1,4 @@
-import { registerMedia } from "./media-scheduler.js?v=mars-delivery-v1-20261029";
+import { registerMedia } from "./media-scheduler.js?v=timing-method-v1-20261029";
 
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -184,7 +184,19 @@ export function initMotionGallery(demos, getLanguage) {
       onPause: () => { item.visible = false; pause(item); },
     });
   }
+  const lunarItems = items.filter(({ demo }) => demo.environment === "lunar" && demo.datasetId === "lusnar" && demo.fineTuned);
+  const lunarFootnote = lunarItems.length ? document.createElement("p") : null;
+  if (lunarFootnote) {
+    lunarFootnote.id = "motion-lunar-method";
+    lunarFootnote.className = "motion-lunar-footnote";
+    lunarItems[lunarItems.length - 1].card.after(lunarFootnote);
+    lunarItems.forEach(({ card }) => card.setAttribute("aria-describedby", lunarFootnote.id));
+  }
   function render() {
+    if (lunarFootnote) lunarFootnote.textContent = t(
+      "Moon 7–9 are LuSNAR simulation scene IDs. OpenNWM was fine-tuned for 1,000 updates on 30 clips (480 target pairs) from Moon 1–5; Moon 6 was used for validation and Moon 7–9 only for testing. Actions are planar displacement and yaw from simulator ground-truth poses. Each clip predicts 16 future views from four observed frames.",
+      "Moon 7–9 是 LuSNAR 的仿真场景编号。OpenNWM 使用 Moon 1–5 的 30 个片段（480 个目标对）微调 1,000 步；Moon 6 用于验证，Moon 7–9 仅用于测试。动作由仿真真值位姿的平面位移和转角计算；每次以 4 帧观察直接预测未来 16 帧。",
+    );
     items.forEach((item) => {
       const title = t(item.demo.title, item.demo.titleZh);
       const isMars = item.demo.environment === "mars";

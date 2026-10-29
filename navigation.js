@@ -1,5 +1,5 @@
-import { registerMedia } from "./media-scheduler.js?v=mars-delivery-v1-20261029";
-import { setMediaUrl } from "./media-delivery.js?v=mars-delivery-v1-20261029";
+import { registerMedia } from "./media-scheduler.js?v=timing-method-v1-20261029";
+import { setMediaUrl } from "./media-delivery.js?v=timing-method-v1-20261029";
 
 const escapeHTML = (value) =>
   String(value).replace(
