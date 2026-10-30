@@ -1,17 +1,15 @@
 import { registerMedia } from "./media-scheduler.js?v=go2-routes-v3-20261030";
 import { setMediaUrl } from "./media-delivery.js?v=go2-routes-v3-20261030";
-import { initResearch } from "./research.js?v=site-refinement-20261030";
-import { initMotionGallery } from "./motion-gallery.js?v=site-refinement-20261030";
-import { initNavigation } from "./navigation.js?v=go2-routes-v3-20261030";
-import { initCinematic } from "./cinematic.js?v=go2-routes-v3-20261030";
-import { initPlayground } from "./playground.js?v=go2-routes-v3-20261030";
+import { initResearch } from "./research.js?v=english-gallery-20261030";
+import { initMotionGallery } from "./motion-gallery.js?v=english-gallery-20261030";
+import { initNavigation } from "./navigation.js?v=english-gallery-20261030";
+import { initCinematic } from "./cinematic.js?v=english-gallery-20261030";
+import { initPlayground } from "./playground.js?v=english-gallery-20261030";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 $$('img[data-local-src]').forEach((image) => setMediaUrl(image, "src", image.dataset.localSrc));
 const motion = matchMedia("(prefers-reduced-motion: reduce)");
-let language = "en";
-const t = (en, zh) => (language === "zh" ? zh : en);
 const escape = (value) =>
   String(value).replace(
     /[&<>"']/g,
@@ -20,31 +18,7 @@ const escape = (value) =>
         char
       ],
   );
-let research, datasets, demos, paper, cinematic, playground, motionGallery, navigation;
-
-function translate() {
-  document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
-  $$("[data-en][data-zh]").forEach((node) => {
-    node.textContent = node.dataset[language];
-  });
-  $("#language").textContent = language === "zh" ? "EN" : "中文";
-  $("#language").setAttribute(
-    "aria-label",
-    t("Switch to Chinese", "Switch to English"),
-  );
-  cinematic?.render();
-  playground?.render();
-  if (!datasets) return;
-  motionGallery?.render();
-  navigation?.render();
-  renderDatasets();
-  research.render();
-}
-$("#language").addEventListener("click", () => {
-  language = language === "en" ? "zh" : "en";
-  translate();
-});
-translate();
+let datasets;
 
 // Navigation remains usable before the content finishes loading.
 function closeMenu() {
@@ -111,34 +85,17 @@ function orderedDatasets() {
 }
 // One page-wide scheduler shares bandwidth and decoder capacity.
 let datasetMedia = [];
-function datasetPlaybackLabel(item) {
-  const timing = item.source?.video;
-  if (timing?.timing_status === "source_video") return t("1× · source video", "1× · 源视频速度");
-  if (timing?.timing_status === "nominal_sampling") return t("≈1× · sampled cadence", "≈1× · 源采样速度");
-  return t(`Display rate · ${timing?.playback_fps || "—"} FPS`, `展示速度 · ${timing?.playback_fps || "—"} 帧/秒`);
-}
 function renderDatasets() {
   datasetMedia.forEach((entry) => entry.unregister());
   datasetMedia = [];
   $("#dataset-grid").innerHTML = orderedDatasets()
     .map(
       (item) =>
-        `<article class="dataset-card" data-dataset="${escape(item.id)}"><div class="dataset-card-image"><video data-src="${escape(item.video || "")}" data-poster="${escape(item.image)}" muted loop playsinline preload="none" width="480" height="270" aria-label="${escape(item.name + t(" dataset video", " 数据集视频"))}"></video></div><div class="dataset-card-label"><h3>${escape(item.name)}</h3><span class="source-group">${item.group === "pretraining" ? t("PRETRAIN", "预训练") : t("POST-TRAIN", "后训练")}</span><span class="source-group dataset-playback">${escape(datasetPlaybackLabel(item))}</span></div></article>`,
+        `<article class="dataset-card" data-dataset="${escape(item.id)}"><div class="dataset-card-image"><video data-src="${escape(item.video || "")}" data-poster="${escape(item.image)}" muted loop playsinline preload="none" width="480" height="270" aria-label="${escape(item.name + " dataset video")}"></video></div><div class="dataset-card-label"><h3>${escape(item.name)}</h3><span class="source-group">${item.group === "pretraining" ? "PRETRAIN" : "POST-TRAIN"}</span></div></article>`,
     )
     .join("");
   datasetMedia = $$("#dataset-grid video").map((video) =>
     registerMedia({ element: video, videos: [video], cost: 1 }),
-  );
-  let note = $("#dataset-playback-note");
-  if (!note) {
-    note = document.createElement("p");
-    note.id = "dataset-playback-note";
-    note.className = "dataset-card-meta";
-    $("#dataset-grid").after(note);
-  }
-  note.textContent = t(
-    "NavAnywhere clips follow source-video time. ≈1× uses the recorded sampling cadence; exact capture timestamps are unavailable. RECON uses a 4 FPS display rate because its frame timestamps could not be verified.",
-    "NavAnywhere 视频按源时间轴播放。≈1× 表示按已记录的采样频率播放，缺少逐帧采集时间。RECON 的帧时间戳无法核验，采用每秒 4 帧的展示速度。",
   );
 }
 $("#copy-citation").addEventListener("click", async () => {
@@ -156,18 +113,15 @@ $("#copy-citation").addEventListener("click", async () => {
       textarea.remove();
       if (!copied) throw new Error("Copy unavailable");
     }
-    $("#citation-status").textContent = t("BibTeX copied.", "BibTeX 已复制。");
+    $("#citation-status").textContent = "BibTeX copied.";
   } catch {
-    $("#citation-status").textContent = t(
-      "Select the citation text to copy it.",
-      "请选择引用文本并复制。",
-    );
+    $("#citation-status").textContent = "Select the citation text to copy it.";
   }
 });
 
 async function init() {
   try {
-    [datasets, demos, paper] = await Promise.all(
+    const content = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
         const revision = name === "paper" ? "paper-tables12-v1-20261029"
           : name === "demos" ? "go2-routes-v3-20261030" : "dataset-timing-v2-20261029";
@@ -176,20 +130,19 @@ async function init() {
         return response.json();
       }),
     );
-    research = initResearch(paper, () => language);
-    motionGallery = initMotionGallery(demos, () => language);
-    navigation = await initNavigation(paper, () => language);
+    const [datasetContent, demos, paper] = content;
+    datasets = datasetContent;
+    initResearch(paper);
+    initMotionGallery(demos);
+    await initNavigation(paper);
     $("#citation").textContent = paper.citation.bibtex;
-    translate();
+    renderDatasets();
   } catch (error) {
-    const message = t(
-      "Interactive content could not load. Serve this folder with a local HTTP server and reload.",
-      "交互内容加载失败。请通过本地 HTTP 服务打开网页并刷新。",
-    );
+    const message = "Interactive content could not load. Serve this folder with a local HTTP server and reload.";
     $("#page-status").textContent = message;
     console.error(error);
   }
 }
 init();
-initCinematic(() => language).then((instance) => { cinematic = instance; });
-initPlayground(() => language).then((instance) => { playground = instance; });
+initCinematic();
+initPlayground();

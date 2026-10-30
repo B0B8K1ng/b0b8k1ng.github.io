@@ -1,186 +1,113 @@
 # Go2 navigation gallery
 
-`go2.js` reads `content/go2.json`, which is authoritative for the published
-selection and readiness. The expanded selection contains **45 clips from 11
-recordings**: eight retained clips and seven restored clips from four earlier
-recordings, plus 30 clips from seven newer recordings. The first four rows contain
-four, three, four and four clips; the remaining rows contain five, five, four, four,
-four, four and four clips. Publish the expansion with `status: "ready"`
-only after its media and measured results have passed validation.
-
-Each recording has its own row, title, clip count and independent navigation.
-Desktop shows two clips at a time; phones show one. Previous/next buttons and
-keyboard arrows advance by one clip. One dot per clip shows the full count,
-highlights the visible selection and lets the viewer jump directly to a clip.
-Home/End jump to the first/last visible selection in the focused row. The gallery follows the paper
-overview and main results, before Visualization.
+`go2.js` reads `content/go2.json`, the authoritative selection and readiness
+manifest. The current gallery contains **44 clips from 11 recordings**, with
+**four clips per recording**. Each recording is one scene with a short English
+title. Every clip is present in the page: two columns on desktop, one on phones.
+There are no scene/clip switching controls or individual clip descriptions.
 
 ## Selection and protocol
 
-The **30 additional clips** were selected for scene/motion diversity, source
-clarity and third-person visibility before model inference. First-person and
-third-person source clocks were visually aligned using multiple events, then
-clip intervals were frozen in each recording's alignment manifest. The seven
-recordings cover varied vegetation, ground surfaces, turns and built spaces.
-The night recording uses a `.qt` QuickTime third-person source, decoded
-according to its actual media container.
+This is a **performance-curated qualitative showcase selected after evaluation**.
+In **41 of 44 clips (93.18%)**, OpenNWM has lower clip-mean ATE **and** RPE than
+NWM, including at the three-decimal precision displayed in the films. The
+selection is not an unbiased benchmark sample; the paper's aggregate results
+are unchanged. The exact selected intervals, scores, parent intervals and three
+retained nonwinning clips are recorded in [go2-selection.json](go2-selection.json).
 
-The **eight retained clips** have a different selection history. Their original
-archive contains 40 quality-approved clips; two per recording were selected
-across corridors, a lobby, a cafe, woodland and courtyards. These eight were
-chosen after measuring model performance and each had more than 13% lower ATE
-and RPE for OpenNWM than NWM. They remain curated qualitative comparisons, not
-an independent benchmark. Do not claim that the full 45-clip selection was
-frozen before inference or chosen independently of model performance. The
-paper's aggregate scores remain unchanged.
+The 36 complete clips retain previously evaluated intervals. Eight clips use
+shorter continuous excerpts of previously quality-approved intervals, with no
+more than two excerpts per recording. Their lengths are 9, 12, 13, 16, 19, 20,
+22 and 22 seconds; complete clips are 20–28 seconds. Four historical complete
+clips were added or substituted to retain four examples in every scene.
+Twelve films were rendered again: those four historical clips and eight
+excerpts. The other 32 films retain their existing verified video bytes.
 
-The **seven restored clips** use existing results from that same quality-approved
-40-clip archive. They were added for scene and time coverage, with delivery size
-as a constraint; model scores were not used to choose them. Their evaluation
-already existed, so they are not a pre-inference selection. All four earlier
-recordings now have at least three clips. Original sources and model predictions
-are retained; their score panels use the current whole-clip mean protocol.
+Shortening is explicit in the private render plan's `shortened_from` field:
+parent ID, start and end. The renderer requires a continuous excerpt of at least
+eight seconds within a documented 20–30 second parent clip. Independently of
+this duration check, the beginning and end must coincide with complete local
+planning windows and there must be no gaps. All selected excerpts in this
+release are at least nine seconds. Source/model frames are unchanged; scores
+are recomputed across **all** complete windows of each displayed excerpt.
 
-Selected clips are approximately 20–30 seconds. Both models use the same
-one-second local planning horizon, recorded starting contexts, goals and CEM
-budget within each clip. Original DDPM checkpoints are used, not DMD2. These
-are offline plans; model predictions were not executed on the robot. Reference
-trajectories come from onboard odometry in meters. Camera alignment is visual,
-with per-recording uncertainty documented in the alignment evidence; it is not
-physical clock calibration. Exact inference settings and per-goal results
-remain in the archive and report.
+Both models use the same one-second local planning horizon, recorded starting
+contexts, goals and CEM budget within each clip. Original DDPM checkpoints are
+used, not DMD2. These are offline plans; model predictions were not executed on
+the robot. Reference trajectories come from onboard odometry in meters. Camera
+alignment is visual, with per-recording uncertainty retained in the evidence;
+it is not physical clock calibration. Exact settings, source hashes and
+per-goal results remain in each clip report and the NAS archives.
 
 Each film emphasizes the recorded third-person view and includes synchronized
 first-person GT, genuine OpenNWM/NWM rollouts and recorded/planned trajectories.
-The bottom-right ATE/RPE panel displays the **arithmetic mean across all evaluated
-one-second windows of that displayed clip**, separately for each model and
-metric. Those values remain constant throughout the film and match its metric
-report. They are not replaced by the currently playing one-second window's
-metrics. Preserve all per-window values and evaluated goal IDs in the report;
-the displayed mean does not replace the underlying evidence.
-
-Preserve the unaltered model-generated frames, including visible prediction
-errors. Do not introduce camera-obstructed intervals when replacing or expanding
-clips. Historical reports may describe the earlier 40-clip archive; distinguish
-that archive from the current displayed selection. Metric and trajectory CSV
-files remain available through manifest paths even though the page has no
-download controls.
+The ATE/RPE panel displays the **arithmetic mean across every complete one-second
+window in that displayed interval**, separately for each model and metric.
+These values remain constant throughout the film and match its JSON report.
+Per-window values, trajectories and evaluated goal IDs remain available through
+the manifest even though the page has no download controls. Preserve visible
+model prediction errors and the original source/model frames.
 
 ## Manifest contract
 
-Example field structure; actual metric values belong to the reviewed results:
+The manifest has `version: 3`, `status: "ready"`, `routes`, `clips`, `report`
+and `selection`. `routes` provides each recording's stable ID, `episode` and
+English `title`. Each clip includes:
 
-```json
-{
-  "version": 3,
-  "status": "ready",
-  "routes": [
-    {
-      "id": "route_05",
-      "episode": "stable_recording_id",
-      "title": "Scene description",
-      "title_zh": "场景描述"
-    }
-  ],
-  "clips": [
-    {
-      "id": "route_05_clip_01",
-      "route_id": "route_05",
-      "episode": "stable_recording_id",
-      "title": "Clip description",
-      "title_zh": "片段描述",
-      "duration_s": 25,
-      "start_time_s": 10,
-      "goal_interval_s": 1,
-      "video": "assets/go2/route_05_clip_01/comparison.mp4",
-      "poster": "assets/go2/route_05_clip_01/poster.webp",
-      "metrics": {
-        "opennwm": {"ate_m": null, "rpe_m": null},
-        "nwm": {"ate_m": null, "rpe_m": null}
-      },
-      "evaluated_goal_ids": [10, 11],
-      "downloads": {
-        "metrics": "assets/go2/route_05_clip_01/metrics.json",
-        "trajectories": "assets/go2/route_05_clip_01/trajectories.csv"
-      }
-    }
-  ],
-  "report": "assets/go2/report.json",
-  "selection": {
-    "kind": "qualitative comparisons with documented selection history",
-    "display_clip_count": 45,
-    "criteria": "Document the pre-inference additions, historical performance-curated subset and restored archive clips separately."
-  }
-}
-```
+- Stable `id`, `episode`, `route_id` and source `start_time_s`.
+- Actual encoded `duration_s`, `goal_interval_s` and `evaluated_goal_ids`.
+- Relative `video`, `poster`, metric JSON and trajectory CSV paths.
+- Verified `metrics.opennwm` and `metrics.nwm`, each with `ate_m` and `rpe_m`.
+- `metric_aggregation`, specifying the arithmetic mean of complete local plans,
+  plan count, meter units and `constant_for_entire_clip` display.
 
-`routes` and `route_id` are optional for compatibility. Grouping prefers
-`route_id`, then `episode`, then a `route_N` prefix in the clip ID. Route titles
-come from matching route metadata or clip `route_title`/`route_title_zh`; otherwise
-the UI supplies a localized route number. Route order follows first appearance
-in `clips`; clips within each route sort by `start_time_s`.
+Grouping prefers `episode`, then `route_id`; metadata supplies a short English
+scene title. Scene order follows first appearance in `clips`; clips sort by
+source start time. All 11 current scenes have exactly four clips.
 
-Replace illustrative `null` metrics and abbreviated goal IDs with verified
-results before publication; never invent missing results. Preserve exact
-aggregation, per-goal values and `evaluated_goal_ids`. `duration_s` is the encoded
-film duration; record any difference from source motion time in the report.
-Use `status: "pending"` for unreviewed material.
-
-Asset paths are relative to the website root, start with `assets/go2/`, and
-contain only letters, digits, underscores, hyphens, dots and slashes. Keep cache
-query strings out of the manifest; the frontend applies its publication
-revision. Additional provenance fields are allowed. Legacy `full`, `summary`
-and `protocol` sections are not rendered as separate gallery panels.
+Never invent missing measurements. Preserve exact aggregation, per-goal scores
+and goal IDs. Keep `status: "pending"` for unreviewed media. Asset paths are
+relative to the website root and start with `assets/go2/`; no local filesystem
+paths belong in public reports. Additional provenance fields are allowed.
 
 ## Playback and delivery
 
-Films use clear 1920×1080, 16:9 H.264 MP4, `yuv420p` and `+faststart`; aligned
-source material retains its native camera resolution. New aligned footage uses
-30 fps, with nearest recorded first-person frames repeated where the camera's
-native cadence is lower. This does not create new first-person observations.
-HDR sources are tone-mapped for ordinary SDR browsers. All delivered films have
-**no audio stream**, and the browser additionally requests muted, inline,
-looping autoplay without playback controls or click-to-pause handlers.
+Web films are silent 1920×1080, 24 fps H.264 MP4 with `yuv420p` and `+faststart`.
+Recorded footage and saved predictions are sampled as documented in the report;
+frame repetition creates no new observations. The browser requests muted,
+inline, looping autoplay. The shared media scheduler registers all clip slots,
+loads nearby videos, plays visible videos and releases distant transfers and
+decoders. Browser autoplay restrictions still apply.
 
-The shared `media-scheduler.js` loads nearby clips, plays visible clips and
-releases distant transfers/decoders. Advancing the row replaces the two
-existing video slots rather than adding decoders for every clip. On phones the
-hidden second slot is unregistered and its media source is released. Playback
-resumes when the gallery returns to view. Browser autoplay restrictions still
-apply.
+`media-delivery.js` uses the pinned delivery configuration. Go2 has
+`localAssetPrefixes: ["go2/"]` until a matching mirror is verified, preventing
+an older mirror from serving obsolete metric panels. The eight shortened clips
+use new `_curated` asset IDs. Existing source media and previous exports are
+retained in their archives.
 
-`media-delivery.js` normally uses the pinned ModelScope mirror selected by
-`content/media-delivery.json`, with per-resource fallback to site assets. The
-expanded Go2 release uses `localAssetPrefixes: ["go2/"]` until a matching mirror
-is verified, so an older mirror cannot serve films with obsolete metric panels.
-Other assets continue to follow their delivery configuration. Delivery changes
-must preserve asset bytes and must not silently lower media quality.
+## Production and validation
 
-## Production and provenance
+Source tools are in the [OpenNWM repository](https://github.com/B0B8K1ng/OpenNWM):
 
-Source tools are maintained in the [OpenNWM source repository](https://github.com/B0B8K1ng/OpenNWM):
+- `tools/render_go2_gallery.py` preserves source/model views and renders constant
+  clip-mean panels; documented shorter excerpts still require complete windows.
+- `tests/test_go2_clip_mean.py` verifies constant means, unmodified predictions
+  and explicit parent bounds for shorter clips.
+- `tools/validate_go2_gallery.py` binds reports to source evaluation windows,
+  result hashes, exact trajectories and matching metric aggregation.
+- `tools/validate_go2_video_content.py` compares beginning/middle/end video panels
+  with recorded cameras and genuine saved predictions.
+- `tools/publish_go2_gallery.py` creates compact web copies and checks hashes,
+  full decoding, frame counts, duration, silent 1080p format and faststart.
 
-- `tools/prepare_go2_multitrajectory.py` freezes camera alignment and source clip
-  selection, encodes synchronized silent footage and validates original hashes,
-  duration, cadence and audio absence.
-- `tools/evaluate_go2_recording.py` prepares the frozen one-second windows and
-  records the measured model results, including any skipped source windows.
-- `tools/render_go2_gallery.py` composes model/source views and the constant
-  whole-clip mean metric panel. `tests/test_go2_clip_mean.py` checks differing
-  windows render identical mean panels and preserve source/model frames.
-- `tools/publish_go2_gallery.py` creates web copies from reviewed NAS masters,
-  preserves metrics/CSV/poster bytes and validates decoding, durations, frame
-  counts, faststart and size budgets. Original masters remain separate.
-- `tools/publish_website_media.py` stages active media, uploads byte-identical
-  files to ModelScope, verifies remote sizes/SHA256 and pins a release tag.
+The private `opennwm_go2_curation_20261030` NAS archive retains the complete
+44-clip plan, 12-clip render plan, preceding manifest/report, source-bound metric
+validation, new masters, web cache and per-process command/PID/log records.
+Its `prepare_release.py` independently recomputes ATE/RPE from each saved
+trajectory and checks every included plan and clip mean before publication.
+The public selection provenance identifies the exact favorable intervals;
+these must never be represented as an independent evaluation sample.
 
-Review `content/go2.json` after any export. Keep original recordings, aligned
-complete videos, independent GT/model rollouts, source hashes and private
-validation logs in the NAS archive. Publication receipts must identify master/
-web hashes and any retained originals; do not remove original media or existing
-audit files while updating the presentation. Only scrubbed reports and portable
-relative paths belong on the public site.
-
-After changing the selection, verify clip count/order, paired clip-mean metrics,
-scene diversity, desktop/mobile navigation and dots, autoplay, decoder release
-and configured delivery at [the real-world gallery](https://b0b8k1ng.github.io/OpenNWM/#go2-navigation).
+After publication, check every scene has four clips, video durations and scores
+match the manifest, source/model panels match their evidence, and desktop/mobile
+playback loads and releases videos correctly.
