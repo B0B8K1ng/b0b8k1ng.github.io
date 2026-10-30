@@ -4,8 +4,8 @@ import { mediaUrl as deliveryUrl, setMediaUrl } from "./media-delivery.js?v=go2-
 const $ = (selector) => document.querySelector(selector);
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-export async function initCinematic(getLanguage) {
-  const t = (en, zh) => getLanguage() === "zh" ? zh || en : en;
+export async function initCinematic() {
+  const t = (en) => en;
   const hero = $("#hero-video");
   const heroScene = $("#hero-scene");
   const section = $(".cinematic-hero");

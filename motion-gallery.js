@@ -14,10 +14,10 @@ function projectTrajectory(positions) {
 }
 
 /** Synchronized GT/OpenNWM wipe comparisons with their given input paths. */
-export function initMotionGallery(demos, getLanguage) {
+export function initMotionGallery(demos) {
   const root = document.querySelector("#motion-gallery");
   if (!root) return { render() {} };
-  const t = (en, zh) => getLanguage() === "zh" ? zh || en : en;
+  const t = (en) => en;
   const items = [];
   root.innerHTML = '<div class="motion-gallery-grid"></div>';
   const grid = root.querySelector(".motion-gallery-grid");
@@ -202,28 +202,10 @@ export function initMotionGallery(demos, getLanguage) {
   }
   function render() {
     if (lunarFootnote) {
-      lunarFootnote.textContent = t(
-        "LuSNAR simulation: fine-tuned on scenes Moon 1–5, validated on Moon 6, and tested only on Moon 7–9.",
-        "LuSNAR 仿真：Moon 1–5 用于微调、Moon 6 用于验证，Moon 7–9 仅用于测试。",
-      );
-      const method = document.createElement("a");
-      method.href = "content/LUNAR_CURVES_20261029_VALIDATION.md";
-      method.textContent = t("Selection details", "选样说明");
-      lunarFootnote.append(" ", method);
+      lunarFootnote.textContent = "LuSNAR simulation: fine-tuned on scenes Moon 1–5, validated on Moon 6, and tested only on Moon 7–9.";
     }
     if (marsFootnote) {
-      marsFootnote.textContent = t(
-        "MarsLab simulation: fine-tuned on six trajectories, validated on one, and tested on three held-out trajectories. All share one terrain; cross-terrain generalization is not evaluated.",
-        "MarsLab 仿真：6 条轨迹用于微调、1 条用于验证、3 条仅用于测试；均在同一地形，未评估跨地形泛化。",
-      );
-      const source = document.createElement("a");
-      source.href = "https://github.com/kimhoyun-robotair/MarsLab";
-      source.textContent = t("Simulator source", "仿真器来源");
-      marsFootnote.append(" ", source);
-      const method = document.createElement("a");
-      method.href = "content/MARSLAB_CURVES_20261029_VALIDATION.md";
-      method.textContent = t("Experiment details", "实验详情");
-      marsFootnote.append(" · ", method);
+      marsFootnote.textContent = "MarsLab simulation: fine-tuned on six trajectories, validated on one, and tested on three held-out trajectories.";
     }
     items.forEach((item) => {
       const title = t(item.demo.title, item.demo.titleZh);

@@ -9,8 +9,8 @@ const defaultPaths = {
   right: [[0, 0], [0, .25], [.12, .55], [.4, .85], [.65, 1.05]],
 };
 
-export async function initPlayground(getLanguage) {
-  const t = (en, zh) => getLanguage() === "zh" ? zh || en : en;
+export async function initPlayground() {
+  const t = (en) => en;
   const canvas = $("#trajectory-canvas"), context = canvas.getContext("2d");
   const video = $("#playground-video");
   video.muted = true; video.defaultMuted = true;

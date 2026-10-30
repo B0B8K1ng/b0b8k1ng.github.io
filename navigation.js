@@ -52,11 +52,11 @@ function trajectoryGraphic(sample, t) {
   </svg>`;
 }
 
-export async function initNavigation(paper, getLanguage) {
+export async function initNavigation(paper) {
   const root = document.getElementById("navigation-content");
   const benchmarks = document.getElementById("navigation-benchmarks");
   if (!root) return { render() {} };
-  const t = (en, zh) => (getLanguage().startsWith("zh") ? zh : en);
+  const t = (en) => en;
   const response = await fetch(
     "content/navigation.json?v=curated-navigation-v5-20261010",
   );
@@ -171,7 +171,7 @@ export async function initNavigation(paper, getLanguage) {
           (
             sample,
           ) => `<article class="navigation-example" data-sample-id="${escapeHTML(sample.id)}" data-fps="${sample.fps || manifest.media.fps}">
-        <header><h3>${escapeHTML(sample.title[getLanguage().startsWith("zh") ? "zh" : "en"])}</h3><span>${escapeHTML(sample.dataset)}</span></header>
+        <header><h3>${escapeHTML(sample.title.en)}</h3><span>${escapeHTML(sample.dataset)}</span></header>
         <div class="navigation-media">
           <figure><img data-src="${sample.start}" loading="lazy" decoding="async" width="224" height="224" alt="${escapeHTML(t(`${sample.title.en}: recorded start`, `${sample.title.zh}：起点观测`))}"><figcaption>${t("Start", "起点")}</figcaption></figure>
           <figure><video data-src="${sample.video}" data-poster="${sample.poster}" width="224" height="224" preload="none" muted loop playsinline aria-label="${escapeHTML(t(`${sample.title.en}: OpenNWM imagined local plan`, `${sample.title.zh}：OpenNWM 规划预测`))}"></video><figcaption>OpenNWM</figcaption></figure>

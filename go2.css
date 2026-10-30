@@ -8,32 +8,16 @@
 .go2-route-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
 .go2-route-heading h3 { margin: 0; color: #e2e8e1; font: 500 18px/1.4 var(--sans); letter-spacing: -.2px; }
 .go2-route-count { flex-shrink: 0; color: #a3ada5; font: 12px/1.5 var(--sans); }
-.go2-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 24px; }
+.go2-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; }
 .go2-clip { min-width: 0; margin: 0; }
-.go2-clip[hidden] { display: none; }
 .go2-screen { position: relative; overflow: hidden; border: 1px solid #2d3735; border-radius: 6px; background: #0d1214; aspect-ratio: 16 / 9; }
 .go2-screen video { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 .go2-screen video::-webkit-media-controls { display: none !important; }
-.go2-clip figcaption { padding: 14px 1px 0; }
-.go2-clip h4 { margin: 0; color: #e2e8e1; font: 500 16px/1.45 var(--sans); letter-spacing: -.15px; }
-.go2-navigation { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 18px; }
-.go2-arrow, .go2-dot { appearance: none; display: grid; place-items: center; flex-shrink: 0; padding: 0; color: #dce5da; cursor: pointer; }
-.go2-arrow { width: 38px; height: 38px; border: 1px solid #3c493f; border-radius: 50%; background: #17201b; font: 20px/1 var(--sans); transition: border-color .15s, background .15s; }
-.go2-arrow:hover:enabled { background: #28342b; border-color: #94a58f; }
-.go2-arrow:disabled { opacity: .28; cursor: default; }
-.go2-arrow:focus-visible, .go2-dot:focus-visible { outline: 2px solid #c1d8ad; outline-offset: 3px; }
-.go2-dots { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 2px; max-width: min(70%, 520px); }
-.go2-dot { width: 26px; height: 32px; border: 0; border-radius: 4px; background: transparent; }
-.go2-dot span { display: block; width: 7px; height: 7px; border-radius: 50%; background: #556158; transition: background .15s, box-shadow .15s; }
-.go2-dot[aria-pressed="true"] span { background: #c2d8ad; box-shadow: 0 0 0 3px #c2d8ad1a; }
-.go2-dot:hover span { background: #d6e5c8; }
-.go2-route-status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .go2-media-error { position: absolute; left: 14px; right: 14px; bottom: 12px; margin: 0; padding: 9px 12px; background: #111817e8; color: #d3d9d1; font: 12px/1.5 var(--sans); }
 .go2-media-error[hidden] { display: none; }
 @media (max-width: 900px) {
   .go2-section { width: calc(100% - 64px); }
-  .go2-grid { gap: 26px 18px; }
-  .go2-clip h4 { font-size: 14px; }
+  .go2-grid { gap: 18px; }
 }
 @media (max-width: 680px) {
   .go2-section { width: calc(100% - 40px); }
@@ -42,8 +26,5 @@
   .go2-routes { gap: 28px; }
   .go2-route + .go2-route { padding-top: 24px; }
   .go2-route-heading h3 { font-size: 16px; }
-  .go2-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
-  .go2-clip h4 { font-size: 15px; }
-  .go2-clip figcaption { padding-top: 11px; }
-  .go2-navigation { gap: 12px; margin-top: 15px; }
+  .go2-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 }
