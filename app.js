@@ -1,10 +1,10 @@
-import { registerMedia } from "./media-scheduler.js?v=texture-master-20261030-v6";
-import { setMediaUrl } from "./media-delivery.js?v=texture-master-20261030-v6";
+import { registerMedia } from "./media-scheduler.js?v=texture-master-20261030-v6-inline1";
+import { setMediaUrl } from "./media-delivery.js?v=texture-master-20261030-v6-inline1";
 import { initResearch } from "./research.js?v=framework-dark-20261030";
-import { initMotionGallery } from "./motion-gallery.js?v=texture-master-20261030-v6";
-import { initNavigation } from "./navigation.js?v=texture-master-20261030-v6";
-import { initCinematic } from "./cinematic.js?v=texture-master-20261030-v6";
-import { initPlayground } from "./playground.js?v=texture-master-20261030-v6";
+import { initMotionGallery } from "./motion-gallery.js?v=texture-master-20261030-v6-inline1";
+import { initNavigation } from "./navigation.js?v=texture-master-20261030-v6-inline1";
+import { initCinematic } from "./cinematic.js?v=texture-master-20261030-v6-inline1";
+import { initPlayground } from "./playground.js?v=texture-master-20261030-v6-inline1";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -124,7 +124,7 @@ async function init() {
     const content = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
         const revision = name === "paper" ? "paper-tables12-v1-20261029"
-          : name === "demos" ? "texture-master-20261030-v6" : "dataset-timing-v2-20261029";
+          : name === "demos" ? "texture-master-20261030-v6-inline1" : "dataset-timing-v2-20261029";
         const response = await fetch(`content/${name}.json?v=${revision}`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();

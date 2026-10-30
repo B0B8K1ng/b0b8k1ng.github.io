@@ -8,24 +8,38 @@ const archivedMedia = new Map();
 // A failed mirror stays on the original host for this page visit, including
 // after offscreen videos release their src or another element uses the asset.
 const failedMirrors = new Set();
-const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 3000);
-try {
-  const response = await fetch("content/media-delivery.json?v=texture-master-20261030-v6", { signal: controller.signal });
-  if (response.ok) {
-    const config = await response.json();
-    if (Array.isArray(config.localAssetPrefixes)) {
-      localAssetPrefixes = config.localAssetPrefixes.filter((prefix) => typeof prefix === "string")
-        .map((prefix) => prefix.trim().replace(/^\/+/, "").replace(/^assets\//, "").replace(/\/+$/, ""))
-        .filter(Boolean).map((prefix) => `${prefix}/`);
-    }
-    if (config.enabled !== false && config.assetBaseUrl) {
-      const base = new URL(config.assetBaseUrl);
-      if (base.protocol === "https:") assetBase = base.href.replace(/\/?$/, "/");
-    }
+function applyConfig(config) {
+  if (!config || typeof config !== "object" || Array.isArray(config)) return false;
+  let base = "";
+  if (config.enabled !== false) {
+    if (!config.assetBaseUrl) return false;
+    const url = new URL(config.assetBaseUrl);
+    if (url.protocol !== "https:") return false;
+    base = url.href.replace(/\/?$/, "/");
   }
-} catch { /* Use the original host or a registered source archive. */ }
-finally { clearTimeout(timeout); }
+  localAssetPrefixes = Array.isArray(config.localAssetPrefixes)
+    ? config.localAssetPrefixes.filter((prefix) => typeof prefix === "string")
+      .map((prefix) => prefix.trim().replace(/^\/+/, "").replace(/^assets\//, "").replace(/\/+$/, ""))
+      .filter(Boolean).map((prefix) => `${prefix}/`)
+    : [];
+  assetBase = base;
+  return true;
+}
+
+let configured = false;
+try {
+  const inline = document.getElementById("media-delivery-config");
+  if (inline) configured = applyConfig(JSON.parse(inline.textContent));
+} catch { /* Older or invalid HTML can still use the standalone manifest. */ }
+if (!configured) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3000);
+  try {
+    const response = await fetch("content/media-delivery.json?v=texture-master-20261030-v6-inline1", { signal: controller.signal });
+    if (response.ok) applyConfig(await response.json());
+  } catch { /* Use the original host or a registered source archive. */ }
+  finally { clearTimeout(timeout); }
+}
 
 function assetPath(source) {
   if (!source) return null;

@@ -1,4 +1,4 @@
-import { setMediaUrl } from "./media-delivery.js?v=texture-master-20261030-v6";
+import { setMediaUrl } from "./media-delivery.js?v=texture-master-20261030-v6-inline1";
 
 // Share network and decoder capacity across the entire page. Media bytes and
 // playback cadence are unchanged; only their lifetime follows the viewport.
