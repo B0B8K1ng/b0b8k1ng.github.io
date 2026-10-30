@@ -3256,6 +3256,16 @@
       }
     }
   ],
+  "metric_aggregation": {
+    "method": "arithmetic_mean_of_complete_local_plans",
+    "plan_count": 24,
+    "display": "constant_for_entire_clip",
+    "metrics": [
+      "ate_m",
+      "rpe_m"
+    ],
+    "units": "meters"
+  },
   "alignment": {
     "time_origin": "First ego timeline_ns; host receive clock.",
     "ego_mapping": "Nearest actual timeline_ns source frame, resampled on host time at 15 Hz.",

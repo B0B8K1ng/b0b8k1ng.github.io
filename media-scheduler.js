@@ -1,4 +1,4 @@
-import { setMediaUrl } from "./media-delivery.js?v=planetary-curves-v1-20261029";
+import { setMediaUrl } from "./media-delivery.js?v=go2-routes-v3-20261030";
 
 // Share network and decoder capacity across the entire page. Media bytes and
 // playback cadence are unchanged; only their lifetime follows the viewport.
