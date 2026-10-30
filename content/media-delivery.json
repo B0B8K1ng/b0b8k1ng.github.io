@@ -1,15 +1,14 @@
 {
   "schemaVersion": 1,
   "enabled": true,
-  "assetBaseUrl": "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/",
-  "manifestSha256": "5091972f9e1135677f5554c38c05383a4cc431d5703aed7501eda29513ade219",
+  "assetBaseUrl": "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v4/",
+  "manifestSha256": "c4a187f1bc3deb3b6b2f1fb72a1d60eea59261bbca99d769d8b91dcdf1fcb193",
   "localAssetPrefixes": [
     "space/synmars-finetuned/",
     "datasets/",
     "space/marslab-finetuned/",
     "space/lusnar-curved-20261029/",
-    "space/marslab-curves-20261029/",
-    "go2/"
+    "space/marslab-curves-20261029/"
   ],
   "localFallback": true
 }

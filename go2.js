@@ -1,4 +1,4 @@
-import { registerMedia } from "./media-scheduler.js?v=go2-routes-v3-20261030";
+import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030";
 
 const root = document.querySelector("#go2-navigation");
 const revision = "scene-grid-20261030";
@@ -42,7 +42,7 @@ async function init() {
   const routes = groupRoutes(manifest, clips);
   root.innerHTML = `<div class="go2-heading"><div><span id="go2-section-number" class="eyebrow section-number">03 / REAL WORLD</span><h2 id="go2-title">Real-world navigation.</h2></div></div>
     <div class="go2-routes">${routes.map((route, index) => `<section class="go2-route" data-route="${escape(route.id)}" aria-labelledby="go2-route-title-${index}">
-      <div class="go2-route-heading"><h3 id="go2-route-title-${index}">${escape(route.title)}</h3><span class="go2-route-count">${route.clips.length} clips</span></div>
+      <div class="go2-route-heading"><h3 id="go2-route-title-${index}">${escape(route.title)}</h3></div>
       <div class="go2-grid">${route.clips.map((clip, clipIndex) => `<figure class="go2-clip" data-clip="${escape(clip.id)}"><div class="go2-screen"><video muted loop playsinline preload="none" width="1920" height="1080" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="${escape(route.title)}: clip ${clipIndex + 1}, recorded robot and OpenNWM / NWM predictions and trajectories"></video><p class="go2-media-error" role="status" hidden>Video unavailable</p></div></figure>`).join("")}</div>
     </section>`).join("")}</div>`;
   root.hidden = false;

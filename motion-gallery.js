@@ -1,4 +1,4 @@
-import { registerMedia } from "./media-scheduler.js?v=go2-routes-v3-20261030";
+import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030";
 
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
