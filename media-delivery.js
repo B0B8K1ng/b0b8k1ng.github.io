@@ -2,13 +2,16 @@
 // keeps ordinary relative URLs working for local previews and static hosting.
 let assetBase = "";
 let localAssetPrefixes = [];
+// Large masters can live in the source archive instead of the Pages artifact.
+// Their pinned fallback URLs preserve the same bytes as the primary mirror.
+const archivedMedia = new Map();
 // A failed mirror stays on the original host for this page visit, including
 // after offscreen videos release their src or another element uses the asset.
 const failedMirrors = new Set();
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 3000);
 try {
-  const response = await fetch("content/media-delivery.json?v=smooth-media-20261030-v2", { signal: controller.signal });
+  const response = await fetch("content/media-delivery.json?v=texture-master-20261030-v6", { signal: controller.signal });
   if (response.ok) {
     const config = await response.json();
     if (Array.isArray(config.localAssetPrefixes)) {
@@ -21,7 +24,7 @@ try {
       if (base.protocol === "https:") assetBase = base.href.replace(/\/?$/, "/");
     }
   }
-} catch { /* The local assets remain a complete fallback. */ }
+} catch { /* Use the original host or a registered source archive. */ }
 finally { clearTimeout(timeout); }
 
 function assetPath(source) {
@@ -49,14 +52,24 @@ export function mediaUrl(source) {
   if (relative !== null && localAssetPrefixes.some((prefix) => relative.startsWith(prefix))) {
     return originalMediaUrl(source);
   }
-  const delivered = assetBase && relative !== null ? new URL(`assets/${relative}`, assetBase).href : source;
+  const delivered = assetBase && relative !== null ? new URL(`assets/${relative}`, assetBase).href : originalMediaUrl(source);
   return delivered && failedMirrors.has(new URL(delivered, document.baseURI).href)
     ? originalMediaUrl(source) : delivered;
 }
 
+export function registerMediaFallback(source, fallback) {
+  const relative = assetPath(source);
+  if (relative === null || !fallback) return;
+  try {
+    const url = new URL(fallback);
+    if (url.protocol === "https:") archivedMedia.set(relative.split(/[?#]/, 1)[0], url.href);
+  } catch { /* Ignore an invalid optional archive URL. */ }
+}
+
 export function originalMediaUrl(source) {
   const relative = assetPath(source);
-  return relative === null ? source : new URL(`assets/${relative}`, document.baseURI).href;
+  return relative === null ? source : archivedMedia.get(relative.split(/[?#]/, 1)[0])
+    || new URL(`assets/${relative}`, document.baseURI).href;
 }
 
 const records = new WeakMap();

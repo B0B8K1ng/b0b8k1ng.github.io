@@ -79,11 +79,24 @@ inline, looping autoplay. The shared media scheduler registers all clip slots,
 loads nearby videos, plays visible videos and releases distant transfers and
 decoders. Browser autoplay restrictions still apply.
 
-`media-delivery.js` uses the pinned delivery configuration. Go2 has
-`localAssetPrefixes: ["go2/"]` until a matching mirror is verified, preventing
-an older mirror from serving obsolete metric panels. The eight shortened clips
-use new `_curated` asset IDs. Existing source media and previous exports are
-retained in their archives.
+`media-delivery.js` uses the verified `site-20261030-v6` mirror, with
+`localAssetPrefixes: []`. Garden paths and Autumn grove use their eight existing
+CRF18 comparison masters byte for byte, removing the additional CRF23 web encode.
+Resolution, frame timing, trajectories, predictions and metrics are unchanged.
+This removes the additional encoding loss, not artifacts already in the source.
+These eight clips target four seconds of buffered video before automatic play,
+with bounded waiting when a browser limits preloading. A scoped service worker
+caches their complete original bytes while streaming and serves subsequent
+loop Range requests locally. Unsupported or unavailable storage falls back to
+ordinary network delivery; no frames or encoding parameters are changed.
+
+These eight large masters remain in the source repository but are omitted from
+the Pages artifact to keep the published site below its size limit. Their
+optional `fallback_video` fields point to the same bytes at an immutable Git
+commit on raw.githubusercontent.com. The gallery registers these fallbacks
+before playback, including when delivery configuration is unavailable. Other
+assets fall back to the ordinary local copy. Previous exports remain archived.
+The eight shortened clips retain their `_curated` asset IDs.
 
 ## Production and validation
 

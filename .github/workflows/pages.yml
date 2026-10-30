@@ -32,6 +32,30 @@ jobs:
           touch _site/.nojekyll
           printf '%s\n' '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=/OpenNWM/"><title>OpenNWM</title></head><body><a href="/OpenNWM/">OpenNWM</a></body></html>' > _site/index.html
           cp _site/index.html _site/OpenNWM-website/index.html
+      - name: Keep archived video masters outside the Pages artifact
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path, PurePosixPath
+          from urllib.parse import urlsplit
+          import re
+
+          site = Path('_site/OpenNWM')
+          clips = json.loads((site / 'content/go2.json').read_text())['clips']
+          for clip in clips:
+              if not clip.get('fallback_video'):
+                  continue
+              relative = PurePosixPath(clip['video'])
+              fallback = urlsplit(clip['fallback_video'])
+              assert not relative.is_absolute() and '..' not in relative.parts
+              assert relative.parts[:2] == ('assets', 'go2') and relative.suffix == '.mp4'
+              assert fallback.scheme == 'https' and fallback.netloc == 'raw.githubusercontent.com'
+              assert re.fullmatch(r'/B0B8K1ng/b0b8k1ng.github.io/[0-9a-f]{40}/' + re.escape(str(relative)), fallback.path)
+              (site / relative).unlink()
+          total = sum(p.stat().st_size for p in Path('_site').rglob('*') if p.is_file())
+          assert total < 950_000_000, f'Pages artifact is too large: {total} bytes'
+          print(f'Pages artifact: {total:,} bytes; masters retained in the pinned source archive')
+          PY
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:

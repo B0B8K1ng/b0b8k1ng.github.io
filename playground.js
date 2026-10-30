@@ -1,5 +1,5 @@
-import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030-v2";
-import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030-v2";
+import { registerMedia } from "./media-scheduler.js?v=texture-master-20261030-v6";
+import { setMediaUrl } from "./media-delivery.js?v=texture-master-20261030-v6";
 
 const $ = (selector) => document.querySelector(selector);
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
