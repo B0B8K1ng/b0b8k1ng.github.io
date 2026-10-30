@@ -60,7 +60,7 @@ Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 
 `content/media-delivery.json` 指定经过校验的 ModelScope 媒体镜像，当前固定版本为：
 
 ```text
-https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v4/
+https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v5/
 ```
 
 镜像保持 `assets/...` 路径，文件与网站副本逐字节相同，支持视频 Range 请求和
@@ -68,9 +68,9 @@ https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v4
 回退到本站副本；本次页面访问会记住失败 URL，滚回视频时不会重新请求同一失败镜像。源素材和本站文件没有被替换为低清版本；论文主图另有像素完全一致
 的无损 WebP，原 PNG 保留供下载。公开校验清单为镜像根目录的 `media-manifest.json`。
 该版本包含当前展示的 44 个真机片段、19 个重新定时的数据集视频以及月球/火星曲线素材，
-576 个文件的远端大小与 SHA256 均已校验。44 个真机主视频使用支持 HTTP 206 的镜像。
-镜像对部分小文件返回不规范的 Range 状态，因此 `localAssetPrefixes` 仍将 datasets/
-以及四个新/历史月火星素材目录指向支持标准分段响应的本站。本站保留相同原文件供失败回退使用。
+576 个文件的远端大小与 SHA256 均已校验。小 MP4 也通过 LFS 分发，保持原始字节，
+使数据集、真机和月球/火星视频都支持标准 HTTP 206 首段与尾段请求。
+`localAssetPrefixes` 为空；本站保留相同原文件供失败回退使用。
 
 ## 本地预览与部署
 

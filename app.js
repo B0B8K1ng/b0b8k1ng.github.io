@@ -1,10 +1,10 @@
-import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030";
-import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030";
+import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030-v2";
+import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030-v2";
 import { initResearch } from "./research.js?v=english-gallery-20261030";
-import { initMotionGallery } from "./motion-gallery.js?v=smooth-media-20261030";
-import { initNavigation } from "./navigation.js?v=smooth-media-20261030";
-import { initCinematic } from "./cinematic.js?v=smooth-media-20261030";
-import { initPlayground } from "./playground.js?v=smooth-media-20261030";
+import { initMotionGallery } from "./motion-gallery.js?v=smooth-media-20261030-v2";
+import { initNavigation } from "./navigation.js?v=smooth-media-20261030-v2";
+import { initCinematic } from "./cinematic.js?v=smooth-media-20261030-v2";
+import { initPlayground } from "./playground.js?v=smooth-media-20261030-v2";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -124,7 +124,7 @@ async function init() {
     const content = await Promise.all(
       ["datasets", "demos", "paper"].map(async (name) => {
         const revision = name === "paper" ? "paper-tables12-v1-20261029"
-          : name === "demos" ? "smooth-media-20261030" : "dataset-timing-v2-20261029";
+          : name === "demos" ? "smooth-media-20261030-v2" : "dataset-timing-v2-20261029";
         const response = await fetch(`content/${name}.json?v=${revision}`);
         if (!response.ok) throw new Error(`Could not load ${name}`);
         return response.json();

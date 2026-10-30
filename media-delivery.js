@@ -8,7 +8,7 @@ const failedMirrors = new Set();
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 3000);
 try {
-  const response = await fetch("content/media-delivery.json?v=smooth-media-20261030", { signal: controller.signal });
+  const response = await fetch("content/media-delivery.json?v=smooth-media-20261030-v2", { signal: controller.signal });
   if (response.ok) {
     const config = await response.json();
     if (Array.isArray(config.localAssetPrefixes)) {

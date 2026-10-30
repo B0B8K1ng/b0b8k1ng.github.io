@@ -1,4 +1,4 @@
-import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030";
+import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030-v2";
 
 const root = document.querySelector("#go2-navigation");
 const revision = "scene-grid-20261030";
