@@ -41,6 +41,9 @@ jobs:
           import re
 
           site = Path('_site/OpenNWM')
+          inline = re.search(r'<script\b[^>]*\bid="media-delivery-config"[^>]*>(.*?)</script>', (site / 'index.html').read_text(), re.S)
+          assert inline, 'Missing inline media delivery configuration'
+          assert json.loads(inline.group(1)) == json.loads((site / 'content/media-delivery.json').read_text()), 'Inline media delivery configuration is stale'
           clips = json.loads((site / 'content/go2.json').read_text())['clips']
           for clip in clips:
               if not clip.get('fallback_video'):

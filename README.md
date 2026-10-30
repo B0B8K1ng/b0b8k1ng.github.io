@@ -63,6 +63,9 @@ Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 
 https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v6/
 ```
 
+`index.html` 的 `media-delivery-config` 内联同一份配置，使首次加载无需额外网络请求。
+更新镜像时需同步两处配置，发布流程会检查一致性；缺少有效内联配置时才读取 JSON 文件。
+
 镜像保持 `assets/...` 路径，文件与网站副本逐字节相同，支持视频 Range 请求和
 跨域加载。`media-delivery.js` 在配置缺失时使用本站路径，并在单个镜像资源失败时
 回退到本站副本或固定提交的同字节源码归档；本次页面访问会记住失败 URL，滚回视频时不会重新请求同一失败镜像。
