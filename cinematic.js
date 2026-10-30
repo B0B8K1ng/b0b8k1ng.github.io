@@ -1,5 +1,5 @@
-import { registerMedia } from "./media-scheduler.js?v=planetary-curves-v1-20261029";
-import { mediaUrl as deliveryUrl, setMediaUrl } from "./media-delivery.js?v=planetary-curves-v1-20261029";
+import { registerMedia } from "./media-scheduler.js?v=go2-routes-v3-20261030";
+import { mediaUrl as deliveryUrl, setMediaUrl } from "./media-delivery.js?v=go2-routes-v3-20261030";
 
 const $ = (selector) => document.querySelector(selector);
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
