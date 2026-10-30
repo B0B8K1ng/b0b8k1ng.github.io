@@ -1,6 +1,6 @@
 import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030-v2";
 import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030-v2";
-import { initResearch } from "./research.js?v=english-gallery-20261030";
+import { initResearch } from "./research.js?v=framework-dark-20261030";
 import { initMotionGallery } from "./motion-gallery.js?v=smooth-media-20261030-v2";
 import { initNavigation } from "./navigation.js?v=smooth-media-20261030-v2";
 import { initCinematic } from "./cinematic.js?v=smooth-media-20261030-v2";
