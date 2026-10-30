@@ -1,5 +1,5 @@
-import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030";
-import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030";
+import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030-v2";
+import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030-v2";
 
 const escapeHTML = (value) =>
   String(value).replace(
