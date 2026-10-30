@@ -3,6 +3,70 @@
   "status": "ready",
   "clips": [
     {
+      "id": "route_01_clip_03",
+      "episode": "episode_20261026T091121_148a01b5",
+      "route_id": "route_01",
+      "title": "Office departure",
+      "title_zh": "办公室出发",
+      "duration_s": 26.0,
+      "start_time_s": 2.0,
+      "goal_interval_s": 1.0,
+      "video": "assets/go2/route_01_clip_03/comparison.mp4",
+      "poster": "assets/go2/route_01_clip_03/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.1436623974511521,
+          "rpe_m": 0.05967401519954823
+        },
+        "nwm": {
+          "ate_m": 0.14360682129438887,
+          "rpe_m": 0.060981537122081715
+        }
+      },
+      "metric_aggregation": {
+        "method": "arithmetic_mean_of_complete_local_plans",
+        "plan_count": 26,
+        "display": "constant_for_entire_clip",
+        "metrics": [
+          "ate_m",
+          "rpe_m"
+        ],
+        "units": "meters"
+      },
+      "evaluated_goal_ids": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "downloads": {
+        "metrics": "assets/go2/route_01_clip_03/metrics.json",
+        "trajectories": "assets/go2/route_01_clip_03/trajectories.csv"
+      }
+    },
+    {
       "id": "route_01_clip_01_lobby_corner",
       "episode": "episode_20261026T091121_148a01b5",
       "route_id": "route_01",
@@ -131,6 +195,128 @@
       }
     },
     {
+      "id": "route_01_clip_06",
+      "episode": "episode_20261026T091121_148a01b5",
+      "route_id": "route_01",
+      "title": "Doorway return",
+      "title_zh": "穿门返回",
+      "duration_s": 20.0,
+      "start_time_s": 150.0,
+      "goal_interval_s": 1.0,
+      "video": "assets/go2/route_01_clip_06/comparison.mp4",
+      "poster": "assets/go2/route_01_clip_06/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.10456258974870972,
+          "rpe_m": 0.04255665387635052
+        },
+        "nwm": {
+          "ate_m": 0.12168473685365047,
+          "rpe_m": 0.048793103320207226
+        }
+      },
+      "metric_aggregation": {
+        "method": "arithmetic_mean_of_complete_local_plans",
+        "plan_count": 20,
+        "display": "constant_for_entire_clip",
+        "metrics": [
+          "ate_m",
+          "rpe_m"
+        ],
+        "units": "meters"
+      },
+      "evaluated_goal_ids": [
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169
+      ],
+      "downloads": {
+        "metrics": "assets/go2/route_01_clip_06/metrics.json",
+        "trajectories": "assets/go2/route_01_clip_06/trajectories.csv"
+      }
+    },
+    {
+      "id": "route_02_clip_03",
+      "episode": "episode_20261027T032914_26ec5b0a",
+      "route_id": "route_02",
+      "title": "Shaded garden trail",
+      "title_zh": "林荫花园步道",
+      "duration_s": 26.0,
+      "start_time_s": 8.0,
+      "goal_interval_s": 1.0,
+      "video": "assets/go2/route_02_clip_03/comparison.mp4",
+      "poster": "assets/go2/route_02_clip_03/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.09103402516318856,
+          "rpe_m": 0.03684642729595083
+        },
+        "nwm": {
+          "ate_m": 0.10384136461531357,
+          "rpe_m": 0.0421823937956894
+        }
+      },
+      "metric_aggregation": {
+        "method": "arithmetic_mean_of_complete_local_plans",
+        "plan_count": 26,
+        "display": "constant_for_entire_clip",
+        "metrics": [
+          "ate_m",
+          "rpe_m"
+        ],
+        "units": "meters"
+      },
+      "evaluated_goal_ids": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "downloads": {
+        "metrics": "assets/go2/route_02_clip_03/metrics.json",
+        "trajectories": "assets/go2/route_02_clip_03/trajectories.csv"
+      }
+    },
+    {
       "id": "route_02_clip_07",
       "episode": "episode_20261027T032914_26ec5b0a",
       "route_id": "route_02",
@@ -248,6 +434,132 @@
       "downloads": {
         "metrics": "assets/go2/route_02_clip_13/metrics.json",
         "trajectories": "assets/go2/route_02_clip_13/trajectories.csv"
+      }
+    },
+    {
+      "id": "route_03_clip_03",
+      "episode": "episode_20261027T034722_7ee6d875",
+      "route_id": "route_03",
+      "title": "Tree-lined approach",
+      "title_zh": "林荫步道前行",
+      "duration_s": 28.0,
+      "start_time_s": 2.0,
+      "goal_interval_s": 1.0,
+      "video": "assets/go2/route_03_clip_03/comparison.mp4",
+      "poster": "assets/go2/route_03_clip_03/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.1070419018243586,
+          "rpe_m": 0.043507473732658196
+        },
+        "nwm": {
+          "ate_m": 0.12295231352921765,
+          "rpe_m": 0.05099452021940769
+        }
+      },
+      "metric_aggregation": {
+        "method": "arithmetic_mean_of_complete_local_plans",
+        "plan_count": 28,
+        "display": "constant_for_entire_clip",
+        "metrics": [
+          "ate_m",
+          "rpe_m"
+        ],
+        "units": "meters"
+      },
+      "evaluated_goal_ids": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "downloads": {
+        "metrics": "assets/go2/route_03_clip_03/metrics.json",
+        "trajectories": "assets/go2/route_03_clip_03/trajectories.csv"
+      }
+    },
+    {
+      "id": "route_03_clip_05",
+      "episode": "episode_20261027T034722_7ee6d875",
+      "route_id": "route_03",
+      "title": "Sidewalk curve",
+      "title_zh": "步道弯转",
+      "duration_s": 22.0,
+      "start_time_s": 88.0,
+      "goal_interval_s": 1.0,
+      "video": "assets/go2/route_03_clip_05/comparison.mp4",
+      "poster": "assets/go2/route_03_clip_05/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.09727555193466092,
+          "rpe_m": 0.04084586667780085
+        },
+        "nwm": {
+          "ate_m": 0.08565911810757719,
+          "rpe_m": 0.037552058697685645
+        }
+      },
+      "metric_aggregation": {
+        "method": "arithmetic_mean_of_complete_local_plans",
+        "plan_count": 22,
+        "display": "constant_for_entire_clip",
+        "metrics": [
+          "ate_m",
+          "rpe_m"
+        ],
+        "units": "meters"
+      },
+      "evaluated_goal_ids": [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109
+      ],
+      "downloads": {
+        "metrics": "assets/go2/route_03_clip_05/metrics.json",
+        "trajectories": "assets/go2/route_03_clip_05/trajectories.csv"
       }
     },
     {
@@ -438,6 +750,138 @@
       "downloads": {
         "metrics": "assets/go2/route_04_clip_03/metrics.json",
         "trajectories": "assets/go2/route_04_clip_03/trajectories.csv"
+      }
+    },
+    {
+      "id": "route_04_clip_06",
+      "episode": "episode_20261027T041128_88e3cb76",
+      "route_id": "route_04",
+      "title": "Bright gallery walk",
+      "title_zh": "明亮展廊通行",
+      "duration_s": 28.0,
+      "start_time_s": 86.0,
+      "goal_interval_s": 1.0,
+      "video": "assets/go2/route_04_clip_06/comparison.mp4",
+      "poster": "assets/go2/route_04_clip_06/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.10690930689277488,
+          "rpe_m": 0.04378362276764534
+        },
+        "nwm": {
+          "ate_m": 0.10643245200502072,
+          "rpe_m": 0.04451608856828332
+        }
+      },
+      "metric_aggregation": {
+        "method": "arithmetic_mean_of_complete_local_plans",
+        "plan_count": 28,
+        "display": "constant_for_entire_clip",
+        "metrics": [
+          "ate_m",
+          "rpe_m"
+        ],
+        "units": "meters"
+      },
+      "evaluated_goal_ids": [
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113
+      ],
+      "downloads": {
+        "metrics": "assets/go2/route_04_clip_06/metrics.json",
+        "trajectories": "assets/go2/route_04_clip_06/trajectories.csv"
+      }
+    },
+    {
+      "id": "route_04_clip_07",
+      "episode": "episode_20261027T041128_88e3cb76",
+      "route_id": "route_04",
+      "title": "Gallery maneuver",
+      "title_zh": "展廊变向",
+      "duration_s": 28.0,
+      "start_time_s": 152.0,
+      "goal_interval_s": 1.0,
+      "video": "assets/go2/route_04_clip_07/comparison.mp4",
+      "poster": "assets/go2/route_04_clip_07/poster.webp",
+      "metrics": {
+        "opennwm": {
+          "ate_m": 0.14211880599557034,
+          "rpe_m": 0.053771915844145035
+        },
+        "nwm": {
+          "ate_m": 0.15111231675781722,
+          "rpe_m": 0.058087496880705546
+        }
+      },
+      "metric_aggregation": {
+        "method": "arithmetic_mean_of_complete_local_plans",
+        "plan_count": 28,
+        "display": "constant_for_entire_clip",
+        "metrics": [
+          "ate_m",
+          "rpe_m"
+        ],
+        "units": "meters"
+      },
+      "evaluated_goal_ids": [
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179
+      ],
+      "downloads": {
+        "metrics": "assets/go2/route_04_clip_07/metrics.json",
+        "trajectories": "assets/go2/route_04_clip_07/trajectories.csv"
       }
     },
     {
@@ -2462,7 +2906,7 @@
     }
   ],
   "selection": {
-    "criteria": "The 30 new clips from seven recordings were selected and frozen for scene diversity, camera visibility and complete pose coverage before inference, without filtering by model metrics. Eight previously displayed clips from four earlier recordings are retained; that historical selection used model-performance criteria. Every displayed video now shows constant arithmetic mean ATE/RPE over all complete local plans within that clip.",
-    "display_clip_count": 38
+    "criteria": "Thirty clips from seven newer recordings were selected and frozen for scene diversity, camera visibility and complete pose coverage before inference, without filtering by model metrics. Eight historical performance-curated clips are retained. Seven additional quality-approved historical clips were restored for scene/time coverage and available delivery capacity, without using model scores. These seven use existing evaluated results; they were not selected before inference. Every displayed video shows constant arithmetic mean ATE/RPE over all complete local plans within that clip.",
+    "display_clip_count": 45
   }
 }

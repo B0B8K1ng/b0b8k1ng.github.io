@@ -44,10 +44,6 @@ export function initResearch(paper, getLanguage) {
     </figure>`;
   }
 
-  function renderModelSizes(rows) {
-    return `<p class="result-parameters"><span>${t("Parameters (M)", "参数量（M）")}</span> ${rows.map((row) => `${escapeHTML(row.model)} ${Number.isFinite(row.params_m) ? row.params_m.toLocaleString("en-US") : "—"}`).join(" · ")}</p>`;
-  }
-
   function renderMethod() {
     if (!method) return;
     method.querySelector(".method-figure-link").setAttribute("aria-label", t(
@@ -65,19 +61,17 @@ export function initResearch(paper, getLanguage) {
     const prediction = paper.results.direct_prediction;
     const navigation = paper.results.navigation;
     results.innerHTML = `<section class="result-family" aria-labelledby="prediction-results-title">
-      <div class="result-family-heading"><h3 id="prediction-results-title">${t("Future prediction", "未来预测")}</h3><span>${t("Table 1 · 4 s", "表 1 · 4 秒")}</span></div>
+      <div class="result-family-heading"><h3 id="prediction-results-title">${t("Future prediction", "未来预测")}</h3><span>${t("4 s", "4 秒")}</span></div>
       <div class="result-group-heading">${t("In-domain", "域内")}</div>
       <div class="result-chart-grid">${columns.slice(0, 3).map((metric) => renderChart(prediction.rows, metric, 3, 1)).join("")}</div>
       <div class="result-group-heading">${t("Out-of-domain", "域外")}<span>PSNR (dB) ↑</span></div>
       <div class="result-chart-grid result-chart-grid-four">${columns.slice(3).map((metric) => renderChart(prediction.rows, metric, 3, 1)).join("")}</div>
       <p class="results-chart-note">${t("In-domain", "域内")}: ${escapeHTML(prediction.id_datasets.join(" · "))}. NWM†: CDiT-XL + Ego4D.</p>
-      ${renderModelSizes(prediction.rows)}
     </section>
     <section class="result-family" aria-labelledby="navigation-results-title">
-      <div class="result-family-heading"><h3 id="navigation-results-title">${t("Navigation", "导航")}</h3><span>${t("Table 2", "表 2")}</span></div>
+      <div class="result-family-heading"><h3 id="navigation-results-title">${t("Navigation", "导航")}</h3></div>
       ${["ate", "rpe"].map((metric) => `<div class="result-group-heading">${metric.toUpperCase()} (m) ↓<span>${t("Lower is better", "越低越好")}</span></div>
       <div class="result-chart-grid">${navigationDatasets.map(({ key, label }) => renderChart(navigation.rows, { key: `${key}_${metric}`, label, direction: "lower", maximum: metric === "ate" ? 3.5 : 0.8 }, 2, 2)).join("")}</div>`).join("")}
-      ${renderModelSizes(navigation.rows)}
     </section>
     <p class="results-ranking-note"><span class="results-color-key">OpenNWM</span><span>${t("Bold: best · Underlined: second best · — not reported", "粗体：最优 · 下划线：次优 · — 未报告")}</span></p>`;
   }
