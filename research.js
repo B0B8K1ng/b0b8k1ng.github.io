@@ -42,8 +42,8 @@ export function initResearch(paper) {
   function renderMethod() {
     if (!method) return;
     method.querySelector(".method-figure-link").setAttribute("aria-label",
-      "Open Figure 1, overview of OpenNWM, at full resolution");
-    method.querySelector("img").alt = "Figure 1. OpenNWM learns from diverse action-free navigation videos through latent action pretraining, enabling generalizable prediction and planning.";
+      "Open Figure 2, the OpenNWM model architecture, at full resolution");
+    method.querySelector("img").alt = "Figure 2. OpenNWM model architecture: navigation observations and latent actions condition the diffusion transformer to predict future frames.";
   }
 
   function renderMainResults() {
