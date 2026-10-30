@@ -60,17 +60,24 @@ Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 
 `content/media-delivery.json` 指定经过校验的 ModelScope 媒体镜像，当前固定版本为：
 
 ```text
-https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v5/
+https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v6/
 ```
 
 镜像保持 `assets/...` 路径，文件与网站副本逐字节相同，支持视频 Range 请求和
 跨域加载。`media-delivery.js` 在配置缺失时使用本站路径，并在单个镜像资源失败时
-回退到本站副本；本次页面访问会记住失败 URL，滚回视频时不会重新请求同一失败镜像。源素材和本站文件没有被替换为低清版本；论文主图另有像素完全一致
-的无损 WebP，原 PNG 保留供下载。公开校验清单为镜像根目录的 `media-manifest.json`。
+回退到本站副本或固定提交的同字节源码归档；本次页面访问会记住失败 URL，滚回视频时不会重新请求同一失败镜像。
+源素材和本站文件没有被替换为低清版本。页面当前展示 Figure 2 结构图的深色 SVG，背景与页面一致。
+公开校验清单为镜像根目录的 `media-manifest.json`。
 该版本包含当前展示的 44 个真机片段、19 个重新定时的数据集视频以及月球/火星曲线素材，
 576 个文件的远端大小与 SHA256 均已校验。小 MP4 也通过 LFS 分发，保持原始字节，
 使数据集、真机和月球/火星视频都支持标准 HTTP 206 首段与尾段请求。
-`localAssetPrefixes` 为空；本站保留相同原文件供失败回退使用。
+`localAssetPrefixes` 为空。Garden paths 和 Autumn grove 的 8 段视频使用原始 CRF18
+母版，移除了 CRF23 网页二次压缩，保持 1080p、24 fps、时长及预测内容。
+为控制 Pages 站点体积，这 8 段视频的同画质备用源由固定 Git 提交的源码归档提供
+（`content/go2.json` 中的 `fallback_video`）；其他资源保留本站副本。
+这 8 段母版以 4 秒为自动播放启动缓冲目标；浏览器停止预加载或准备超过 10 秒且
+已有可播放帧时允许启动。`media-cache-worker.js` 在流式播放的同时保存完整原始字节，
+后续循环的 Range 请求复用本地缓存。缓存不可用时继续普通网络播放；不重新编码视频。
 
 ## 本地预览与部署
 

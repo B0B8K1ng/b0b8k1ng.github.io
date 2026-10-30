@@ -1,7 +1,9 @@
-import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030-v2";
+import { registerMedia } from "./media-scheduler.js?v=texture-master-20261030-v6";
+import { registerMediaFallback } from "./media-delivery.js?v=texture-master-20261030-v6";
+import { initMediaCache } from "./media-cache.js?v=texture-master-20261030-v6";
 
 const root = document.querySelector("#go2-navigation");
-const revision = "scene-grid-20261030";
+const revision = "texture-master-20261030-v6";
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[character]);
@@ -32,6 +34,7 @@ function groupRoutes(manifest, clips) {
 
 async function init() {
   if (!root) return;
+  const cacheReady = initMediaCache();
   const response = await fetch(`content/go2.json?v=${revision}`);
   if (!response.ok) throw new Error(`Go2 comparison: HTTP ${response.status}`);
   const manifest = await response.json();
@@ -47,6 +50,7 @@ async function init() {
     </section>`).join("")}</div>`;
   root.hidden = false;
 
+  await cacheReady;
   const cards = root.querySelectorAll(".go2-clip");
   routes.flatMap((route) => route.clips).forEach((clip, index) => {
     const card = cards[index];
@@ -55,12 +59,15 @@ async function init() {
     video.muted = video.defaultMuted = true;
     video.controls = false;
     video.loop = video.playsInline = true;
+    if (clip.fallback_video) video.crossOrigin = "anonymous";
+    registerMediaFallback(mediaAsset(clip.video), clip.fallback_video);
     video.addEventListener("playing", () => { error.hidden = true; });
     video.addEventListener("error", () => { error.hidden = false; });
     registerMedia({
       element: card.querySelector(".go2-screen"),
       videos: [video], sources: [mediaAsset(clip.video)], posters: [mediaAsset(clip.poster)],
       cost: 3, priority: 1,
+      startupBufferSeconds: clip.fallback_video ? 4 : 0,
     });
   });
 }

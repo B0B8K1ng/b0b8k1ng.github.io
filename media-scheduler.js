@@ -1,4 +1,4 @@
-import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030-v2";
+import { setMediaUrl } from "./media-delivery.js?v=texture-master-20261030-v6";
 
 // Share network and decoder capacity across the entire page. Media bytes and
 // playback cadence are unchanged; only their lifetime follows the viewport.
@@ -58,12 +58,31 @@ function tryPlay(entry) {
   if (!entry.active || document.hidden || entry.onPlay) return;
   entry.videos.forEach((video) => {
     if (!video.paused || entry.attempts.has(video)) return;
+    if (entry.startupBufferSeconds > 0) {
+      if (video.readyState < 3 || video.seeking) return;
+      // A short cushion absorbs download jitter without changing video quality.
+      // Preload is a browser hint, so allow playback if it stops fetching or
+      // has already spent ten seconds preparing playable frames.
+      if (!hasVideoBuffer(video, entry.startupBufferSeconds)
+        && video.networkState !== 1 && performance.now() < entry.startupDeadline) return;
+    }
     entry.attempts.add(video);
     Promise.resolve(video.play()).catch(() => {}).finally(() => entry.attempts.delete(video));
   });
 }
 
+function resetStartup(entry) {
+  clearTimeout(entry.startupTimer);
+  entry.startupTimer = null;
+  if (entry.startupBufferSeconds > 0) {
+    entry.startupDeadline = performance.now() + 10000;
+    entry.startupTimer = setTimeout(queueUpdate, 10000);
+  }
+}
+
 function deactivate(entry) {
+  clearTimeout(entry.startupTimer);
+  entry.startupTimer = null;
   if (entry.active) {
     entry.active = false;
     entry.onPause?.();
@@ -88,15 +107,17 @@ function release(entry) {
   entry.resumePending = true;
 }
 
+function hasVideoBuffer(video, seconds) {
+  if (video.readyState < 3) return false;
+  const target = Math.min(video.currentTime + seconds, video.duration - .025);
+  for (let index = 0; index < video.buffered.length; index++) {
+    if (video.buffered.start(index) <= video.currentTime + .025 && video.buffered.end(index) >= target) return true;
+  }
+  return false;
+}
+
 function hasPlaybackBuffer(entry) {
-  return entry.videos.every((video) => {
-    if (video.readyState < 3) return false;
-    const target = Math.min(video.currentTime + 2, video.duration - .025);
-    for (let index = 0; index < video.buffered.length; index++) {
-      if (video.buffered.start(index) <= video.currentTime + .025 && video.buffered.end(index) >= target) return true;
-    }
-    return false;
-  });
+  return entry.videos.every((video) => hasVideoBuffer(video, Math.max(2, entry.startupBufferSeconds)));
 }
 
 function rank(entry) {
@@ -131,6 +152,7 @@ function reconcile() {
       prepare(entry);
       if (!entry.active) {
         entry.active = true;
+        resetStartup(entry);
         entry.onPlay?.(entry.videos.map((video, index) => !entry.resumePending && video.readyState ? video.currentTime : entry.resumeTimes[index]));
         entry.resumePending = false;
       }
@@ -150,9 +172,10 @@ function reconcile() {
 
 /** Register one video or a synchronized group; callbacks own paired playback. */
 export function registerMedia({ element, videos, sources, posters, priority = 0,
-  cost = videos.length, onPlay, onPause }) {
+  cost = videos.length, startupBufferSeconds = 0, onPlay, onPause }) {
   const entry = {
-    element, videos, priority, cost, onPlay, onPause,
+    element, videos, priority, cost, startupBufferSeconds, onPlay, onPause,
+    startupDeadline: 0, startupTimer: null,
     sources: sources || videos.map((video) => video.dataset.src || video.dataset.source || video.getAttribute("src") || ""),
     posters: posters || videos.map((video) => video.dataset.poster || video.getAttribute("poster") || ""),
     visible: false, near: false, ratio: 0, active: false,
@@ -174,6 +197,7 @@ export function registerMedia({ element, videos, sources, posters, priority = 0,
     const ready = () => { tryPlay(entry); queueUpdate(); };
     const fallback = () => {
       if (!entry.active) return;
+      resetStartup(entry);
       entry.onPause?.();
       entry.onPlay?.(entry.resumeTimes.slice());
       ready();
@@ -187,6 +211,9 @@ export function registerMedia({ element, videos, sources, posters, priority = 0,
       ready();
     };
     video.addEventListener("canplay", ready);
+    video.addEventListener("loadeddata", ready);
+    video.addEventListener("seeked", ready);
+    video.addEventListener("suspend", ready);
     video.addEventListener("progress", queueUpdate);
     video.addEventListener("waiting", queueUpdate);
     video.addEventListener("mediafallback", fallback);
@@ -194,6 +221,9 @@ export function registerMedia({ element, videos, sources, posters, priority = 0,
     video.addEventListener("loadedmetadata", restore);
     handlers.push(() => {
       video.removeEventListener("canplay", ready);
+      video.removeEventListener("loadeddata", ready);
+      video.removeEventListener("seeked", ready);
+      video.removeEventListener("suspend", ready);
       video.removeEventListener("progress", queueUpdate);
       video.removeEventListener("waiting", queueUpdate);
       video.removeEventListener("mediafallback", fallback);

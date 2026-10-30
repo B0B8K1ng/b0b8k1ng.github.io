@@ -1,4 +1,4 @@
-import { registerMedia } from "./media-scheduler.js?v=smooth-media-20261030-v2";
+import { registerMedia } from "./media-scheduler.js?v=texture-master-20261030-v6";
 
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
