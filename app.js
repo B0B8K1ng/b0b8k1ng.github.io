@@ -1,7 +1,7 @@
 import { registerMedia } from "./media-scheduler.js?v=go2-routes-v3-20261030";
 import { setMediaUrl } from "./media-delivery.js?v=go2-routes-v3-20261030";
-import { initResearch } from "./research.js?v=site-refresh-20261029-v2";
-import { initMotionGallery } from "./motion-gallery.js?v=go2-routes-v3-20261030";
+import { initResearch } from "./research.js?v=site-refinement-20261030";
+import { initMotionGallery } from "./motion-gallery.js?v=site-refinement-20261030";
 import { initNavigation } from "./navigation.js?v=go2-routes-v3-20261030";
 import { initCinematic } from "./cinematic.js?v=go2-routes-v3-20261030";
 import { initPlayground } from "./playground.js?v=go2-routes-v3-20261030";

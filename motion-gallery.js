@@ -203,8 +203,8 @@ export function initMotionGallery(demos, getLanguage) {
   function render() {
     if (lunarFootnote) {
       lunarFootnote.textContent = t(
-        "Moon 7–9 are LuSNAR simulation scene IDs. OpenNWM was fine-tuned for 1,000 updates on 30 clips (480 target pairs) from Moon 1–5; Moon 6 was used for validation and Moon 7–9 only for testing. Actions are planar displacement and yaw from simulator ground-truth poses. Each clip predicts 16 future views from four observed frames. These turning clips were selected by ground-truth motion before inference, using the same fine-tuned model.",
-        "Moon 7–9 是 LuSNAR 的仿真场景编号。OpenNWM 使用 Moon 1–5 的 30 个片段（480 个目标对）微调 1,000 步；Moon 6 用于验证，Moon 7–9 仅用于测试。动作由仿真真值位姿的平面位移和转角计算；每次以 4 帧观察直接预测未来 16 帧。本次转弯片段在推理前按真实运动选定，沿用同一微调模型。",
+        "LuSNAR simulation: fine-tuned on scenes Moon 1–5, validated on Moon 6, and tested only on Moon 7–9.",
+        "LuSNAR 仿真：Moon 1–5 用于微调、Moon 6 用于验证，Moon 7–9 仅用于测试。",
       );
       const method = document.createElement("a");
       method.href = "content/LUNAR_CURVES_20261029_VALIDATION.md";
@@ -213,8 +213,8 @@ export function initMotionGallery(demos, getLanguage) {
     }
     if (marsFootnote) {
       marsFootnote.textContent = t(
-        "MarsLab crater and Perseverance assets run through an Isaac Sim 4.1 adapter with simplified lighting. Actions come from simulator ground-truth body poses, with RGB recorded at 4 Hz. Fine-tuning uses 30 clips (480 target pairs) from six trajectories for 1,000 updates; one trajectory is used for validation and three only for testing. The displayed left, right and S turns were fixed before training. All trajectories share one terrain. Four observed frames predict 16 future views; playback is 1× simulation time.",
-        "使用 MarsLab 火星陨坑与毅力号资产，经 Isaac Sim 4.1 适配器和简化光照进行物理仿真。动作由仿真真值位姿计算，画面按 4 Hz 同步记录。使用 6 条训练轨迹的 30 个片段（480 个目标对）微调 1,000 步；1 条轨迹用于验证，3 条仅用于测试。展示的左弯、右弯和 S 弯在训练前固定。所有轨迹位于同一地形，不代表跨场景泛化。每次以 4 帧观察预测未来 16 帧，按 1× 仿真时间播放。",
+        "MarsLab simulation: fine-tuned on six trajectories, validated on one, and tested on three held-out trajectories. All share one terrain; cross-terrain generalization is not evaluated.",
+        "MarsLab 仿真：6 条轨迹用于微调、1 条用于验证、3 条仅用于测试；均在同一地形，未评估跨地形泛化。",
       );
       const source = document.createElement("a");
       source.href = "https://github.com/kimhoyun-robotair/MarsLab";

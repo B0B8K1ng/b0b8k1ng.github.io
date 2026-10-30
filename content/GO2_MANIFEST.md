@@ -1,18 +1,18 @@
 # Go2 navigation gallery
 
 `go2.js` reads `content/go2.json`, which is authoritative for the published
-selection and readiness. The expanded selection contains **38 clips from 11
-recordings**: eight retained clips from four earlier recordings and 30 additional
-clips from seven recordings. The additions contain five, five, four, four, four,
-four and four clips respectively. Publish the expansion with `status: "ready"`
+selection and readiness. The expanded selection contains **45 clips from 11
+recordings**: eight retained clips and seven restored clips from four earlier
+recordings, plus 30 clips from seven newer recordings. The first four rows contain
+four, three, four and four clips; the remaining rows contain five, five, four, four,
+four, four and four clips. Publish the expansion with `status: "ready"`
 only after its media and measured results have passed validation.
 
 Each recording has its own row, title, clip count and independent navigation.
-Desktop shows two clips at a time; phones show one. Previous/next buttons change
-the visible clips, and one dot per clip shows the full count, highlights the
-visible selection and lets the viewer jump directly to a clip. An odd final
-pair overlaps the preceding pair so desktop retains two visible clips. Keyboard
-arrows and Home/End also navigate the focused row. The gallery follows the paper
+Desktop shows two clips at a time; phones show one. Previous/next buttons and
+keyboard arrows advance by one clip. One dot per clip shows the full count,
+highlights the visible selection and lets the viewer jump directly to a clip.
+Home/End jump to the first/last visible selection in the focused row. The gallery follows the paper
 overview and main results, before Visualization.
 
 ## Selection and protocol
@@ -30,9 +30,16 @@ archive contains 40 quality-approved clips; two per recording were selected
 across corridors, a lobby, a cafe, woodland and courtyards. These eight were
 chosen after measuring model performance and each had more than 13% lower ATE
 and RPE for OpenNWM than NWM. They remain curated qualitative comparisons, not
-an independent benchmark. Do not claim that the full 38-clip selection was
+an independent benchmark. Do not claim that the full 45-clip selection was
 frozen before inference or chosen independently of model performance. The
 paper's aggregate scores remain unchanged.
+
+The **seven restored clips** use existing results from that same quality-approved
+40-clip archive. They were added for scene and time coverage, with delivery size
+as a constraint; model scores were not used to choose them. Their evaluation
+already existed, so they are not a pre-inference selection. All four earlier
+recordings now have at least three clips. Original sources and model predictions
+are retained; their score panels use the current whole-clip mean protocol.
 
 Selected clips are approximately 20–30 seconds. Both models use the same
 one-second local planning horizon, recorded starting contexts, goals and CEM
@@ -101,8 +108,8 @@ Example field structure; actual metric values belong to the reviewed results:
   "report": "assets/go2/report.json",
   "selection": {
     "kind": "qualitative comparisons with documented selection history",
-    "display_clip_count": 38,
-    "criteria": "Document the pre-inference additions and historical performance-curated subset separately."
+    "display_clip_count": 45,
+    "criteria": "Document the pre-inference additions, historical performance-curated subset and restored archive clips separately."
   }
 }
 ```
@@ -136,7 +143,7 @@ HDR sources are tone-mapped for ordinary SDR browsers. All delivered films have
 looping autoplay without playback controls or click-to-pause handlers.
 
 The shared `media-scheduler.js` loads nearby clips, plays visible clips and
-releases distant transfers/decoders. Selecting another pair replaces the two
+releases distant transfers/decoders. Advancing the row replaces the two
 existing video slots rather than adding decoders for every clip. On phones the
 hidden second slot is unregistered and its media source is released. Playback
 resumes when the gallery returns to view. Browser autoplay restrictions still

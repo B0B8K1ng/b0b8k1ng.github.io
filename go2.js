@@ -1,7 +1,7 @@
 import { registerMedia } from "./media-scheduler.js?v=go2-routes-v3-20261030";
 
 const root = document.querySelector("#go2-navigation");
-const revision = "go2-routes-v3-20261030";
+const revision = "site-refinement-20261030";
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[character]);
@@ -88,8 +88,8 @@ async function init() {
       `Showing ${state.start + 1}${end > state.start + 1 ? `–${end}` : ""} of ${total} clips`,
       `正在显示第 ${state.start + 1}${end > state.start + 1 ? `–${end}` : ""} 个片段，共 ${total} 个`,
     );
-    state.previous.setAttribute("aria-label", t(`Previous clips: ${title}`, `${title}：上一组片段`));
-    state.next.setAttribute("aria-label", t(`Next clips: ${title}`, `${title}：下一组片段`));
+    state.previous.setAttribute("aria-label", t(`Previous clip: ${title}`, `${title}：上一个片段`));
+    state.next.setAttribute("aria-label", t(`Next clip: ${title}`, `${title}：下一个片段`));
     state.dots.forEach((dot, index) => {
       const clipTitle = localized(state.route.clips[index], "title") || state.route.clips[index].id;
       dot.setAttribute("aria-label", t(`Show clip ${index + 1} of ${total}: ${clipTitle}`, `显示第 ${index + 1} 个片段，共 ${total} 个：${clipTitle}`));
@@ -139,11 +139,11 @@ async function init() {
   }
 
   states.forEach((state) => {
-    state.previous.addEventListener("click", () => showClips(state, state.start - visibleCount()));
-    state.next.addEventListener("click", () => showClips(state, state.start + visibleCount()));
+    state.previous.addEventListener("click", () => showClips(state, state.start - 1));
+    state.next.addEventListener("click", () => showClips(state, state.start + 1));
     state.dots.forEach((dot, index) => dot.addEventListener("click", () => showClips(state, index)));
     state.element.querySelector(".go2-navigation").addEventListener("keydown", (event) => {
-      const targets = { ArrowLeft: state.start - visibleCount(), ArrowRight: state.start + visibleCount(), Home: 0, End: lastStart(state) };
+      const targets = { ArrowLeft: state.start - 1, ArrowRight: state.start + 1, Home: 0, End: lastStart(state) };
       if (!(event.key in targets)) return;
       event.preventDefault();
       showClips(state, targets[event.key]);
