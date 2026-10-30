@@ -3952,8 +3952,8 @@
         "The SE(2) action interface discards vertical motion, pitch, and roll.",
         "MarsLab scene and rover assets are run with a minimal Isaac Sim 4.1 recorder, not the complete official Isaac Sim 5.x application."
       ],
-      "note": "Held-out curved trajectories on the same terrain; realized PhysX poses condition each prediction. Fine-tuned on 30 clips for 1,000 updates; 1× simulation time.",
-      "noteZh": "同一地形上未参与训练的弯曲轨迹，使用 PhysX 实际位姿作为动作；30 个片段微调 1,000 步，按 1× 仿真时间播放。",
+      "note": "Actions from simulator poses; playback at 1× simulation speed.",
+      "noteZh": "动作来自仿真位姿；按 1× 仿真速度播放。",
       "training": {
         "steps": 1000,
         "windows": 30,
@@ -4115,8 +4115,8 @@
         "The SE(2) action interface discards vertical motion, pitch, and roll.",
         "MarsLab scene and rover assets are run with a minimal Isaac Sim 4.1 recorder, not the complete official Isaac Sim 5.x application."
       ],
-      "note": "Held-out curved trajectories on the same terrain; realized PhysX poses condition each prediction. Fine-tuned on 30 clips for 1,000 updates; 1× simulation time.",
-      "noteZh": "同一地形上未参与训练的弯曲轨迹，使用 PhysX 实际位姿作为动作；30 个片段微调 1,000 步，按 1× 仿真时间播放。",
+      "note": "Actions from simulator poses; playback at 1× simulation speed.",
+      "noteZh": "动作来自仿真位姿；按 1× 仿真速度播放。",
       "training": {
         "steps": 1000,
         "windows": 30,
@@ -4278,8 +4278,8 @@
         "The SE(2) action interface discards vertical motion, pitch, and roll.",
         "MarsLab scene and rover assets are run with a minimal Isaac Sim 4.1 recorder, not the complete official Isaac Sim 5.x application."
       ],
-      "note": "Held-out curved trajectories on the same terrain; realized PhysX poses condition each prediction. Fine-tuned on 30 clips for 1,000 updates; 1× simulation time.",
-      "noteZh": "同一地形上未参与训练的弯曲轨迹，使用 PhysX 实际位姿作为动作；30 个片段微调 1,000 步，按 1× 仿真时间播放。",
+      "note": "Actions from simulator poses; playback at 1× simulation speed.",
+      "noteZh": "动作来自仿真位姿；按 1× 仿真速度播放。",
       "training": {
         "steps": 1000,
         "windows": 30,
