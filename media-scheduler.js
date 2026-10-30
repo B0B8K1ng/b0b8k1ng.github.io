@@ -1,11 +1,11 @@
-import { setMediaUrl } from "./media-delivery.js?v=go2-routes-v3-20261030";
+import { setMediaUrl } from "./media-delivery.js?v=smooth-media-20261030";
 
 // Share network and decoder capacity across the entire page. Media bytes and
 // playback cadence are unchanged; only their lifetime follows the viewport.
 const entries = new Set();
 const byElement = new WeakMap();
 let pending = false;
-const nearMargin = 320;
+const nearMargin = 600;
 const maxPreloads = 2;
 const releaseDelay = 1500;
 
@@ -40,12 +40,12 @@ function showPosters(entry) {
   });
 }
 
-function prepare(entry, playing) {
+function prepare(entry, preload = "auto") {
   clearTimeout(entry.releaseTimer);
   entry.releaseTimer = null;
   showPosters(entry);
   entry.videos.forEach((video, index) => {
-    video.preload = playing ? "auto" : "metadata";
+    if (video.preload !== preload) video.preload = preload;
     if (!video.getAttribute("src") && entry.sources[index]) {
       setMediaUrl(video, "src", entry.sources[index]);
       video.load();
@@ -68,7 +68,7 @@ function deactivate(entry) {
     entry.active = false;
     entry.onPause?.();
   }
-  entry.videos.forEach((video) => { video.pause(); video.preload = "none"; });
+  entry.videos.forEach((video) => { if (!video.paused) video.pause(); });
 }
 
 function release(entry) {
@@ -77,11 +77,26 @@ function release(entry) {
   if (!entry.prepared) return;
   deactivate(entry);
   entry.videos.forEach((video, index) => {
-    if (Number.isFinite(video.currentTime)) entry.resumeTimes[index] = video.currentTime;
+    if (video.readyState && !entry.resumePending && Number.isFinite(video.currentTime)) {
+      entry.resumeTimes[index] = video.currentTime;
+    }
+    video.preload = "none";
     video.removeAttribute("src");
     video.load(); // Abort unused transfers and release offscreen decoders.
   });
   entry.prepared = false;
+  entry.resumePending = true;
+}
+
+function hasPlaybackBuffer(entry) {
+  return entry.videos.every((video) => {
+    if (video.readyState < 3) return false;
+    const target = Math.min(video.currentTime + 2, video.duration - .025);
+    for (let index = 0; index < video.buffered.length; index++) {
+      if (video.buffered.start(index) <= video.currentTime + .025 && video.buffered.end(index) >= target) return true;
+    }
+    return false;
+  });
 }
 
 function rank(entry) {
@@ -94,7 +109,8 @@ function reconcile() {
   const candidates = [...entries].filter((entry) => entry.element.isConnected);
   const active = new Set();
   // Small previews are inexpensive; large compositions can reserve extra slots.
-  let capacity = matchMedia("(max-width: 680px)").matches ? 8 : 16;
+  const mobile = matchMedia("(max-width: 680px)").matches;
+  let capacity = mobile ? 8 : 16;
   if (!document.hidden) {
     for (const entry of candidates.filter((entry) => entry.visible).sort((a, b) => rank(b) - rank(a))) {
       if (entry.cost > capacity && active.size) continue;
@@ -104,22 +120,29 @@ function reconcile() {
   }
   const preload = new Set(document.hidden ? [] : candidates
     .filter((entry) => entry.near && !active.has(entry))
-    .sort((a, b) => rank(b) - rank(a)).slice(0, maxPreloads));
+    .sort((a, b) => rank(b) - rank(a)).slice(0, mobile ? 1 : maxPreloads));
+  // Buffer nearby frames only after visible videos have a playback cushion.
+  // The bounded queue keeps large offscreen clips from starving playback.
+  const warmPreload = [...active].every(hasPlaybackBuffer) ? "auto" : "metadata";
 
   for (const entry of candidates) {
     if (entry.near && !document.hidden) showPosters(entry);
     if (active.has(entry)) {
-      prepare(entry, true);
+      prepare(entry);
       if (!entry.active) {
         entry.active = true;
-        entry.onPlay?.(entry.videos.map((video, index) => video.readyState ? video.currentTime : entry.resumeTimes[index]));
+        entry.onPlay?.(entry.videos.map((video, index) => !entry.resumePending && video.readyState ? video.currentTime : entry.resumeTimes[index]));
+        entry.resumePending = false;
       }
       tryPlay(entry);
     } else {
       deactivate(entry);
-      if (preload.has(entry)) prepare(entry, false);
-      else if (entry.prepared && !entry.releaseTimer) {
-        entry.releaseTimer = setTimeout(() => { release(entry); }, releaseDelay);
+      if (preload.has(entry)) prepare(entry, warmPreload);
+      else {
+        entry.videos.forEach((video) => { video.preload = "none"; });
+        if (entry.prepared && !entry.releaseTimer) {
+          entry.releaseTimer = setTimeout(() => { release(entry); }, releaseDelay);
+        }
       }
     }
   }
@@ -135,6 +158,7 @@ export function registerMedia({ element, videos, sources, posters, priority = 0,
     visible: false, near: false, ratio: 0, active: false,
     prepared: videos.some((video) => video.hasAttribute("src")),
     resumeTimes: videos.map((video) => video.currentTime || 0),
+    resumePending: false,
     attempts: new WeakSet(), releaseTimer: null,
   };
   const handlers = [];
@@ -147,7 +171,7 @@ export function registerMedia({ element, videos, sources, posters, priority = 0,
     video.controls = false;
     if (video.hasAttribute("src")) setMediaUrl(video, "src", entry.sources[index]);
     if (video.hasAttribute("poster")) setMediaUrl(video, "poster", entry.posters[index]);
-    const ready = () => tryPlay(entry);
+    const ready = () => { tryPlay(entry); queueUpdate(); };
     const fallback = () => {
       if (!entry.active) return;
       entry.onPause?.();
@@ -163,11 +187,15 @@ export function registerMedia({ element, videos, sources, posters, priority = 0,
       ready();
     };
     video.addEventListener("canplay", ready);
+    video.addEventListener("progress", queueUpdate);
+    video.addEventListener("waiting", queueUpdate);
     video.addEventListener("mediafallback", fallback);
     video.addEventListener("play", guard);
     video.addEventListener("loadedmetadata", restore);
     handlers.push(() => {
       video.removeEventListener("canplay", ready);
+      video.removeEventListener("progress", queueUpdate);
+      video.removeEventListener("waiting", queueUpdate);
       video.removeEventListener("mediafallback", fallback);
       video.removeEventListener("play", guard);
       video.removeEventListener("loadedmetadata", restore);

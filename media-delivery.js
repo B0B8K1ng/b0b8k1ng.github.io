@@ -2,10 +2,13 @@
 // keeps ordinary relative URLs working for local previews and static hosting.
 let assetBase = "";
 let localAssetPrefixes = [];
+// A failed mirror stays on the original host for this page visit, including
+// after offscreen videos release their src or another element uses the asset.
+const failedMirrors = new Set();
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 3000);
 try {
-  const response = await fetch("content/media-delivery.json?v=go2-routes-v3-20261030", { signal: controller.signal });
+  const response = await fetch("content/media-delivery.json?v=smooth-media-20261030", { signal: controller.signal });
   if (response.ok) {
     const config = await response.json();
     if (Array.isArray(config.localAssetPrefixes)) {
@@ -46,7 +49,9 @@ export function mediaUrl(source) {
   if (relative !== null && localAssetPrefixes.some((prefix) => relative.startsWith(prefix))) {
     return originalMediaUrl(source);
   }
-  return assetBase && relative !== null ? new URL(`assets/${relative}`, assetBase).href : source;
+  const delivered = assetBase && relative !== null ? new URL(`assets/${relative}`, assetBase).href : source;
+  return delivered && failedMirrors.has(new URL(delivered, document.baseURI).href)
+    ? originalMediaUrl(source) : delivered;
 }
 
 export function originalMediaUrl(source) {
@@ -59,6 +64,9 @@ const records = new WeakMap();
 function useLocalSource(element, record) {
   if (!record || record.fallback || !record.mirrored) return;
   record.fallback = true;
+  failedMirrors.add(new URL(record.delivered, document.baseURI).href);
+  const current = element.getAttribute("src");
+  if (current && new URL(current, document.baseURI).href === record.local) return;
   element.setAttribute("src", record.local);
   if (element instanceof HTMLVideoElement) {
     element.load();
@@ -78,24 +86,30 @@ export function setMediaUrl(element, attribute, source) {
     element.addEventListener("error", () => useLocalSource(element, attributes.get("src")));
   }
   const mirrored = new URL(delivered, document.baseURI).href !== new URL(local, document.baseURI).href;
-  const record = { local, delivered, mirrored, fallback: false };
+  const previous = attributes.get(attribute);
+  const record = previous?.local === local && previous.delivered === delivered
+    ? previous : { local, delivered, mirrored, fallback: false, posterProbe: false };
   attributes.set(attribute, record);
   const current = element.getAttribute(attribute);
-  if (!current || new URL(current, document.baseURI).href !== new URL(delivered, document.baseURI).href) {
+  const unchanged = current && new URL(current, document.baseURI).href === new URL(delivered, document.baseURI).href;
+  if (!unchanged) {
     element.setAttribute(attribute, delivered);
   }
   // The hero starts from HTML before modules arrive. Catch an earlier failure
   // as well as future error events without restarting a healthy initial load.
-  if (attribute === "src" && mirrored && (
+  // An error left by an older src does not describe a newly selected resource.
+  if (attribute === "src" && mirrored && unchanged && (
     (element instanceof HTMLVideoElement && element.error) ||
     (element instanceof HTMLImageElement && element.complete && !element.naturalWidth)
   )) useLocalSource(element, record);
   // Poster failures do not produce a video error event. The browser shares this
   // image request/cache entry with the poster; the probe supplies its error hook.
-  if (attribute === "poster" && mirrored) {
+  if (attribute === "poster" && mirrored && !record.posterProbe) {
+    record.posterProbe = true;
     const probe = new Image();
     probe.decoding = "async";
     probe.onerror = () => {
+      failedMirrors.add(new URL(delivered, document.baseURI).href);
       if (attributes.get(attribute) === record) element.setAttribute(attribute, local);
     };
     probe.src = delivered;

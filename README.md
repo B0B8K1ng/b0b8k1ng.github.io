@@ -50,8 +50,9 @@ Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 
 
 影片、真机和数据集视频静音自动播放，不提供开始/暂停按钮；首页保留进度展示。
 浏览器仍决定自动播放资格。`media-scheduler.js` 统一调度可见视频及同步视频组，
-只预载少量邻近内容，离屏或隐藏标签页时暂停并释放不需要的传输和解码资源，回到
-可见区域自动恢复。它不降低视频分辨率、码率或帧率。
+优先加载可见画面；当前视频有约 2 秒缓冲后，桌面最多为两个邻近项目、手机最多为一个
+邻近项目预缓冲视频帧。离屏或隐藏标签页时暂停并释放不需要的传输和解码资源，回到
+可见区域恢复进度，包括同步视频组。它不降低视频分辨率、码率或帧率。
 
 数据集预览保留现有视频与实际播放参数，页面不显示视频速度、帧率或时间依据标注。
 各来源的采样时间和导出参数仍保留在 `content/datasets.json` 中用于溯源。
@@ -59,16 +60,17 @@ Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 
 `content/media-delivery.json` 指定经过校验的 ModelScope 媒体镜像，当前固定版本为：
 
 ```text
-https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261029-v3/
+https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v4/
 ```
 
 镜像保持 `assets/...` 路径，文件与网站副本逐字节相同，支持视频 Range 请求和
 跨域加载。`media-delivery.js` 在配置缺失时使用本站路径，并在单个镜像资源失败时
-回退到本站副本。源素材和本站文件没有被替换为低清版本；论文主图另有像素完全一致
+回退到本站副本；本次页面访问会记住失败 URL，滚回视频时不会重新请求同一失败镜像。源素材和本站文件没有被替换为低清版本；论文主图另有像素完全一致
 的无损 WebP，原 PNG 保留供下载。公开校验清单为镜像根目录的 `media-manifest.json`。
-重新定时的数据集视频和新火星素材尚未收录于该固定镜像；`localAssetPrefixes` 将
-`assets/datasets/`、`assets/space/lusnar-curved-20261029/`、`assets/space/marslab-curves-20261029/`、
-`assets/go2/` 和保留的 MarsLab / SynMars 历史素材直接指向本站。
+该版本包含当前展示的 44 个真机片段、19 个重新定时的数据集视频以及月球/火星曲线素材，
+576 个文件的远端大小与 SHA256 均已校验。44 个真机主视频使用支持 HTTP 206 的镜像。
+镜像对部分小文件返回不规范的 Range 状态，因此 `localAssetPrefixes` 仍将 datasets/
+以及四个新/历史月火星素材目录指向支持标准分段响应的本站。本站保留相同原文件供失败回退使用。
 
 ## 本地预览与部署
 

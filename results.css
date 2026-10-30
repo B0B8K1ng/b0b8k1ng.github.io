@@ -1,6 +1,6 @@
 /* Selected Table 1 / Table 2 results, with zero-based bar charts. */
-.paper-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; min-width: 0; margin-top: 12px; align-items: start; }
-.result-family { display: grid; min-width: 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: #101416; }
+.paper-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; min-width: 0; margin-top: 12px; align-items: stretch; }
+.result-family { display: grid; align-content: start; min-width: 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: #101416; }
 .result-family-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 24px; }
 .result-family-heading h3 { margin: 0; color: #edf0ec; font: 500 24px/1.3 var(--sans); letter-spacing: -.5px; }
 .result-family-heading > span { color: var(--muted); font: 400 12px/1.5 var(--sans); }
