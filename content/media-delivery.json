@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "enabled": true,
-  "assetBaseUrl": "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v6/",
-  "manifestSha256": "c2c935393db0b4731e35c2b39218693da0e06863100409417b2cbcf9be74515d",
+  "assetBaseUrl": "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261031-v7/",
+  "manifestSha256": "80c565db2a9187c4910918a99f4c1447bc596a056e00e2c4f723c7fe9d0240ba",
   "localAssetPrefixes": [],
   "localFallback": true
 }

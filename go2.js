@@ -1,9 +1,9 @@
 import { registerMedia } from "./media-scheduler.js?v=texture-master-20261030-v6-inline1";
 import { registerMediaFallback } from "./media-delivery.js?v=texture-master-20261030-v6-inline1";
-import { initMediaCache } from "./media-cache.js?v=texture-master-20261030-v6-inline1";
+import { initMediaCache } from "./media-cache.js?v=privacy-20261031-v7";
 
 const root = document.querySelector("#go2-navigation");
-const revision = "texture-master-20261030-v6-inline1";
+const revision = "privacy-20261031";
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[character]);

@@ -4,7 +4,7 @@ let initialization;
 export function initMediaCache() {
   if (initialization) return initialization;
   if (!globalThis.isSecureContext || !("serviceWorker" in navigator)) return Promise.resolve(false);
-  const worker = new URL("./media-cache-worker.js?v=go2-master-v6-2", import.meta.url);
+  const worker = new URL("./media-cache-worker.js?v=go2-master-v7-privacy", import.meta.url);
   const scope = new URL("./", import.meta.url);
   initialization = new Promise((resolve) => {
     const serviceWorker = navigator.serviceWorker;

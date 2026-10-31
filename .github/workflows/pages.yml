@@ -32,7 +32,7 @@ jobs:
           touch _site/.nojekyll
           printf '%s\n' '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=/OpenNWM/"><title>OpenNWM</title></head><body><a href="/OpenNWM/">OpenNWM</a></body></html>' > _site/index.html
           cp _site/index.html _site/OpenNWM-website/index.html
-      - name: Keep archived video masters outside the Pages artifact
+      - name: Publish active gallery media and keep archived masters outside Pages
         run: |
           python3 - <<'PY'
           import json
@@ -45,6 +45,19 @@ jobs:
           assert inline, 'Missing inline media delivery configuration'
           assert json.loads(inline.group(1)) == json.loads((site / 'content/media-delivery.json').read_text()), 'Inline media delivery configuration is stale'
           clips = json.loads((site / 'content/go2.json').read_text())['clips']
+          review = json.loads((site / 'assets/go2/privacy-review.json').read_text())
+          assert review['status'] == 'passed' and review['selection_preserved']
+          reviewed = {row['id']: row for row in review['clips']}
+          assert set(reviewed) == {clip['id'] for clip in clips}
+          for clip in clips:
+              assert clip['privacy']['reviewed']
+              assert all(clip[key] == reviewed[clip['id']][key] for key in ('video', 'poster'))
+          active_media = {clip[key] for clip in clips for key in ('video', 'poster')}
+          # Superseded originals stay in source history; Pages serves only the
+          # privacy-reviewed videos and posters selected by the current gallery.
+          for path in (site / 'assets/go2').rglob('*'):
+              if path.is_file() and path.suffix in {'.mp4', '.webp'} and path.relative_to(site).as_posix() not in active_media:
+                  path.unlink()
           for clip in clips:
               if not clip.get('fallback_video'):
                   continue

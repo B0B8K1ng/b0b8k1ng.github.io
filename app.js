@@ -1,6 +1,6 @@
 import { registerMedia } from "./media-scheduler.js?v=texture-master-20261030-v6-inline1";
 import { setMediaUrl } from "./media-delivery.js?v=texture-master-20261030-v6-inline1";
-import { initResearch } from "./research.js?v=framework-dark-20261030";
+import { initResearch } from "./research.js?v=vertical-results-20261031";
 import { initMotionGallery } from "./motion-gallery.js?v=texture-master-20261030-v6-inline1";
 import { initNavigation } from "./navigation.js?v=texture-master-20261030-v6-inline1";
 import { initCinematic } from "./cinematic.js?v=texture-master-20261030-v6-inline1";

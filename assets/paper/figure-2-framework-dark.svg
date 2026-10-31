@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" width="2352" height="720" viewBox="0 0 2352 720" fill="#eeeeee" style="background:#0d0e10">
 <title>Figure 2. OpenNWM model architecture</title>
 <desc>Original paper vector artwork adapted for a dark page. Navigation observations and latent actions condition the diffusion transformer to predict future frames.</desc>
-<metadata>{"source": "OpenNWM.pdf", "sourceSha256": "91b306f869f96d0890d83f1a7125b4476291d0e93f36c27524b68334e6ee7292", "figure": 2, "page": 3, "clipPoints": [110, 77, 502, 197], "scale": 6, "presentation": "Original paper vector geometry and embedded image bytes. Dark canvas, vector paint colors, and selective SVG filters for equation labels, logo, and shadows. Photographs are unfiltered."}</metadata>
+<metadata>{"source": "OpenNWM.pdf", "sourceSha256": "91b306f869f96d0890d83f1a7125b4476291d0e93f36c27524b68334e6ee7292", "figure": 2, "page": 3, "clipPoints": [110, 77, 502, 197], "scale": 6, "presentation": "Original paper vector geometry and embedded image bytes. Dark canvas, vector paint colors, and selective SVG filters for equation labels, wordmark, and shadows. Website green N vector icon replaces the original logo icon. Photographs are unfiltered."}</metadata>
 <defs>
+<!-- Preserve the original OpenNWM wordmark while replacing its icon with the website mark. -->
+<clipPath id="opennwm-wordmark-clip"><rect x="1247.6581" y="29.103653" width="400" height="120"/></clipPath>
 <filter id="dark-label" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.9333 0 0 0 0 0.9333 0 0 0 0 0.9333 0 0 0 1 0"/></filter>
 <filter id="dark-logo" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.55" intercept="0.45"/><feFuncG type="linear" slope="0.55" intercept="0.45"/><feFuncB type="linear" slope="0.55" intercept="0.45"/></feComponentTransfer></filter>
 <filter id="dark-shadow" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="0.12"/><feFuncG type="linear" slope="0.12"/><feFuncB type="linear" slope="0.12"/></feComponentTransfer></filter>
@@ -3276,7 +3278,7 @@ b74cfuir7/lV/e2v/gcXVLqr6vktiwAAAABJRU5ErkJggg=="/>
 <path transform="matrix(1.44132,0,0,-1.44132,2290.8797,683.5239)" stroke-width="1" stroke-linecap="butt" stroke-dasharray="9" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#d4dadd" d="M0 0H-164.082C-168.478 0-172.041 3.563-172.041 7.959V436.041C-172.041 440.437-168.478 444-164.082 444H0C4.396 444 7.959 440.437 7.959 436.041V7.959C7.959 3.563 4.396 0 0 0Z"/>
 </g>
 <g clip-path="url(#clip_120)">
-<g mask="url(#mask_121)">
+<g mask="url(#mask_121)" clip-path="url(#opennwm-wordmark-clip)">
 <g transform="matrix(.34579853,0,0,.34496907,1154.2925,29.103653)">
 <image id="image_123" filter="url(#dark-logo)" width="1126" height="272" xlink:href="data:image/jpeg;base64,
 /9j/7gAOQWRvYmUAZAAAAAAB/9sAxQACAgIDAgMDAwMDBQQEBAUFBQUFBQUHBgYG
@@ -4377,6 +4379,10 @@ EAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQB
 AEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQ
 BAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAEAQBAf/Z"/>
 </g>
+</g>
+<g id="opennwm-green-n-logo" aria-label="OpenNWM green N logo" transform="translate(1154.2925 29.103653) scale(2.34579)">
+<path fill="#b6ee65" d="M4 34V6h7l18 18V6h7v28h-7L11 16v18z"/>
+<circle cx="32.5" cy="7" r="4" fill="#eeeeee"/>
 </g>
 </g>
 <use data-text=" " xlink:href="#font_17_3" transform="matrix(37.47432,0,0,-37.47432,2041.0021,653.9854)" fill="#76b8e8"/>
