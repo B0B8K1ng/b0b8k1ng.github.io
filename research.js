@@ -50,7 +50,7 @@ export function initResearch(paper) {
     if (!method) return;
     const figureLink = method.querySelector(".method-figure-link");
     const figureImage = method.querySelector("img");
-    const figureSource = "assets/paper/method-overview-20261031.svg";
+    const figureSource = "assets/paper/method-overview-dark-20261031.svg";
     figureLink.href = "assets/paper/method-overview-20261031.pdf";
     figureImage.src = figureSource;
     figureLink.setAttribute("aria-label",
