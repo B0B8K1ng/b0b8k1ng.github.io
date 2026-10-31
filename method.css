@@ -14,7 +14,7 @@
 .method-figure-link {
   display: block;
   padding: 20px;
-  background: var(--paper);
+  background: #fff;
   cursor: zoom-in;
 }
 .method-figure-link img {

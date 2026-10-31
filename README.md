@@ -10,7 +10,7 @@
 
 1. 首页背景影片、OpenSpace Lab 标识，以及论文、代码、模型、Demo 和数据集入口。
 2. 作者与单位。
-3. 论文 Figure 2 结构图，采用与页面一致的深色背景和绿色 N 标识；保留原始结构、公式和照片，点击可放大查看。绿色 N 的独立矢量文件为 `assets/opennwm-logo.svg` 和 `assets/opennwm-logo.pdf`，均为透明背景、无嵌入位图。
+3. 方法图使用 2026-10-31 提供的 `method.pdf`，直接导出为 `assets/paper/method-overview-20261031.svg`，保留原始白底、结构、公式和照片。文字转为矢量轮廓，放大时保持清晰且不依赖字体；点击打开逐字节保留的原始 PDF。来源和校验值记录在同名 JSON 中。绿色 N 的独立矢量文件为 `assets/opennwm-logo.svg` 和 `assets/opennwm-logo.pdf`，均为透明背景、无嵌入位图。
 4. 论文 Table 1 的未来预测结果、Table 2 的导航结果，以纵向排列的 Prediction / Navigation 竖柱图展示精简指标，方法名置于横轴；预测和导航采用一致的双列绘图区，保留全部模型对比。
 5. 真机导航：按完整记录分组，所有子片段直接平铺；每个场景至少 4 段，实际就绪内容及筛选记录以 `content/go2.json` 为准。
 6. Visualization：地球、月面、火星的未来预测对照，以及离线导航可视化。
@@ -69,7 +69,7 @@ https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261031-v7
 镜像保持 `assets/...` 路径，文件与网站副本逐字节相同，支持视频 Range 请求和
 跨域加载。`media-delivery.js` 在配置缺失时使用本站路径，并在单个镜像资源失败时
 回退到本站副本或固定提交的同字节源码归档；本次页面访问会记住失败 URL，滚回视频时不会重新请求同一失败镜像。
-源素材和本站文件没有被替换为低清版本。页面当前展示 Figure 2 结构图的深色 SVG，背景与页面一致。
+源素材和本站文件没有被替换为低清版本。方法图的 SVG 和原始 PDF 直接由本站提供，不依赖视频镜像。
 公开校验清单为镜像根目录的 `media-manifest.json`。
 该版本包含当前展示的 44 个真机片段、19 个重新定时的数据集视频以及月球/火星曲线素材，
 各文件的远端大小与 SHA256 均已校验。小 MP4 也通过 LFS 分发，保持上传文件字节，

@@ -50,12 +50,12 @@ export function initResearch(paper) {
     if (!method) return;
     const figureLink = method.querySelector(".method-figure-link");
     const figureImage = method.querySelector("img");
-    const figureSource = "assets/paper/figure-2-framework-dark.svg?v=green-n-20261031";
-    figureLink.href = figureSource;
+    const figureSource = "assets/paper/method-overview-20261031.svg";
+    figureLink.href = "assets/paper/method-overview-20261031.pdf";
     figureImage.src = figureSource;
     figureLink.setAttribute("aria-label",
-      "Open Figure 2, the OpenNWM model architecture, at full resolution");
-    figureImage.alt = "Figure 2. OpenNWM model architecture: navigation observations and latent actions condition the diffusion transformer to predict future frames.";
+      "Open the original OpenNWM method figure PDF to zoom in");
+    figureImage.alt = "OpenNWM method: a latent action encoder and decoder infer actions from observations; a conditional diffusion transformer predicts future frames with frozen VAE encoding and decoding.";
   }
 
   function renderMainResults() {
