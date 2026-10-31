@@ -65,6 +65,11 @@
       "downloads": {
         "metrics": "assets/go2/route_01_clip_04/metrics.json",
         "trajectories": "assets/go2/route_01_clip_04/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -75,8 +80,8 @@
       "duration_s": 24.0,
       "start_time_s": 58.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_01_clip_01_lobby_corner/comparison.mp4",
-      "poster": "assets/go2/route_01_clip_01_lobby_corner/poster.webp",
+      "video": "assets/go2/route_01_clip_01_lobby_corner/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_01_clip_01_lobby_corner/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.10100010776495712,
@@ -126,6 +131,12 @@
       "downloads": {
         "metrics": "assets/go2/route_01_clip_01_lobby_corner/metrics.json",
         "trajectories": "assets/go2/route_01_clip_01_lobby_corner/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_01_clip_01_lobby_corner/comparison.mp4"
       }
     },
     {
@@ -191,6 +202,11 @@
       "downloads": {
         "metrics": "assets/go2/route_01_clip_05/metrics.json",
         "trajectories": "assets/go2/route_01_clip_05/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -248,6 +264,11 @@
       "downloads": {
         "metrics": "assets/go2/route_01_clip_06/metrics.json",
         "trajectories": "assets/go2/route_01_clip_06/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -258,8 +279,8 @@
       "duration_s": 26.0,
       "start_time_s": 8.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_02_clip_03/comparison.mp4",
-      "poster": "assets/go2/route_02_clip_03/poster.webp",
+      "video": "assets/go2/route_02_clip_03/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_02_clip_03/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.09103402516318856,
@@ -311,6 +332,12 @@
       "downloads": {
         "metrics": "assets/go2/route_02_clip_03/metrics.json",
         "trajectories": "assets/go2/route_02_clip_03/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_02_clip_03/comparison.mp4"
       }
     },
     {
@@ -372,6 +399,11 @@
       "downloads": {
         "metrics": "assets/go2/route_02_clip_07/metrics.json",
         "trajectories": "assets/go2/route_02_clip_07/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -429,6 +461,11 @@
       "downloads": {
         "metrics": "assets/go2/route_02_clip_10/metrics.json",
         "trajectories": "assets/go2/route_02_clip_10/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -486,6 +523,11 @@
       "downloads": {
         "metrics": "assets/go2/route_02_clip_13/metrics.json",
         "trajectories": "assets/go2/route_02_clip_13/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -496,8 +538,8 @@
       "duration_s": 28.0,
       "start_time_s": 2.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_03_clip_03/comparison.mp4",
-      "poster": "assets/go2/route_03_clip_03/poster.webp",
+      "video": "assets/go2/route_03_clip_03/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_03_clip_03/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.1070419018243586,
@@ -551,6 +593,12 @@
       "downloads": {
         "metrics": "assets/go2/route_03_clip_03/metrics.json",
         "trajectories": "assets/go2/route_03_clip_03/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_03_clip_03/comparison.mp4"
       }
     },
     {
@@ -561,8 +609,8 @@
       "duration_s": 28.0,
       "start_time_s": 116.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_03_clip_06/comparison.mp4",
-      "poster": "assets/go2/route_03_clip_06/poster.webp",
+      "video": "assets/go2/route_03_clip_06/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_03_clip_06/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.09249841274653395,
@@ -616,6 +664,12 @@
       "downloads": {
         "metrics": "assets/go2/route_03_clip_06/metrics.json",
         "trajectories": "assets/go2/route_03_clip_06/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_03_clip_06/comparison.mp4"
       }
     },
     {
@@ -626,8 +680,8 @@
       "duration_s": 20.0,
       "start_time_s": 168.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_03_clip_08/comparison.mp4",
-      "poster": "assets/go2/route_03_clip_08/poster.webp",
+      "video": "assets/go2/route_03_clip_08/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_03_clip_08/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.08115037092632867,
@@ -673,6 +727,12 @@
       "downloads": {
         "metrics": "assets/go2/route_03_clip_08/metrics.json",
         "trajectories": "assets/go2/route_03_clip_08/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_03_clip_08/comparison.mp4"
       }
     },
     {
@@ -738,6 +798,11 @@
       "downloads": {
         "metrics": "assets/go2/route_03_clip_11/metrics.json",
         "trajectories": "assets/go2/route_03_clip_11/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -748,8 +813,8 @@
       "duration_s": 28.0,
       "start_time_s": 2.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_04_clip_03/comparison.mp4",
-      "poster": "assets/go2/route_04_clip_03/poster.webp",
+      "video": "assets/go2/route_04_clip_03/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_04_clip_03/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.10750215753917654,
@@ -803,6 +868,12 @@
       "downloads": {
         "metrics": "assets/go2/route_04_clip_03/metrics.json",
         "trajectories": "assets/go2/route_04_clip_03/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_04_clip_03/comparison.mp4"
       }
     },
     {
@@ -813,8 +884,8 @@
       "duration_s": 28.0,
       "start_time_s": 152.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_04_clip_07/comparison.mp4",
-      "poster": "assets/go2/route_04_clip_07/poster.webp",
+      "video": "assets/go2/route_04_clip_07/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_04_clip_07/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.14211880599557034,
@@ -868,6 +939,12 @@
       "downloads": {
         "metrics": "assets/go2/route_04_clip_07/metrics.json",
         "trajectories": "assets/go2/route_04_clip_07/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_04_clip_07/comparison.mp4"
       }
     },
     {
@@ -933,6 +1010,11 @@
       "downloads": {
         "metrics": "assets/go2/route_04_clip_08/metrics.json",
         "trajectories": "assets/go2/route_04_clip_08/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -943,8 +1025,8 @@
       "duration_s": 28.0,
       "start_time_s": 214.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_04_clip_02_cafe_turn/comparison.mp4",
-      "poster": "assets/go2/route_04_clip_02_cafe_turn/poster.webp",
+      "video": "assets/go2/route_04_clip_02_cafe_turn/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_04_clip_02_cafe_turn/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.10242702417788689,
@@ -998,6 +1080,12 @@
       "downloads": {
         "metrics": "assets/go2/route_04_clip_02_cafe_turn/metrics.json",
         "trajectories": "assets/go2/route_04_clip_02_cafe_turn/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_04_clip_02_cafe_turn/comparison.mp4"
       }
     },
     {
@@ -1008,8 +1096,8 @@
       "duration_s": 25.0,
       "start_time_s": 50.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_05_clip_02_entrance_promemade/comparison.mp4",
-      "poster": "assets/go2/route_05_clip_02_entrance_promemade/poster.webp",
+      "video": "assets/go2/route_05_clip_02_entrance_promemade/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_05_clip_02_entrance_promemade/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.08675550333218059,
@@ -1060,6 +1148,12 @@
       "downloads": {
         "metrics": "assets/go2/route_05_clip_02_entrance_promemade/metrics.json",
         "trajectories": "assets/go2/route_05_clip_02_entrance_promemade/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_05_clip_02_entrance_promemade/comparison.mp4"
       }
     },
     {
@@ -1122,6 +1216,11 @@
       "downloads": {
         "metrics": "assets/go2/route_05_clip_03_gate_approach/metrics.json",
         "trajectories": "assets/go2/route_05_clip_03_gate_approach/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -1132,8 +1231,8 @@
       "duration_s": 25.0,
       "start_time_s": 260.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_05_clip_04_shuttle_plaza/comparison.mp4",
-      "poster": "assets/go2/route_05_clip_04_shuttle_plaza/poster.webp",
+      "video": "assets/go2/route_05_clip_04_shuttle_plaza/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_05_clip_04_shuttle_plaza/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.09726508408281058,
@@ -1184,6 +1283,12 @@
       "downloads": {
         "metrics": "assets/go2/route_05_clip_04_shuttle_plaza/metrics.json",
         "trajectories": "assets/go2/route_05_clip_04_shuttle_plaza/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_05_clip_04_shuttle_plaza/comparison.mp4"
       }
     },
     {
@@ -1194,8 +1299,8 @@
       "duration_s": 13.0,
       "start_time_s": 403.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_05_clip_05_woodland_lane_curated/comparison.mp4",
-      "poster": "assets/go2/route_05_clip_05_woodland_lane_curated/poster.webp",
+      "video": "assets/go2/route_05_clip_05_woodland_lane_curated/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_05_clip_05_woodland_lane_curated/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.13246811851670479,
@@ -1234,6 +1339,12 @@
       "downloads": {
         "metrics": "assets/go2/route_05_clip_05_woodland_lane_curated/metrics.json",
         "trajectories": "assets/go2/route_05_clip_05_woodland_lane_curated/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_05_clip_05_woodland_lane_curated/comparison.mp4"
       }
     },
     {
@@ -1296,6 +1407,11 @@
       "downloads": {
         "metrics": "assets/go2/route_06_clip_01_lakeside_planter_turn/metrics.json",
         "trajectories": "assets/go2/route_06_clip_01_lakeside_planter_turn/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -1342,6 +1458,11 @@
       "downloads": {
         "metrics": "assets/go2/route_06_clip_02_sand_switchbacks_curated/metrics.json",
         "trajectories": "assets/go2/route_06_clip_02_sand_switchbacks_curated/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -1404,6 +1525,11 @@
       "downloads": {
         "metrics": "assets/go2/route_06_clip_04_campground_arc/metrics.json",
         "trajectories": "assets/go2/route_06_clip_04_campground_arc/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -1453,6 +1579,11 @@
       "downloads": {
         "metrics": "assets/go2/route_06_clip_05_fence_path_exit_curated/metrics.json",
         "trajectories": "assets/go2/route_06_clip_05_fence_path_exit_curated/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -1516,7 +1647,12 @@
         "metrics": "assets/go2/route_07_clip_01_grass_passage/metrics.json",
         "trajectories": "assets/go2/route_07_clip_01_grass_passage/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_01_grass_passage/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_01_grass_passage/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_07_clip_02_gravel_entry_curated",
@@ -1576,7 +1712,12 @@
         "metrics": "assets/go2/route_07_clip_02_gravel_entry_curated/metrics.json",
         "trajectories": "assets/go2/route_07_clip_02_gravel_entry_curated/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_02_gravel_entry_curated/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_02_gravel_entry_curated/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_07_clip_03_garden_turn",
@@ -1639,7 +1780,12 @@
         "metrics": "assets/go2/route_07_clip_03_garden_turn/metrics.json",
         "trajectories": "assets/go2/route_07_clip_03_garden_turn/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_03_garden_turn/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_03_garden_turn/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_07_clip_04_stone_wall_bend_curated",
@@ -1699,7 +1845,12 @@
         "metrics": "assets/go2/route_07_clip_04_stone_wall_bend_curated/metrics.json",
         "trajectories": "assets/go2/route_07_clip_04_stone_wall_bend_curated/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_04_stone_wall_bend_curated/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_07_clip_04_stone_wall_bend_curated/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_08_clip_01_leaf_grove",
@@ -1762,7 +1913,12 @@
         "metrics": "assets/go2/route_08_clip_01_leaf_grove/metrics.json",
         "trajectories": "assets/go2/route_08_clip_01_leaf_grove/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_01_leaf_grove/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_01_leaf_grove/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_08_clip_02_tree_slalom",
@@ -1825,7 +1981,12 @@
         "metrics": "assets/go2/route_08_clip_02_tree_slalom/metrics.json",
         "trajectories": "assets/go2/route_08_clip_02_tree_slalom/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_02_tree_slalom/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_02_tree_slalom/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_08_clip_03_grass_gully",
@@ -1888,7 +2049,12 @@
         "metrics": "assets/go2/route_08_clip_03_grass_gully/metrics.json",
         "trajectories": "assets/go2/route_08_clip_03_grass_gully/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_03_grass_gully/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_03_grass_gully/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_08_clip_04_paved_exit",
@@ -1948,7 +2114,12 @@
         "metrics": "assets/go2/route_08_clip_04_paved_exit/metrics.json",
         "trajectories": "assets/go2/route_08_clip_04_paved_exit/trajectories.csv"
       },
-      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_04_paved_exit/comparison.mp4"
+      "fallback_video": "https://raw.githubusercontent.com/B0B8K1ng/b0b8k1ng.github.io/837138275852b88c7e8f6fb3c68a61ec9330d812/assets/go2/route_08_clip_04_paved_exit/comparison.mp4",
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
+      }
     },
     {
       "id": "route_09_clip_01_plaza_curve",
@@ -2009,6 +2180,11 @@
       "downloads": {
         "metrics": "assets/go2/route_09_clip_01_plaza_curve/metrics.json",
         "trajectories": "assets/go2/route_09_clip_01_plaza_curve/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -2074,6 +2250,11 @@
       "downloads": {
         "metrics": "assets/go2/route_09_clip_02_grass_paver_entry/metrics.json",
         "trajectories": "assets/go2/route_09_clip_02_grass_paver_entry/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -2084,8 +2265,8 @@
       "duration_s": 24.0,
       "start_time_s": 126.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_09_clip_03_garden_s_bend/comparison.mp4",
-      "poster": "assets/go2/route_09_clip_03_garden_s_bend/poster.webp",
+      "video": "assets/go2/route_09_clip_03_garden_s_bend/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_09_clip_03_garden_s_bend/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.1032178816143257,
@@ -2135,6 +2316,12 @@
       "downloads": {
         "metrics": "assets/go2/route_09_clip_03_garden_s_bend/metrics.json",
         "trajectories": "assets/go2/route_09_clip_03_garden_s_bend/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_09_clip_03_garden_s_bend/comparison.mp4"
       }
     },
     {
@@ -2145,8 +2332,8 @@
       "duration_s": 20.0,
       "start_time_s": 293.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_09_clip_04_plaza_return_curated/comparison.mp4",
-      "poster": "assets/go2/route_09_clip_04_plaza_return_curated/poster.webp",
+      "video": "assets/go2/route_09_clip_04_plaza_return_curated/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_09_clip_04_plaza_return_curated/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.09647520486390374,
@@ -2192,6 +2379,12 @@
       "downloads": {
         "metrics": "assets/go2/route_09_clip_04_plaza_return_curated/metrics.json",
         "trajectories": "assets/go2/route_09_clip_04_plaza_return_curated/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_09_clip_04_plaza_return_curated/comparison.mp4"
       }
     },
     {
@@ -2202,8 +2395,8 @@
       "duration_s": 16.0,
       "start_time_s": 8.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_10_clip_01_parking_departure_curated/comparison.mp4",
-      "poster": "assets/go2/route_10_clip_01_parking_departure_curated/poster.webp",
+      "video": "assets/go2/route_10_clip_01_parking_departure_curated/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_10_clip_01_parking_departure_curated/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.11065441502151212,
@@ -2245,6 +2438,12 @@
       "downloads": {
         "metrics": "assets/go2/route_10_clip_01_parking_departure_curated/metrics.json",
         "trajectories": "assets/go2/route_10_clip_01_parking_departure_curated/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_10_clip_01_parking_departure_curated/comparison.mp4"
       }
     },
     {
@@ -2255,8 +2454,8 @@
       "duration_s": 19.0,
       "start_time_s": 52.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_10_clip_02_garage_lane_turn_curated/comparison.mp4",
-      "poster": "assets/go2/route_10_clip_02_garage_lane_turn_curated/poster.webp",
+      "video": "assets/go2/route_10_clip_02_garage_lane_turn_curated/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_10_clip_02_garage_lane_turn_curated/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.1178637006417326,
@@ -2301,6 +2500,12 @@
       "downloads": {
         "metrics": "assets/go2/route_10_clip_02_garage_lane_turn_curated/metrics.json",
         "trajectories": "assets/go2/route_10_clip_02_garage_lane_turn_curated/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_10_clip_02_garage_lane_turn_curated/comparison.mp4"
       }
     },
     {
@@ -2362,6 +2567,11 @@
       "downloads": {
         "metrics": "assets/go2/route_10_clip_03_store_entrance/metrics.json",
         "trajectories": "assets/go2/route_10_clip_03_store_entrance/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -2372,8 +2582,8 @@
       "duration_s": 24.0,
       "start_time_s": 250.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_10_clip_04_indoor_corridor/comparison.mp4",
-      "poster": "assets/go2/route_10_clip_04_indoor_corridor/poster.webp",
+      "video": "assets/go2/route_10_clip_04_indoor_corridor/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_10_clip_04_indoor_corridor/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.12108048479035764,
@@ -2423,6 +2633,12 @@
       "downloads": {
         "metrics": "assets/go2/route_10_clip_04_indoor_corridor/metrics.json",
         "trajectories": "assets/go2/route_10_clip_04_indoor_corridor/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_10_clip_04_indoor_corridor/comparison.mp4"
       }
     },
     {
@@ -2433,8 +2649,8 @@
       "duration_s": 25.0,
       "start_time_s": 10.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_11_clip_01_night_zebra_turn/comparison.mp4",
-      "poster": "assets/go2/route_11_clip_01_night_zebra_turn/poster.webp",
+      "video": "assets/go2/route_11_clip_01_night_zebra_turn/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_11_clip_01_night_zebra_turn/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.11974914687654067,
@@ -2485,6 +2701,12 @@
       "downloads": {
         "metrics": "assets/go2/route_11_clip_01_night_zebra_turn/metrics.json",
         "trajectories": "assets/go2/route_11_clip_01_night_zebra_turn/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_11_clip_01_night_zebra_turn/comparison.mp4"
       }
     },
     {
@@ -2547,6 +2769,11 @@
       "downloads": {
         "metrics": "assets/go2/route_11_clip_02_night_storefront_bollards/metrics.json",
         "trajectories": "assets/go2/route_11_clip_02_night_storefront_bollards/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": false,
+        "report": "assets/go2/privacy-review.json"
       }
     },
     {
@@ -2557,8 +2784,8 @@
       "duration_s": 25.0,
       "start_time_s": 269.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_11_clip_03_night_barrier_passage/comparison.mp4",
-      "poster": "assets/go2/route_11_clip_03_night_barrier_passage/poster.webp",
+      "video": "assets/go2/route_11_clip_03_night_barrier_passage/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_11_clip_03_night_barrier_passage/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.11912733071412376,
@@ -2609,6 +2836,12 @@
       "downloads": {
         "metrics": "assets/go2/route_11_clip_03_night_barrier_passage/metrics.json",
         "trajectories": "assets/go2/route_11_clip_03_night_barrier_passage/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_11_clip_03_night_barrier_passage/comparison.mp4"
       }
     },
     {
@@ -2619,8 +2852,8 @@
       "duration_s": 25.0,
       "start_time_s": 375.0,
       "goal_interval_s": 1.0,
-      "video": "assets/go2/route_11_clip_04_night_zebra_curve/comparison.mp4",
-      "poster": "assets/go2/route_11_clip_04_night_zebra_curve/poster.webp",
+      "video": "assets/go2/route_11_clip_04_night_zebra_curve/comparison-privacy-v1.mp4",
+      "poster": "assets/go2/route_11_clip_04_night_zebra_curve/poster-privacy-v1.webp",
       "metrics": {
         "opennwm": {
           "ate_m": 0.12862855366207088,
@@ -2671,6 +2904,12 @@
       "downloads": {
         "metrics": "assets/go2/route_11_clip_04_night_zebra_curve/metrics.json",
         "trajectories": "assets/go2/route_11_clip_04_night_zebra_curve/trajectories.csv"
+      },
+      "privacy": {
+        "reviewed": true,
+        "face_redacted": true,
+        "report": "assets/go2/privacy-review.json",
+        "original_video": "assets/go2/route_11_clip_04_night_zebra_curve/comparison.mp4"
       }
     }
   ],

@@ -10,8 +10,8 @@
 
 1. 首页背景影片、OpenSpace Lab 标识，以及论文、代码、模型、Demo 和数据集入口。
 2. 作者与单位。
-3. 论文 Figure 2 结构图，采用与页面一致的深色背景；保留原始结构、公式和照片，点击可放大查看。
-4. 论文 Table 1 的未来预测结果、Table 2 的导航结果，以并排的 Prediction / Navigation 柱状图展示精简指标，保留全部模型对比。
+3. 论文 Figure 2 结构图，采用与页面一致的深色背景和绿色 N 标识；保留原始结构、公式和照片，点击可放大查看。绿色 N 的独立矢量文件为 `assets/opennwm-logo.svg` 和 `assets/opennwm-logo.pdf`，均为透明背景、无嵌入位图。
+4. 论文 Table 1 的未来预测结果、Table 2 的导航结果，以纵向排列的 Prediction / Navigation 竖柱图展示精简指标，方法名置于横轴；预测和导航采用一致的双列绘图区，保留全部模型对比。
 5. 真机导航：按完整记录分组，所有子片段直接平铺；每个场景至少 4 段，实际就绪内容及筛选记录以 `content/go2.json` 为准。
 6. Visualization：地球、月面、火星的未来预测对照，以及离线导航可视化。
 7. Demo：选择场景、绘制轨迹、提交真实模型推理并查看返回视频。
@@ -60,7 +60,7 @@ Moon 7–9 是 LuSNAR 的仿真场景编号。月面模型使用 Moon 1–5 的 
 `content/media-delivery.json` 指定经过校验的 ModelScope 媒体镜像，当前固定版本为：
 
 ```text
-https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v6/
+https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261031-v7/
 ```
 
 `index.html` 的 `media-delivery-config` 内联同一份配置，使首次加载无需额外网络请求。
@@ -72,7 +72,7 @@ https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v6
 源素材和本站文件没有被替换为低清版本。页面当前展示 Figure 2 结构图的深色 SVG，背景与页面一致。
 公开校验清单为镜像根目录的 `media-manifest.json`。
 该版本包含当前展示的 44 个真机片段、19 个重新定时的数据集视频以及月球/火星曲线素材，
-576 个文件的远端大小与 SHA256 均已校验。小 MP4 也通过 LFS 分发，保持原始字节，
+各文件的远端大小与 SHA256 均已校验。小 MP4 也通过 LFS 分发，保持上传文件字节，
 使数据集、真机和月球/火星视频都支持标准 HTTP 206 首段与尾段请求。
 `localAssetPrefixes` 为空。Garden paths 和 Autumn grove 的 8 段视频使用原始 CRF18
 母版，移除了 CRF23 网页二次压缩，保持 1080p、24 fps、时长及预测内容。
@@ -81,6 +81,12 @@ https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v6
 这 8 段母版以 4 秒为自动播放启动缓冲目标；浏览器停止预加载或准备超过 10 秒且
 已有可播放帧时允许启动。`media-cache-worker.js` 在流式播放的同时保存完整原始字节，
 后续循环的 Range 请求复用本地缓存。缓存不可用时继续普通网络播放；不重新编码视频。
+
+真机画廊的 44 段视频均已进行人脸复核。有人脸的片段采用局部、随时间移动的马赛克，
+第一视角 GT、OpenNWM 和 NWM 使用相同遮罩区域；预览图同步更新。
+选段、时长、帧数、轨迹及评分不变，OpenNWM 仍在 41/44 段中同时取得更低的 ATE/RPE。
+核验记录见 `assets/go2/privacy-review.json`。Pages 只部署当前清单选中的真机视频和
+预览图，排除已被替换的版本。
 
 ## 本地预览与部署
 

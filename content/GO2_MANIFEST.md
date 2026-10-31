@@ -21,14 +21,16 @@ more than two excerpts per recording. Their lengths are 9, 12, 13, 16, 19, 20,
 22 and 22 seconds; complete clips are 20–28 seconds. Four historical complete
 clips were added or substituted to retain four examples in every scene.
 Twelve films were rendered again: those four historical clips and eight
-excerpts. The other 32 films retain their existing verified video bytes.
+excerpts. These selection-stage exports are the baseline for the subsequent
+face-redaction pass described below.
 
 Shortening is explicit in the private render plan's `shortened_from` field:
 parent ID, start and end. The renderer requires a continuous excerpt of at least
 eight seconds within a documented 20–30 second parent clip. Independently of
 this duration check, the beginning and end must coincide with complete local
 planning windows and there must be no gaps. All selected excerpts in this
-release are at least nine seconds. Source/model frames are unchanged; scores
+release are at least nine seconds. Apart from the face mosaics described below,
+source/model content is preserved; scores
 are recomputed across **all** complete windows of each displayed excerpt.
 
 Both models use the same one-second local planning horizon, recorded starting
@@ -46,7 +48,23 @@ window in that displayed interval**, separately for each model and metric.
 These values remain constant throughout the film and match its JSON report.
 Per-window values, trajectories and evaluated goal IDs remain available through
 the manifest even though the page has no download controls. Preserve visible
-model prediction errors and the original source/model frames.
+model prediction errors and source/model content outside reviewed face masks.
+
+## Face privacy
+
+All 44 selected videos were reviewed across their full duration, including the
+third-person camera, first-person GT, both model views and the goal image.
+Visible faces receive localized, time-dependent mosaics. First-person face
+regions are masked equally in GT, OpenNWM and NWM; goal frames also cover the
+adjacent planning-window boundaries. Posters are generated from the reviewed
+videos. The machine-readable audit is `assets/go2/privacy-review.json`.
+
+This pass preserves every selected clip, source interval, frame count, duration,
+trajectory, prediction error and displayed score. OpenNWM still has lower ATE
+and RPE in 41 of 44 clips. Changed videos use `comparison-privacy-v1.mp4` and
+`poster-privacy-v1.webp`; their previous video fallbacks are removed. Pages
+publishes only the active gallery videos and posters, excluding superseded
+versions from the deployment artifact.
 
 ## Manifest contract
 
@@ -79,7 +97,7 @@ inline, looping autoplay. The shared media scheduler registers all clip slots,
 loads nearby videos, plays visible videos and releases distant transfers and
 decoders. Browser autoplay restrictions still apply.
 
-`media-delivery.js` uses the verified `site-20261030-v6` mirror, with
+`media-delivery.js` uses the verified `site-20261031-v7` mirror, with
 `localAssetPrefixes: []`. Garden paths and Autumn grove use their eight existing
 CRF18 comparison masters byte for byte, removing the additional CRF23 web encode.
 Resolution, frame timing, trajectories, predictions and metrics are unchanged.
@@ -112,6 +130,10 @@ Source tools are in the [OpenNWM repository](https://github.com/B0B8K1ng/OpenNWM
   with recorded cameras and genuine saved predictions.
 - `tools/publish_go2_gallery.py` creates compact web copies and checks hashes,
   full decoding, frame counts, duration, silent 1080p format and faststart.
+- `tools/redact_go2_faces.py` applies reviewed face regions and checks complete
+  decoding, timing and encoding error outside masks.
+- `tools/finalize_go2_privacy.py` verifies independent output reviews, asset
+  hashes and unchanged experimental fields before updating the gallery.
 
 The private `opennwm_go2_curation_20261030` NAS archive retains the complete
 44-clip plan, 12-clip render plan, preceding manifest/report, source-bound metric

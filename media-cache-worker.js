@@ -1,7 +1,7 @@
 // Cache only these immutable, original-byte masters. Other media streams normally.
 const CACHE_PREFIX = "opennwm-go2-master-cache-";
-const CACHE_NAME = `${CACHE_PREFIX}v6-2`;
-const BASE = "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261030-v6/";
+const CACHE_NAME = `${CACHE_PREFIX}v7-privacy`;
+const BASE = "https://modelscope.cn/models/LittleBoss/OpenNWM-Website/resolve/site-20261031-v7/";
 const MASTERS = [
   ["route_07_clip_01_grass_passage", 83056964, "efdb79d1bf2a07a7d5d85865b56cf60a93a43ebe60510cb98e1415064a19da25"],
   ["route_07_clip_02_gravel_entry_curated", 67303672, "87380e898bcf3afea455dd4de4cd5720cfc55dcf196d01b2c130095ad3edbadb"],
