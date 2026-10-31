@@ -10,7 +10,7 @@
 
 1. 首页背景影片、OpenSpace Lab 标识，以及论文、代码、模型、Demo 和数据集入口。
 2. 作者与单位。
-3. 方法图使用 2026-10-31 提供的 `method.pdf`，直接导出为 `assets/paper/method-overview-20261031.svg`，保留原始白底、结构、公式和照片。文字转为矢量轮廓，放大时保持清晰且不依赖字体；点击打开逐字节保留的原始 PDF。来源和校验值记录在同名 JSON 中。绿色 N 的独立矢量文件为 `assets/opennwm-logo.svg` 和 `assets/opennwm-logo.pdf`，均为透明背景、无嵌入位图。
+3. 方法图使用 2026-10-31 提供的 `method.pdf`，直接导出为矢量 SVG，网页使用 `assets/paper/method-overview-dark-20261031.svg`：透明底与页面 `--paper` 背景一致，文字、箭头和模块使用深色主题配色。保留原始结构、公式轮廓和照片字节；仅对公式位图、Logo 文字和阴影应用 SVG 颜色滤镜。文字矢量轮廓放大时保持清晰且不依赖字体；点击打开逐字节保留的原始 PDF。原始导出 `method-overview-20261031.svg` 一并保留，来源和配色映射记录在各自同名 JSON 中。绿色 N 的独立矢量文件为 `assets/opennwm-logo.svg` 和 `assets/opennwm-logo.pdf`，均为透明背景、无嵌入位图。
 4. 论文 Table 1 的未来预测结果、Table 2 的导航结果，以纵向排列的 Prediction / Navigation 竖柱图展示精简指标，方法名置于横轴；预测和导航采用一致的双列绘图区，保留全部模型对比。
 5. 真机导航：按完整记录分组，所有子片段直接平铺；每个场景至少 4 段，实际就绪内容及筛选记录以 `content/go2.json` 为准。
 6. Visualization：地球、月面、火星的未来预测对照，以及离线导航可视化。
