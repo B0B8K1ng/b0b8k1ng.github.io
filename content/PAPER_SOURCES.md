@@ -1,6 +1,6 @@
 # Paper content and provenance
 
-`paper.json` is transcribed and summarized from the supplied 38-page manuscript,
+The research content in `paper.json` is transcribed and summarized from the supplied 38-page manuscript,
 `assets/paper/OpenNWM.pdf`, inspected on 2026-09-27.
 Page numbers refer to the PDF's one-based pages, which match its printed page
 numbers. This file records source and interpretation details for maintainers;
@@ -10,7 +10,7 @@ the concise reader-facing text lives in `paper.json`.
 
 | Content | Manuscript source |
 | --- | --- |
-| Title, authors, review status, abstract | Page 1 |
+| Abstract and original manuscript metadata | Page 1 |
 | Contributions | Pages 1–2 |
 | Latent action objectives and dynamics conditioning | Pages 4–6 |
 | Three-stage world-model training | Figure 3, page 7 |
@@ -32,12 +32,9 @@ the concise reader-facing text lives in `paper.json`.
 
 ## Metadata and citation
 
-The manuscript names **Anonymous authors** and states **Paper under double-blind
-review** and **Under review as a conference paper at ICLR 2027**. It does not state
-real author names, affiliations, acceptance, a publication year, a DOI, or an
-arXiv URL. Those fields must not be inferred from local directory names or PDF
-creation timestamps. `citation.bibtex` is a provisional `@unpublished` entry
-that preserves the anonymous review status and omits an unsupported year.
+Public paper links and bibliographic metadata follow the [arXiv record](https://arxiv.org/abs/2611.01844). The BibTeX entry in `paper.json` and the static fallback in `index.html` use the [arXiv export](https://arxiv.org/bibtex/2611.01844), with only trailing whitespace removed. Keep these entries synchronized with the repository README and the dataset and model cards.
+
+The local manuscript remains the audit source for the research content and page references above.
 
 ## Statistical and experimental interpretation
 
